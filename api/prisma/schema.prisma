@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  username  String   @unique
+  avatar    String?
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  projects Project[]
+
+  cards    Card[]
+  comments Comment[]
+}
+
+model Project {
+  id        Int      @id @default(autoincrement())
+  title     String
+  image     String?
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  users     User[]
+}
+
+model Column {
+  id        Int      @id @default(autoincrement())
+  title     String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  cards     Card[]
+}
+
+model Card {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  tags        Tag[]
+  assignees   User[]
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+
+  column   Column?   @relation(fields: [columnId], references: [id])
+  columnId Int?
+  comments Comment[]
+}
+
+model Tag {
+  id    Int    @id @default(autoincrement())
+  title String
+  color String
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  Card      Card?    @relation(fields: [cardId], references: [id])
+  cardId    Int?
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  body      String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  author User @relation(fields: [userId], references: [id])
+  userId Int
+
+  card   Card? @relation(fields: [cardId], references: [id])
+  cardId Int?
+}
