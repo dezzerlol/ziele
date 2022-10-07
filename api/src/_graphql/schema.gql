@@ -1,0 +1,57 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Int!
+  username: String!
+  email: String!
+  password: String!
+  avatar: String
+  updatedAt: String!
+  createdAt: String!
+}
+
+type OutputLogin {
+  token: String!
+}
+
+type OutputRegister {
+  status: Float!
+  message: String!
+}
+
+type Project {
+  id: Int!
+  title: String!
+  image: String
+  updatedAt: Int!
+  createdAt: Int!
+  users: [User!]!
+}
+
+type Query {
+  getAllUsers: [User!]!
+}
+
+type Mutation {
+  login(data: LoginDto!): OutputLogin!
+  register(data: CreateUserDto!): OutputRegister!
+  createProject(data: CreateProjectDto!): Project!
+}
+
+input LoginDto {
+  email: String!
+  password: String!
+}
+
+input CreateUserDto {
+  email: String!
+  username: String!
+  password: String!
+}
+
+input CreateProjectDto {
+  title: String!
+  userId: Float!
+}

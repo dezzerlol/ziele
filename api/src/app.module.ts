@@ -1,29 +1,30 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { GraphQLModule } from '@nestjs/graphql'
+import { join } from 'path'
+import { AuthModule } from './auth/auth.module'
+import { PrismaService } from './prisma.service'
+import { UsersModule } from './users/users.module'
+import { ProjectModule } from './project/project.module';
 
 @Module({
   controllers: [],
-  providers: [],
+  providers: [PrismaService],
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.env`,
     }),
-    /*     ServeStaticModule.forRoot({ rootPath: path.resolve(__dirname, 'static') }),
-    SequelizeModule.forRoot({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB_NAME,
-      models: [],
-      autoLoadModels: true,
-    }), */
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/_graphql/schema.gql'),
+      buildSchemaOptions: { dateScalarMode: 'timestamp' },
+      debug: false,
+      playground: true,
+    }),
     UsersModule,
     AuthModule,
+    ProjectModule,
   ],
 })
 export class AppModule {}

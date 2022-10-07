@@ -12,7 +12,6 @@ export class AuthService {
 
   async login(data: LoginDto) {
     const user = await this.validateUser(data)
-
     return this.generateToken(user)
   }
 
@@ -27,7 +26,7 @@ export class AuthService {
 
     const user = await this.userService.createUser({ ...data, password: hashedPassword })
 
-    return { status: HttpStatus.CREATED, message: 'User created' }
+    return { status: HttpStatus.CREATED, message: 'ok' }
   }
 
   private async validateUser(data: LoginDto) {
