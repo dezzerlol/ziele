@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
+import { Column } from 'src/column/column.model'
 import { User } from 'src/users/users.model'
 
 @ObjectType()
@@ -12,12 +13,15 @@ export class Project {
   @Field(() => String, { nullable: true })
   image?: string
 
-  @Field(() => Int, {})
-  updatedAt: number
+  @Field(() => String, {})
+  updatedAt: Date
 
-  @Field(() => Int, {})
-  createdAt: number
+  @Field(() => String, {})
+  createdAt: Date
 
   @Field(() => [User], {})
-  users: number
+  users: Array<User>
+
+  @Field(() => [Column], {})
+  columns: Array<Column>
 }

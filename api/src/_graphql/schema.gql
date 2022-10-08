@@ -2,6 +2,24 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Column {
+  id: Int!
+  title: String!
+  updatedAt: String!
+  createdAt: String!
+  projectId: Int!
+}
+
+type Project {
+  id: Int!
+  title: String!
+  image: String
+  updatedAt: String!
+  createdAt: String!
+  users: [User!]!
+  columns: [Column!]!
+}
+
 type User {
   id: Int!
   username: String!
@@ -10,6 +28,7 @@ type User {
   avatar: String
   updatedAt: String!
   createdAt: String!
+  projects: [Project!]!
 }
 
 type OutputLogin {
@@ -21,25 +40,18 @@ type OutputRegister {
   message: String!
 }
 
-type Project {
-  id: Int!
-  title: String!
-  image: String
-  updatedAt: Int!
-  createdAt: Int!
-  users: [User!]!
-}
-
 type Query {
   getAllUsers: [User!]!
+  getProject(id: Float!): Project!
+  getUserProjects: [Project!]!
+  getProjectColumns(projectId: Float!): [Column!]!
 }
 
 type Mutation {
   login(data: LoginDto!): OutputLogin!
   register(data: CreateUserDto!): OutputRegister!
   createProject(data: CreateProjectDto!): Project!
-  getProject(id: Float!): Project!
-  getUserProjects: [Project!]!
+  createColumn(data: CreateColumnDto!): Column!
 }
 
 input LoginDto {
@@ -55,4 +67,9 @@ input CreateUserDto {
 
 input CreateProjectDto {
   title: String!
+}
+
+input CreateColumnDto {
+  title: String!
+  projectId: Float!
 }
