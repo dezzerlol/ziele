@@ -38,6 +38,8 @@ type Mutation {
   login(data: LoginDto!): OutputLogin!
   register(data: CreateUserDto!): OutputRegister!
   createProject(data: CreateProjectDto!): Project!
+  getProject(id: Float!): Project!
+  getUserProjects: [Project!]!
 }
 
 input LoginDto {
@@ -53,5 +55,4 @@ input CreateUserDto {
 
 input CreateProjectDto {
   title: String!
-  userId: Float!
 }

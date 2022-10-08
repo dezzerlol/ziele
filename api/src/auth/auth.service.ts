@@ -29,6 +29,15 @@ export class AuthService {
     return { status: HttpStatus.CREATED, message: 'ok' }
   }
 
+  validateToken(token: string) {
+    try {
+      const user = this.jwtService.verify(token)
+      return user
+    } catch (error) {
+      throw new UnauthorizedException({ message: 'User not authorized' })
+    }
+  }
+
   private async validateUser(data: LoginDto) {
     const user = await this.userService.findUserByEmail(data.email)
 

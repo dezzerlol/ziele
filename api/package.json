@@ -33,6 +33,7 @@
     "apollo-server-express": "^3.10.2",
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.13.2",
+    "cookie-parser": "^1.4.6",
     "graphql": "^16.6.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

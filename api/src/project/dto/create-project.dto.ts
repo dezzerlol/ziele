@@ -10,8 +10,4 @@ export class CreateProjectDto {
   @Field()
   readonly title: string
 
-  @ApiProperty({ example: 'Tester', description: 'User name' })
-  @IsNumber({}, { message: 'Must be a number' })
-  @Field()
-  readonly userId: number
 }

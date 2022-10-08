@@ -6,7 +6,7 @@ import { join } from 'path'
 import { AuthModule } from './auth/auth.module'
 import { PrismaService } from './prisma.service'
 import { UsersModule } from './users/users.module'
-import { ProjectModule } from './project/project.module';
+import { ProjectModule } from './project/project.module'
 
 @Module({
   controllers: [],
@@ -21,6 +21,7 @@ import { ProjectModule } from './project/project.module';
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
       debug: false,
       playground: true,
+      context: ({ req }) => ({ req }),
     }),
     UsersModule,
     AuthModule,
