@@ -2,12 +2,23 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Card {
+  id: Int!
+  title: String!
+  description: String
+  updatedAt: String!
+  createdAt: String!
+  assignees: [User!]!
+  columnId: Int!
+}
+
 type Column {
   id: Int!
   title: String!
   updatedAt: String!
   createdAt: String!
   projectId: Int!
+  cards: [Card!]!
 }
 
 type Project {
@@ -52,6 +63,8 @@ type Mutation {
   register(data: CreateUserDto!): OutputRegister!
   createProject(data: CreateProjectDto!): Project!
   createColumn(data: CreateColumnDto!): Column!
+  updateColumn(id: Float!, newTitle: String!): Column!
+  createCard(data: CreateCardDto!): Card!
 }
 
 input LoginDto {
@@ -72,4 +85,14 @@ input CreateProjectDto {
 input CreateColumnDto {
   title: String!
   projectId: Float!
+}
+
+input CreateCardDto {
+  title: String!
+  columnId: Float!
+  description: String
+}
+
+type Subscription {
+  cardCreated(columnId: Float!): Card!
 }

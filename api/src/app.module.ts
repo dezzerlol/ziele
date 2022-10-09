@@ -7,7 +7,8 @@ import { AuthModule } from './auth/auth.module'
 import { PrismaService } from './prisma.service'
 import { UsersModule } from './users/users.module'
 import { ProjectModule } from './project/project.module'
-import { ColumnModule } from './column/column.module';
+import { ColumnModule } from './column/column.module'
+import { CardModule } from './card/card.module'
 
 @Module({
   controllers: [],
@@ -18,6 +19,10 @@ import { ColumnModule } from './column/column.module';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      subscriptions: {
+        'graphql-ws': true,
+        'subscriptions-transport-ws': true,
+      },
       autoSchemaFile: join(process.cwd(), 'src/_graphql/schema.gql'),
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
       debug: false,
@@ -28,6 +33,7 @@ import { ColumnModule } from './column/column.module';
     AuthModule,
     ProjectModule,
     ColumnModule,
+    CardModule,
   ],
 })
 export class AppModule {}

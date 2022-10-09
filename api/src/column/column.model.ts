@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
+import { Card } from 'src/card/card.model'
 
 
 @ObjectType()
@@ -18,6 +19,6 @@ export class Column {
   @Field(() => Int, {})
   projectId: number
 
-  /* @Field(() => [Card], {})
-  cards: [] */
+  @Field(() => [Card], {})
+  cards: Array<Card>
 }

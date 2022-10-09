@@ -25,7 +25,23 @@ export class ColumnService {
       where: {
         projectId: projectId,
       },
+      include: {
+        cards: true,
+      },
     })
     return columns
+  }
+
+  async updateColumn(id: number, newTitle: string) {
+    const column = await this.prisma.column.update({
+      where: {
+        id,
+      },
+      data: {
+        title: newTitle,
+      },
+    })
+
+    return column
   }
 }

@@ -10,13 +10,18 @@ import { CreateColumnDto } from './dto/create-column.dto'
 export class ColumnResolver {
   constructor(private columnService: ColumnService) {}
 
+  @Query(() => [Column])
+  async getProjectColumns(@Args('projectId') projectId: number) {
+    return this.columnService.getProjectColumns(projectId)
+  }
+
   @Mutation(() => Column)
   async createColumn(@Args('data') data: CreateColumnDto) {
     return this.columnService.createColumn(data)
   }
 
-  @Query(() => [Column])
-  async getProjectColumns(@Args('projectId') projectId: number) {
-    return this.columnService.getProjectColumns(projectId)
+  @Mutation(() => Column)
+  async updateColumn(@Args('id') id: number, @Args('newTitle') newTitle: string) {
+    return this.columnService.updateColumn(id, newTitle)
   }
 }
