@@ -6,7 +6,7 @@ import { ColumnService } from './column.service'
 import { CreateColumnDto } from './dto/create-column.dto'
 
 @Resolver()
-@UseGuards(GqlAuthGuard)
+/* @UseGuards(GqlAuthGuard) */
 export class ColumnResolver {
   constructor(private columnService: ColumnService) {}
 

@@ -56,6 +56,7 @@ type Query {
   getProject(id: Float!): Project!
   getUserProjects: [Project!]!
   getProjectColumns(projectId: Float!): [Column!]!
+  getCards(columnId: Float!): [Card!]!
 }
 
 type Mutation {
@@ -65,6 +66,7 @@ type Mutation {
   createColumn(data: CreateColumnDto!): Column!
   updateColumn(id: Float!, newTitle: String!): Column!
   createCard(data: CreateCardDto!): Card!
+  updateCard(data: UpdateCardDto!): Card!
 }
 
 input LoginDto {
@@ -91,8 +93,19 @@ input CreateCardDto {
   title: String!
   columnId: Float!
   description: String
+  assigneeIds: [Float!]
+  tagId: Float
+}
+
+input UpdateCardDto {
+  cardId: Float!
+  title: String
+  description: String
+  assigneeId: Float
+  tagId: Float
 }
 
 type Subscription {
   cardCreated(columnId: Float!): Card!
+  cardUpdated(cardId: Float!): Card!
 }
