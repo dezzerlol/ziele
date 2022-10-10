@@ -2,9 +2,9 @@ import { Anchor, Box, Button, Center, Checkbox, Container, Image, Stack, Text, T
 import Link from 'next/link'
 import fetcher from '../../lib/fetcher'
 
-const LoginPage = () => {
-  const handleLogin = () => {
-    return fetcher('/auth/login', { email: 'testinLogin@mail.com', password: '123456' })
+const RegisterPage = () => {
+  const handleRegister = () => {
+    return fetcher('/auth/signup', { email: 'testinLogin@mail.com', password: '123456', username: 'testinLogin' })
   }
 
   return (
@@ -15,15 +15,16 @@ const LoginPage = () => {
       <Center sx={{ width: '50%' }}>
         <Stack align='center' px='md' sx={{ maxWidth: '300px', width: '100%' }}>
           <Box sx={{ alignSelf: 'flex-start' }}>
-            <Title mb='sm'>Log in</Title>
-            <Text>to your account.</Text>
+            <Title mb='xs'>Create</Title>
+            <Text>your account.</Text>
           </Box>
           <TextInput placeholder='Enter email...' sx={{ width: '100%' }} />
+          <TextInput placeholder='Enter username...' sx={{ width: '100%' }} />
           <TextInput placeholder='Enter password...' sx={{ width: '100%' }} />
           <Checkbox label='Remember me' sx={{ alignSelf: 'flex-start' }} />
-          <Button sx={{ width: '100%' }}>Log in</Button>
-          <Link href='/register'>
-            <Anchor sx={{ alignSelf: 'flex-start' }}>Dont have an account? Sign up.</Anchor>
+          <Button sx={{ width: '100%' }}>Submit</Button>
+          <Link href='/login'>
+            <Anchor sx={{ alignSelf: 'flex-start' }}>Already a user? Log in.</Anchor>
           </Link>
         </Stack>
       </Center>
@@ -31,4 +32,4 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage
+export default RegisterPage
