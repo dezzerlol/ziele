@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma.service'
 import { CreateColumnDto } from './dto/create-column.dto'
+import { GetColumnsDto } from './dto/get-columns.dto'
 
 @Injectable()
 export class ColumnService {
@@ -20,10 +21,10 @@ export class ColumnService {
     return column
   }
 
-  async getProjectColumns(projectId: number) {
+  async getProjectColumns(data: GetColumnsDto) {
     const columns = await this.prisma.column.findMany({
       where: {
-        projectId: projectId,
+        projectId: data.projectId,
       },
       include: {
         cards: true,

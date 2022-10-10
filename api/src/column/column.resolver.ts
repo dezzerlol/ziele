@@ -1,18 +1,19 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
-import { GqlAuthGuard } from 'src/auth/jwt-auth.guard'
+import { ProjectGuard } from 'src/project/project.guard'
 import { Column } from './column.model'
 import { ColumnService } from './column.service'
 import { CreateColumnDto } from './dto/create-column.dto'
+import { GetColumnsDto } from './dto/get-columns.dto'
 
 @Resolver()
-/* @UseGuards(GqlAuthGuard) */
+@UseGuards(ProjectGuard)
 export class ColumnResolver {
   constructor(private columnService: ColumnService) {}
 
   @Query(() => [Column])
-  async getProjectColumns(@Args('projectId') projectId: number) {
-    return this.columnService.getProjectColumns(projectId)
+  async getProjectColumns(@Args('data') data: GetColumnsDto) {
+    return this.columnService.getProjectColumns(data)
   }
 
   @Mutation(() => Column)

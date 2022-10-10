@@ -11,19 +11,23 @@ import { ProjectService } from './project.service'
 export class ProjectResolver {
   constructor(private projectService: ProjectService) {}
 
-  @Mutation(() => Project)
-  async createProject(@Args('data') data: CreateProjectDto, @CurrentUser() user: ICurrentUser) {
-    return this.projectService.createProject(data, user.id)
-  }
-
   @Query(() => Project)
-  async getProject(@Args('id') id: number, @CurrentUser() user: ICurrentUser) {
-    console.log({ user })
-    return this.projectService.getProject(id)
+  async getProject(@Args('id') id: number, @CurrentUser() reqUser: ICurrentUser) {
+    return this.projectService.getProject(id, reqUser)
   }
 
   @Query(() => [Project])
-  async getUserProjects(@CurrentUser() user: ICurrentUser) {
-    return this.projectService.getUserProjects(user.id)
+  async getUserProjects(@CurrentUser() reqUser: ICurrentUser) {
+    return this.projectService.getUserProjects(reqUser)
+  }
+
+  /* @Query(() => Boolean)
+  async findUserInProject(@Args('data') data: FindUserDto) {
+    return this.projectService.findUserInProject(data)
+  } */
+
+  @Mutation(() => Project)
+  async createProject(@Args('data') data: CreateProjectDto, @CurrentUser() reqUser: ICurrentUser) {
+    return this.projectService.createProject(data, reqUser.id)
   }
 }

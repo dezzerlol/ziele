@@ -2,6 +2,26 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type OutputLogin {
+  token: String!
+}
+
+type OutputRegister {
+  status: Float!
+  message: String!
+}
+
+type User {
+  id: Int!
+  username: String!
+  email: String!
+  password: String!
+  avatar: String
+  updatedAt: String!
+  createdAt: String!
+  projects: [Project!]!
+}
+
 type Card {
   id: Int!
   title: String!
@@ -31,32 +51,15 @@ type Project {
   columns: [Column!]!
 }
 
-type User {
-  id: Int!
-  username: String!
-  email: String!
-  password: String!
-  avatar: String
-  updatedAt: String!
-  createdAt: String!
-  projects: [Project!]!
-}
-
-type OutputLogin {
-  token: String!
-}
-
-type OutputRegister {
-  status: Float!
-  message: String!
-}
-
 type Query {
-  getAllUsers: [User!]!
   getProject(id: Float!): Project!
   getUserProjects: [Project!]!
-  getProjectColumns(projectId: Float!): [Column!]!
+  getProjectColumns(data: GetColumnsDto!): [Column!]!
   getCards(columnId: Float!): [Card!]!
+}
+
+input GetColumnsDto {
+  projectId: Float!
 }
 
 type Mutation {

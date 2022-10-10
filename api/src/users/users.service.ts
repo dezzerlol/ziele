@@ -18,4 +18,12 @@ export class UsersService {
   async getAllUsers() {
     return await this.prisma.user.findMany()
   }
+
+  async getUserProjects(userId: number) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: { projects: { select: { id: true } } },
+    })
+    return user.projects
+  }
 }

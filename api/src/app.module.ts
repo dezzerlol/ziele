@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module'
 import { ProjectModule } from './project/project.module'
 import { ColumnModule } from './column/column.module'
 import { CardModule } from './card/card.module'
+import { GraphQLError, GraphQLFormattedError } from 'graphql'
 
 @Module({
   controllers: [],
@@ -28,6 +29,12 @@ import { CardModule } from './card/card.module'
       debug: false,
       playground: true,
       context: ({ req }) => ({ req }),
+      formatError: (error: GraphQLError) => {
+        const graphQLFormattedError: GraphQLFormattedError = {
+          message: error.message,
+        }
+        return graphQLFormattedError
+      },
     }),
     UsersModule,
     AuthModule,
