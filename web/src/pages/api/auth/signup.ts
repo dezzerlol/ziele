@@ -7,17 +7,21 @@ import apolloClient from '../../../lib/apolloClient'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { email, password, username } = req.body
 
-  const { data } = await apolloClient.mutate({
-    mutation: gql`
-      mutation register($data: CreateUserDto!) {
-        register(data: $data) {
-          status
-          message
+  try {
+    const { data } = await apolloClient.mutate({
+      mutation: gql`
+        mutation register($data: CreateUserDto!) {
+          register(data: $data) {
+            status
+            message
+          }
         }
-      }
-    `,
-    variables: { data: { email, password, username } },
-  })
+      `,
+      variables: { data: { email, password, username } },
+    })
 
-  return res.status(data.register.status).json(data)
+    return res.status(data.register.status).json(data)
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message })
+  }
 }
