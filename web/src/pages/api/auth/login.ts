@@ -2,10 +2,11 @@ import { gql } from '@apollo/client'
 import { serialize } from 'cookie'
 import { decodeJwt } from 'jose'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { AUTH_TOKEN } from '../../../constant'
 import apolloClient from '../../../lib/apolloClient'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { email, password, username } = req.body
+  const { email, password } = req.body
 
   try {
     const { data, errors } = await apolloClient.mutate({
@@ -24,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.setHeader(
       'Set-Cookie',
-      serialize('ZIELE_AUTH_TOKEN', data.login.token, {
+      serialize(AUTH_TOKEN, data.login.token, {
         httpOnly: true,
         expires: expTime,
         path: '/',
@@ -35,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     return res.status(200).json({ token: data.login.token })
   } catch (error: any) {
-    console.log(error.graphQLErrors[0])
+    /* console.log(error.graphQLErrors[0]) */
     return res.status(401).json({ message: error.graphQLErrors[0].message })
   }
 }

@@ -4,7 +4,8 @@ import { JwtService } from '@nestjs/jwt'
 import { Observable } from 'rxjs'
 import { AuthService } from './auth.service'
 
-@Injectable()
+// guard for http requests
+/* @Injectable()
 export class JwtAuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
@@ -30,8 +31,9 @@ export class JwtAuthGuard implements CanActivate {
       throw new UnauthorizedException({ message: 'User not authorized' })
     }
   }
-}
+} */
 
+// guard for graphql requests
 @Injectable()
 export class GqlAuthGuard implements CanActivate {
   constructor(private readonly auth: AuthService) {}
@@ -43,31 +45,28 @@ export class GqlAuthGuard implements CanActivate {
 
   canActivate(context: ExecutionContext) {
     //get request
-    const req = this.getRequest(context);
+    const req = this.getRequest(context)
 
-    // Get the header
-    const authHeader = context.getArgs()[2].req.headers.authorization as string
+    // Get the token from cookie
+    const AUTH_TOKEN = context.getArgs()[2].req.cookies.ZIELE_AUTH_TOKEN
 
-    if (!authHeader) {
-      throw new BadRequestException('Authorization header not found.')
+    if (!AUTH_TOKEN) {
+      throw new BadRequestException('Authorization token not found.')
     }
 
-    const [type, token] = authHeader.split(' ')
-    if (type !== 'Bearer') {
-      throw new BadRequestException(`Authentication type \'Bearer\' required. Found \'${type}\'`)
-    }
-    const validationResult = this.auth.validateToken(token)
+    const validationResult = this.auth.validateToken(AUTH_TOKEN)
 
     if (validationResult) {
       // send token in request user
       req.user = validationResult
       return true
     }
-    
+
     throw new UnauthorizedException(validationResult)
   }
 }
 
+// guard for graphql subscriptions requests
 @Injectable()
 export class WsAuthGuard implements CanActivate {
   constructor(private readonly auth: AuthService) {}

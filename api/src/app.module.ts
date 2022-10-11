@@ -28,6 +28,7 @@ import { GraphQLError, GraphQLFormattedError } from 'graphql'
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
       debug: false,
       playground: true,
+      cors: { origin: 'http://localhost:3000', credentials: true },
       context: ({ req }) => ({ req }),
       formatError: (error: GraphQLError) => {
         const graphQLFormattedError: GraphQLFormattedError = {

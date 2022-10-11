@@ -2,8 +2,8 @@ import { gql, useQuery } from '@apollo/client'
 import { useCallback, useEffect } from 'react'
 
 const Query = gql`
-  query getProjectColumns($projectId: Float!) {
-    getProjectColumns(projectId: $projectId) {
+  query getProjectColumns($data: GetColumnsDto!) {
+    getProjectColumns(data: $data) {
       id
       title
       cards {
@@ -25,7 +25,7 @@ const Subscription = gql`
 `
 
 export default function useColumns(projectId: number) {
-  const { data, loading, error, subscribeToMore } = useQuery(Query, { variables: { projectId } })
+  const { data, loading, error, subscribeToMore } = useQuery(Query, { variables: { data: { projectId } } })
 
   const columnIds = data?.getProjectColumns.map((column: any) => column.id)
 

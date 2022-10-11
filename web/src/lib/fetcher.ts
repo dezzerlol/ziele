@@ -7,6 +7,10 @@ export default function fetcher(url: string, data: any = undefined) {
 
     body: JSON.stringify(data),
   }).then(async (res) => {
+    if (!res.ok) {
+      const data = await res.json()
+      throw new Error(data?.message)
+    }
     return res.json()
   })
 }

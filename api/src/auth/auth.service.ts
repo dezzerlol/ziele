@@ -54,7 +54,7 @@ export class AuthService {
       return user
     } else {
       throw new UnauthorizedException({
-        message: 'Email or password incorrect',
+        message: 'Password incorrect',
       })
     }
   }

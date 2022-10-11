@@ -1,4 +1,12 @@
-import { BadRequestException, CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common'
+import {
+  BadRequestException,
+  CanActivate,
+  ExecutionContext,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { AuthService } from 'src/auth/auth.service'
 import { ProjectService } from './project.service'
@@ -22,18 +30,14 @@ export class ProjectGuard implements CanActivate {
     const req = this.getRequest(context)
     const args = this.getArgs(context)
 
-    // Get the header
-    const authHeader = context.getArgs()[2].req.headers.authorization as string
+    // Get the token from cookie
+    const AUTH_TOKEN = context.getArgs()[2].req.cookies.ZIELE_AUTH_TOKEN
 
-    if (!authHeader) {
-      throw new BadRequestException('Authorization header not found.')
+    if (!AUTH_TOKEN) {
+      throw new BadRequestException('Authorization token not found.')
     }
 
-    const [type, token] = authHeader.split(' ')
-    if (type !== 'Bearer') {
-      throw new BadRequestException(`Authentication type \'Bearer\' required. Found \'${type}\'`)
-    }
-    const validationResult = this.auth.validateToken(token)
+    const validationResult = this.auth.validateToken(AUTH_TOKEN)
 
     if (validationResult) {
       const projectId = args.data.projectId
@@ -42,7 +46,7 @@ export class ProjectGuard implements CanActivate {
       // check if user exists in requested project,
       // if exists return true
       const isUserInProject = await this.projectService.findUserInProject({ userId, projectId })
-     /*  console.log(isUserInProject) */
+  
       if (isUserInProject) {
         req.user = validationResult
         return true
