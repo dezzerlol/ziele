@@ -1,6 +1,7 @@
 import { Avatar, Box, Group, Menu, Text, Title } from '@mantine/core'
 import React from 'react'
 import { RiArrowUpDownFill } from 'react-icons/ri'
+import { TbGripVertical } from 'react-icons/tb'
 
 type Props = {
   companyName: string
@@ -20,7 +21,8 @@ const CompanyItem = ({
 }) => {
   return (
     <Group spacing='xs'>
-      <Avatar radius='md' size='md' src={image} />
+      {type === 'dropdown' && <TbGripVertical />}
+      <Avatar radius='md' size='sm' src={image} />
       <Box>
         <Title order={6} weight='bold' p={0}>
           {companyName}
@@ -34,7 +36,7 @@ const CompanyItem = ({
 const Header = ({ companyName, image }: Props) => {
   return (
     <>
-      <Menu width={260} shadow='md'>
+      <Menu width={260} shadow='xl'>
         <Menu.Target>
           <Group position='apart' sx={{ cursor: 'pointer' }}>
             <CompanyItem companyName={companyName} image={image} type='header' />
