@@ -10,6 +10,9 @@ export default class _Document extends Document {
     return (
       <Html>
         <Head />
+        <link rel='preload' href='/fonts/Nunito-Bold.ttf' as='font' crossOrigin='' type='font/ttf' />
+        <link rel='preload' href='/fonts/Nunito-Regular.ttf' as='font' crossOrigin='' type='font/ttf' />
+        <link rel='preload' href='/fonts/Nunito-Semibold.ttf' as='font' crossOrigin='' type='font/ttf' />
         <body>
           <Main />
           <NextScript />

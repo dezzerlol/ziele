@@ -86,6 +86,8 @@ const LoginPage = () => {
 
 export default LoginPage
 
+LoginPage.layout = false
+
 export async function getServerSideProps(context: any) {
   const cookie = context.req.cookies[AUTH_TOKEN]
 

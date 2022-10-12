@@ -1,7 +1,6 @@
-import type { NextPage } from 'next'
 import Columns from '../components/Columns'
 
-const Home: NextPage = () => {
+const Home = () => {
   const handleLogout = () => {}
   return (
     <div>
@@ -17,3 +16,5 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+Home.layout = true

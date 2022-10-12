@@ -1,12 +1,18 @@
 import { ApolloProvider } from '@apollo/client'
+import Layout from '@components/Layout/Layout'
 import { ColorScheme, MantineProvider } from '@mantine/core'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 import { NotificationsProvider } from '@mantine/notifications'
+import { NextComponentType, NextPageContext } from 'next'
 import type { AppProps } from 'next/app'
 import apolloClient from '../lib/apolloClient'
 import '../styles/globals.css'
 
-function MyApp({ Component, pageProps }: AppProps) {
+type CustomAppProps = AppProps & {
+  Component: NextComponentType & { layout?: boolean }
+}
+
+function MyApp({ Component, pageProps }: CustomAppProps) {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: 'mantine-color-scheme',
     defaultValue: 'light',
@@ -39,10 +45,19 @@ function MyApp({ Component, pageProps }: AppProps) {
         },
         colorScheme,
         primaryColor: 'brand',
+        fontFamily: 'Nunito, sans-serif',
+        fontFamilyMonospace: 'Nunito, sans-serif',
+        headings: { fontFamily: 'Nunito, sans-serif' },
       }}>
       <NotificationsProvider>
         <ApolloProvider client={apolloClient}>
-          <Component {...pageProps} />
+          {Component.layout ? (
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          ) : (
+            <Component {...pageProps} />
+          )}
         </ApolloProvider>
       </NotificationsProvider>
     </MantineProvider>
