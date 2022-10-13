@@ -1,3 +1,4 @@
+import { ScrollArea } from '@mantine/core'
 import useColumns from '../hooks/useColumns'
 import Column from './Column'
 
@@ -18,6 +19,7 @@ const Columns = () => {
         {`
         .columns {
           display: flex;
+          overflow-y: auto;
         }
 
         .column {

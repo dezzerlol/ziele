@@ -28,3 +28,8 @@
   src: url('/fonts/Nunito-Extrabold.ttf');
   font-display: swap;
 }
+
+root {
+  --main-text-color: #000000;
+  --sec-text-color: rgba(25, 23, 17, 0.6);
+}

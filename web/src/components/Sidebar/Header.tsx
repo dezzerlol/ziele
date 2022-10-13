@@ -44,7 +44,7 @@ const Header = ({ companyName, image }: Props) => {
           </Group>
         </Menu.Target>
 
-        <Menu.Dropdown>
+        <Menu.Dropdown ml='md'>
           <Menu.Item>
             <CompanyItem companyName={companyName} image={image} type='dropdown' members={'4500'} />
           </Menu.Item>
