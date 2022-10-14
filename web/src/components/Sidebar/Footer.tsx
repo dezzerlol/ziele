@@ -1,11 +1,43 @@
-import { Avatar, Box, Divider, Group, Menu, Text, Title } from '@mantine/core'
-import { RiArrowUpDownFill, RiQuestionMark, RiSettings5Line } from 'react-icons/ri'
+import AvatarName from '@components/common/AvatarName'
+import { Box, Center, Divider, Group, Menu, SegmentedControl, Text } from '@mantine/core'
+import { useRouter } from 'next/router'
+import { BiNotification } from 'react-icons/bi'
+import { FiLogOut, FiMoon, FiSun } from 'react-icons/fi'
+import { RiQuestionMark, RiSettings5Line, RiUser3Line } from 'react-icons/ri'
+
+const links = [
+  { id: 1, name: 'Settings', link: '', icon: <RiSettings5Line /> },
+  { id: 2, name: 'Help', link: '', icon: <RiQuestionMark /> },
+]
+
+const themeButtons = [
+  {
+    label: (
+      <Center>
+        <FiSun />
+        <Box ml={10}>Light</Box>
+      </Center>
+    ),
+    value: 'light',
+  },
+  {
+    label: (
+      <Center>
+        <FiMoon />
+        <Box ml={10}>Dark</Box>
+      </Center>
+    ),
+    value: 'dark',
+  },
+]
 
 const Footer = () => {
-  const links = [
-    { id: 1, name: 'Settings', link: '', icon: <RiSettings5Line /> },
-    { id: 2, name: 'Help', link: '', icon: <RiQuestionMark /> },
-  ]
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' })
+    router.replace('/login')
+  }
   return (
     <Box>
       <Box p='md'>
@@ -29,26 +61,43 @@ const Footer = () => {
         ))}
       </Box>
       <Divider />
+
       <Menu width='260px' shadow='xl' position='top-start'>
         <Menu.Target>
-          <Group position='apart' spacing='xs' px='md' py='xs' sx={{ cursor: 'pointer' }}>
-            <Group>
-              <Avatar radius='md' size='sm' src={''} />
-              <Box>
-                <Title order={6} weight='bold' p={0}>
-                  dezzerlol
-                </Title>
-                <Text size='xs'>test@mail.com</Text>
-              </Box>
-            </Group>
-            <RiArrowUpDownFill color='gray' />
-          </Group>
+          <Box px='md' py='xs' sx={{ cursor: 'pointer' }}>
+            <AvatarName image={''} name={'dezzerlol'} undername={'user@test.com'} type='default' />
+          </Box>
         </Menu.Target>
         <Menu.Dropdown ml='md'>
-          <Menu.Item>Night mode</Menu.Item>
-          <Menu.Item>Notifications</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Logout</Menu.Item>
+          <SegmentedControl size='xs' sx={{ width: '100%' }} data={themeButtons} />
+          <Menu.Divider />
+          <Menu.Item>
+            <Group>
+              <RiUser3Line />
+              Profile
+            </Group>
+          </Menu.Item>
+          <Menu.Item>
+            <Group>
+              <RiSettings5Line />
+              Settings
+            </Group>
+          </Menu.Item>
+          <Menu.Item>
+            <Group>
+              <BiNotification />
+              Notifications
+            </Group>
+          </Menu.Item>
+          <Menu.Divider />
+          <Menu.Item>
+            <Box>
+              <Group onClick={handleLogout}>
+                <FiLogOut />
+                Logout
+              </Group>
+            </Box>
+          </Menu.Item>
         </Menu.Dropdown>
       </Menu>
     </Box>

@@ -30,7 +30,7 @@ const LoginPage = () => {
     setIsLoading(true)
     try {
       const data = await fetcher('/auth/login', { email: values.email, password: values.password })
-      router.replace('/')
+      router.replace(`/user/${data.userId}`)
     } catch (error: any) {
       loginForm.setFieldError('email', error.message)
     } finally {

@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
     )
 
-    return res.status(200).json({ token: data.login.token })
+    return res.status(200).json({ token: data.login.token, userId: payload.id })
   } catch (error: any) {
     /* console.log(error.graphQLErrors[0]) */
     return res.status(401).json({ message: error.graphQLErrors[0].message })
