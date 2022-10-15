@@ -1,39 +1,18 @@
-import Columns from '@components/Columns'
-import Header from '@components/Header/Header'
+import Board from '@components/Board/Board'
+import BoardHeader from '@components/Board/BoardHeader'
 import { AUTH_TOKEN } from '@constant'
-import { Burger, Group } from '@mantine/core'
-import { useUiStore } from 'store/uiStore'
-import shallow from 'zustand/shallow'
+import { Box, Stack } from '@mantine/core'
 
 const BoardPage = () => {
-  const { isSidebarOpen, toggleSidebar } = useUiStore(
-    (state) => ({
-      isSidebarOpen: state.isSidebarOpen,
-      toggleSidebar: state.toggleSidebar,
-    }),
-    shallow
-  )
-
-  const handleOpen = () => {
-    toggleSidebar(true)
-  }
   return (
-    <div>
-      <Header />
-      <Group>
-        <Burger
-          opened={isSidebarOpen}
-          onClick={handleOpen}
-          sx={{
-            '@media (min-width: 756px)': {
-              display: 'none',
-            },
-          }}
-        />
-        <h1>Design</h1>
-      </Group>
-      <Columns />
-    </div>
+    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Box p='md' sx={{ backgroundColor: 'white' }}>
+        <BoardHeader />
+      </Box>
+      <Box px='md' pt='md' sx={{ height: '80%' }}>
+        <Board />
+      </Box>
+    </Box>
   )
 }
 

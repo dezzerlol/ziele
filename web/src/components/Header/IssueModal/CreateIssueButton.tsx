@@ -5,18 +5,13 @@ import {
   Divider,
   Group,
   Modal,
-  MultiSelect,
-  MultiSelectValueProps,
-  Select,
-  SelectItemProps,
-  Text,
-  TextInput,
-  Title,
+  MultiSelect, Select, TextInput,
+  Title
 } from '@mantine/core'
 import dynamic from 'next/dynamic'
-import React, { forwardRef, useState } from 'react'
+import { forwardRef, useState } from 'react'
+import { BiDownArrowAlt, BiUpArrowAlt } from 'react-icons/bi'
 import { FiPlus } from 'react-icons/fi'
-import { BiUpArrowAlt, BiDownArrowAlt } from 'react-icons/bi'
 import { RiUser3Line } from 'react-icons/ri'
 import { FileDropzone } from './FileDropzone'
 import Label from './Label'

@@ -28,7 +28,7 @@ const Sidebar = () => {
       ref={matches ? ref : null}
       sx={{
         width: '260px',
-        minHeight: '100vh',
+        minHeight: 'inherit',
         backgroundColor: 'white',
         boxShadow: '-3px 0 5px 0 #555',
         zIndex: 100,
