@@ -1,3 +1,4 @@
+import Tag from '@components/common/Tag'
 import { ActionIcon, Avatar, Badge, Box, Card, Group, Menu, Text, Title } from '@mantine/core'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -25,6 +26,7 @@ const IssueCard = ({ card }: any) => {
         <Menu opened={isClicked} onChange={() => setIsClicked(!isClicked)} position='bottom-end' shadow='sm'>
           <Menu.Target>
             <ActionIcon
+              onClick={(e: any) => e.stopPropagation()}
               variant='transparent'
               sx={{
                 width: '20px',
@@ -58,7 +60,7 @@ const IssueCard = ({ card }: any) => {
       </Group>
       <Text color='gray.6'>Short summary</Text>
       <Group mt='xl' position='apart'>
-        <Badge color='green'>Tag</Badge>
+        <Tag color='green' text='WEB' />
         <Box>
           <Avatar radius='xl' size='sm' />
         </Box>

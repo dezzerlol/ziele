@@ -13,6 +13,7 @@ import {
   Tooltip,
 } from '@mantine/core'
 import { BiGridAlt, BiMenu } from 'react-icons/bi'
+import { FiPlus } from 'react-icons/fi'
 import { useUiStore } from 'store/uiStore'
 import shallow from 'zustand/shallow'
 
@@ -91,7 +92,9 @@ const BoardHeader = () => {
           </Tooltip.Group>
           <Tooltip label='Add people' withArrow mr='xl'>
             <ActionIcon size='lg' variant='transparent'>
-              <Avatar radius='xl'>+</Avatar>
+              <Avatar radius='xl'>
+                <FiPlus />
+              </Avatar>
             </ActionIcon>
           </Tooltip>
           <MultiSelect
