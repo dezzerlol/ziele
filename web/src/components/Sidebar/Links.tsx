@@ -1,4 +1,4 @@
-import { Box, Text } from '@mantine/core'
+import { Box, Group, Text } from '@mantine/core'
 import React from 'react'
 import { BiCalendar, BiChalkboard, BiNotification } from 'react-icons/bi'
 import { RiTeamLine } from 'react-icons/ri'
@@ -13,22 +13,20 @@ const Links = () => {
   return (
     <Box mt='lg'>
       {links.map((link) => (
-        <Box
+        <Group
           key={link.id}
           p='xs'
           sx={{
-            display: 'flex',
-            alignItems: 'center',
             gap: '8px',
             borderRadius: '10px',
             cursor: 'pointer',
             '&:hover': { backgroundColor: '#F5F7FB', color: '#562BF7' },
           }}>
           {link.icon}
-          <Text mt='2px' sx={{ fontWeight: '600' as 'bold' }} color='black'>
+          <Text mt={4} sx={{ fontWeight: '600' as 'bold' }} color='black'>
             {link.name}
           </Text>
-        </Box>
+        </Group>
       ))}
     </Box>
   )
