@@ -1,16 +1,17 @@
-import { ActionIcon, Box, Group, Menu, Modal, Title, useMantineTheme } from '@mantine/core'
-import { useRouter } from 'next/router'
+import { useDroppable } from '@dnd-kit/core'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { ActionIcon, Box, Group, Menu, Title } from '@mantine/core'
 import { useState } from 'react'
 import { BiDotsHorizontalRounded, BiListUl, BiTrash } from 'react-icons/bi'
-import IssueCard from './IssueCard'
-import IssueModal from './IssueModal'
+import DraggableIssueCard from './DraggableIssueCard'
 
 const Column = ({ column }: any) => {
-  const theme = useMantineTheme()
-  const router = useRouter()
+  const { setNodeRef } = useDroppable({
+    id: column.id,
+  })
+
   const [isClicked, setIsClicked] = useState(false)
 
-  console.log(router)
   return (
     <>
       <Box
@@ -57,13 +58,15 @@ const Column = ({ column }: any) => {
             </Menu.Dropdown>
           </Menu>
         </Group>
-        <Box sx={{ borderRadius: '5px', height: 'auto' }}>
-          {column.cards.map((card: any) => (
-            <IssueCard key={card.id} card={card} />
-          ))}
-        </Box>
+
+        <SortableContext items={column.cards.map((card: any) => card.id)} strategy={verticalListSortingStrategy}>
+          <Box ref={setNodeRef} sx={{ borderRadius: '5px', height: 'auto' }}>
+            {column.cards.map((card: any) => (
+              <DraggableIssueCard key={card.id} card={card} />
+            ))}
+          </Box>
+        </SortableContext>
       </Box>
-      <IssueModal />
     </>
   )
 }
