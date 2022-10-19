@@ -16,6 +16,7 @@ const Column = ({ column }: any) => {
     <>
       <Box
         p='xs'
+
         sx={{
           minWidth: '300px',
           maxWidth: '300px',
@@ -60,7 +61,7 @@ const Column = ({ column }: any) => {
         </Group>
 
         <SortableContext items={column.cards.map((card: any) => card.id)} strategy={verticalListSortingStrategy}>
-          <Box ref={setNodeRef} sx={{ borderRadius: '5px', height: 'auto' }}>
+          <Box ref={setNodeRef} sx={{ borderRadius: '5px', height: 'auto', minHeight: '200px' }}>
             {column.cards.map((card: any) => (
               <DraggableIssueCard key={card.id} card={card} />
             ))}

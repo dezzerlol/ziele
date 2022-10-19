@@ -9,8 +9,9 @@ const DraggableIssueCard = ({ card }: any) => {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : undefined,
+    opacity: isDragging ? 0.35 : undefined,
     backgroundColor: isDragging ? '#562BF7' : undefined,
+    
   }
 
   return <IssueCard ref={setNodeRef} {...attributes} {...listeners} card={card} style={style} />
