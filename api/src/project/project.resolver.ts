@@ -2,6 +2,7 @@ import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { GqlAuthGuard } from 'src/auth/jwt-auth.guard'
 import { CurrentUser, ICurrentUser } from 'src/users/user.decorator'
+import { AddUserDto } from './dto/add-user.dto'
 import { CreateProjectDto } from './dto/create-project.dto'
 import { Project } from './project.model'
 import { ProjectService } from './project.service'
@@ -21,10 +22,10 @@ export class ProjectResolver {
     return this.projectService.getUserProjects(reqUser)
   }
 
-  /* @Query(() => Boolean)
-  async findUserInProject(@Args('data') data: FindUserDto) {
-    return this.projectService.findUserInProject(data)
-  } */
+  @Mutation(() => Project)
+  async addUserInProject(@Args('data') data: AddUserDto) {
+    return this.projectService.addUserToProject(data)
+  }
 
   @Mutation(() => Project)
   async createProject(@Args('data') data: CreateProjectDto, @CurrentUser() reqUser: ICurrentUser) {

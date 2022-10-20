@@ -25,7 +25,7 @@ const Subscription = gql`
 `
 
 export default function useColumns(projectId: number) {
-  const { data, loading, error, subscribeToMore } = useQuery(Query, { variables: { data: { projectId } } })
+  const { data, loading, error, subscribeToMore,  } = useQuery(Query, { variables: { data: { projectId } } })
 
   const columnIds = data?.getProjectColumns.map((column: any) => column.id)
 

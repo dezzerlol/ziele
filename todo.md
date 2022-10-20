@@ -5,6 +5,7 @@
 - [ ] comment api (create, delete, update)
 - [ ] file api
 - [ ] roles for projects
+- [ ] swap graphql subscriptions to graphql-postgres-subscriptions (https://www.apollographql.com/docs/apollo-server/data/subscriptions/#production-pubsub-libraries)
 
 <br />
 <br />

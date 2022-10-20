@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma.service'
 import { ICurrentUser } from 'src/users/user.decorator'
 import { UsersService } from 'src/users/users.service'
+import { AddUserDto } from './dto/add-user.dto'
 import { CreateProjectDto } from './dto/create-project.dto'
 
 @Injectable()
@@ -31,7 +32,7 @@ export class ProjectService {
 
   async findUserInProject(data: { userId: number; projectId: number }) {
     const projects = await this.usersService.getUserProjects(data.userId)
-    
+
     if (projects.some((p) => p.id === data.projectId)) {
       return true
     } else {
@@ -46,24 +47,29 @@ export class ProjectService {
         users: {
           connect: { id: userId },
         },
+        team: {
+          connect: { id: data.teamId },
+        },
       },
     })
   }
 
-  async addUserToProject(id: number, userId: number) {
-    const users = this.prismaService.user.findUnique({ where: { id: userId } })
+  async addUserToProject(data: AddUserDto) {
+    const user = await this.prismaService.user.findUnique({ where: { username: data.username } })
 
-    if (!users) {
+    if (!user) {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST)
     }
 
-    return this.prismaService.project.update({
-      where: { id },
+    const addedToProject = await this.prismaService.project.update({
+      where: { id: data.projectId },
       data: {
         users: {
-          connect: { id: 1 },
+          connect: { id: user.id },
         },
       },
     })
+
+    return addedToProject
   }
 }

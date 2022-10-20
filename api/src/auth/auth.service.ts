@@ -16,10 +16,15 @@ export class AuthService {
   }
 
   async register(data: CreateUserDto) {
-    const isExist = await this.userService.findUserByEmail(data.email)
-
-    if (isExist) {
+    const isExistEmail = await this.userService.findUserByEmail(data.email)
+    const isExistUsername = await this.userService.findUserByUsername(data.username)
+    
+    if (isExistEmail) {
       throw new HttpException('User with this email already exists', HttpStatus.BAD_REQUEST)
+    }
+
+    if (isExistUsername) {
+      throw new HttpException('User with this username already exists', HttpStatus.BAD_REQUEST)
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 6)

@@ -10,6 +10,7 @@ import { ProjectModule } from './project/project.module'
 import { ColumnModule } from './column/column.module'
 import { CardModule } from './card/card.module'
 import { GraphQLError, GraphQLFormattedError } from 'graphql'
+import { TeamModule } from './team/team.module';
 
 @Module({
   controllers: [],
@@ -28,6 +29,7 @@ import { GraphQLError, GraphQLFormattedError } from 'graphql'
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
       debug: false,
       playground: true,
+      
       cors: { origin: 'http://localhost:3000', credentials: true },
       context: ({ req }) => ({ req }),
       formatError: (error: GraphQLError) => {
@@ -42,6 +44,7 @@ import { GraphQLError, GraphQLFormattedError } from 'graphql'
     ProjectModule,
     ColumnModule,
     CardModule,
+    TeamModule,
   ],
 })
 export class AppModule {}

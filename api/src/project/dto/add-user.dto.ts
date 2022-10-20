@@ -3,16 +3,15 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsNumber, IsString, Length } from 'class-validator'
 
 @InputType()
-export class CreateProjectDto {
+export class AddUserDto {
   @ApiProperty({ example: '1', description: '1' })
   @IsNumber({}, { message: 'Must be a number' })
   @Length(1, 100, { message: 'Must be longer than 1 and shorter than 100' })
   @Field()
-  readonly teamId: number
+  readonly projectId: number
 
-  @ApiProperty({ example: 'Project 1', description: 'Project title' })
+  @ApiProperty({ example: 'user123', description: 'User name' })
   @IsString({ message: 'Must be a string' })
-  @Length(1, 100, { message: 'Must be longer than 1 and shorter than 100' })
   @Field()
-  readonly title: string
+  readonly username: string
 }

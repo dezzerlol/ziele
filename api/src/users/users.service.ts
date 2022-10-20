@@ -15,6 +15,11 @@ export class UsersService {
     return user
   }
 
+  async findUserByUsername(username: string) {
+    const user = await this.prisma.user.findUnique({ where: { username } })
+    return user
+  }
+
   async getAllUsers() {
     return await this.prisma.user.findMany()
   }
@@ -25,5 +30,13 @@ export class UsersService {
       include: { projects: { select: { id: true } } },
     })
     return user.projects
+  }
+
+  async getUserTeams(userId: number) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: { teams: true },
+    })
+    return user.teams
   }
 }

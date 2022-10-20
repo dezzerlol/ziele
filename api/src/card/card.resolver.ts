@@ -2,6 +2,7 @@ import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql'
 import { PubSub } from 'graphql-subscriptions'
 import { GqlAuthGuard } from 'src/auth/jwt-auth.guard'
+import { CARD_CREATED, CARD_UPDATED } from 'src/constants/subscriptions.const'
 import { Card } from './card.model'
 import { CardService } from './card.service'
 import { CreateCardDto } from './dto/create-card.dto'
@@ -10,7 +11,7 @@ import { UpdateCardDto } from './dto/update-card.dto'
 const pubSub = new PubSub()
 
 @Resolver()
-/* @UseGuards(GqlAuthGuard) */
+@UseGuards(GqlAuthGuard)
 export class CardResolver {
   constructor(private cardService: CardService) {}
 
@@ -23,24 +24,21 @@ export class CardResolver {
   @Mutation(() => Card)
   async createCard(@Args('data') data: CreateCardDto) {
     const newCard = await this.cardService.createCard(data)
-    pubSub.publish('cardCreated', { cardCreated: newCard })
+    pubSub.publish(CARD_CREATED, { cardCreated: newCard })
     return newCard
   }
 
   @Subscription(() => Card, {
-    filter: (payload, variables) => {
-      console.log({ payload, variables })
-      return payload.cardCreated.columnId === variables.columnId
-    },
+    filter: (payload, variables) => payload.cardCreated.columnId === variables.columnId,
   })
   cardCreated(@Args('columnId') columnId: number) {
-    return pubSub.asyncIterator('cardCreated')
+    return pubSub.asyncIterator(CARD_CREATED)
   }
 
   @Mutation(() => Card)
   async updateCard(@Args('data') data: UpdateCardDto) {
     const updatedCard = await this.cardService.updateCard(data)
-    pubSub.publish('cardUpdated', { cardUpdated: updatedCard })
+    pubSub.publish(CARD_UPDATED, { cardUpdated: updatedCard })
     return updatedCard
   }
 
@@ -48,6 +46,6 @@ export class CardResolver {
     filter: (payload, variables) => payload.cardUpdated.cardId === variables.cardId,
   })
   cardUpdated(@Args('cardId') cardId: number) {
-    return pubSub.asyncIterator('cardUpdated')
+    return pubSub.asyncIterator(CARD_UPDATED)
   }
 }
