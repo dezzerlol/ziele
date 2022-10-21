@@ -8,5 +8,6 @@ import { UsersModule } from 'src/users/users.module';
 @Module({
   providers: [PrismaService, TeamService, TeamResolver],
   imports: [AuthModule, UsersModule],
+  exports: [TeamService],
 })
 export class TeamModule {}

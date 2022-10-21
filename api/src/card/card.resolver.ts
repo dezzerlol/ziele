@@ -11,7 +11,7 @@ import { UpdateCardDto } from './dto/update-card.dto'
 const pubSub = new PubSub()
 
 @Resolver()
-@UseGuards(GqlAuthGuard)
+/* @UseGuards(GqlAuthGuard) */
 export class CardResolver {
   constructor(private cardService: CardService) {}
 

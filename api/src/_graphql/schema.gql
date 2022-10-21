@@ -61,16 +61,17 @@ type Team {
 }
 
 type Query {
-  getProject(id: Float!): Project!
+  getProject(teamTitle: String!, projectTitle: String!): Project!
   getUserProjects: [Project!]!
+  getTeam(title: String!): Team!
+  getUserTeams: [Team!]!
   getProjectColumns(data: GetColumnsDto!): [Column!]!
   getCards(columnId: Float!): [Card!]!
-  getTeam(id: Float!): Team!
-  getUserTeams: [Team!]!
 }
 
 input GetColumnsDto {
-  projectId: Float!
+  teamTitle: String!
+  projectTitle: String!
 }
 
 type Mutation {
@@ -78,12 +79,12 @@ type Mutation {
   register(data: CreateUserDto!): OutputRegister!
   addUserInProject(data: AddUserDto!): Project!
   createProject(data: CreateProjectDto!): Project!
+  createTeam(data: CreateTeamDto!): Team!
+  addUserInTeam(data: AddUserToTeamDto!): Team!
   createColumn(data: CreateColumnDto!): Column!
   updateColumn(id: Float!, newTitle: String!): Column!
   createCard(data: CreateCardDto!): Card!
   updateCard(data: UpdateCardDto!): Card!
-  createTeam(data: CreateTeamDto!): Team!
-  addUserInTeam(data: AddUserToTeamDto!): Team!
 }
 
 input LoginDto {
@@ -107,6 +108,15 @@ input CreateProjectDto {
   title: String!
 }
 
+input CreateTeamDto {
+  title: String!
+}
+
+input AddUserToTeamDto {
+  teamId: Float!
+  username: String!
+}
+
 input CreateColumnDto {
   title: String!
   projectId: Float!
@@ -126,15 +136,6 @@ input UpdateCardDto {
   description: String
   assigneeId: Float
   tagId: Float
-}
-
-input CreateTeamDto {
-  title: String!
-}
-
-input AddUserToTeamDto {
-  teamId: Float!
-  username: String!
 }
 
 type Subscription {

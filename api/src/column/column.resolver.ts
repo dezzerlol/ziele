@@ -1,6 +1,7 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { ProjectGuard } from 'src/project/project.guard'
+import { CurrentUser, ICurrentUser } from 'src/users/user.decorator'
 import { Column } from './column.model'
 import { ColumnService } from './column.service'
 import { CreateColumnDto } from './dto/create-column.dto'
@@ -12,8 +13,8 @@ export class ColumnResolver {
   constructor(private columnService: ColumnService) {}
 
   @Query(() => [Column])
-  async getProjectColumns(@Args('data') data: GetColumnsDto) {
-    return this.columnService.getProjectColumns(data)
+  async getProjectColumns(@Args('data') data: GetColumnsDto, @CurrentUser() reqUser: ICurrentUser) {
+    return this.columnService.getProjectColumns(data, reqUser)
   }
 
   @Mutation(() => Column)

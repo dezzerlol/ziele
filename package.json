@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "web": "cd web && yarn dev",
-    "api": "cd api && yarn start:dev ",
+    "api": "cd api && yarn start:dev",
+    "studio": "cd api && yarn prisma studio",
     "install:web": "cd web && yarn install",
     "install:api": "cd api && yarn install",
     "install:main": "yarn install",

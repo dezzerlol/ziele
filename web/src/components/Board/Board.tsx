@@ -15,6 +15,7 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { Box, ScrollArea } from '@mantine/core'
 import useColumns from 'hooks/useColumns'
+import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Column from './Column'
@@ -50,10 +51,11 @@ function findIndex(id: any, array: any) {
 }
 
 const Board = () => {
+  const router = useRouter()
   const [items, setItems] = useState<Column[]>([])
   const [activeId, setActiveId] = useState<number | null>(null)
   const [activeCard, setActiveCard] = useState<Card | null>(null)
-  const { data, loading, error } = useColumns(1)
+  const { data, loading, error } = useColumns(router.query.teamTitle as string, router.query.projectTitle as string)
   const recentlyMovedToNewContainer = useRef(false)
 
   const lastOverId = useRef<UniqueIdentifier | null>(null)

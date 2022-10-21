@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma.service'
+import { TeamService } from 'src/team/team.service'
 import { ICurrentUser } from 'src/users/user.decorator'
 import { UsersService } from 'src/users/users.service'
 import { AddUserDto } from './dto/add-user.dto'
@@ -7,20 +8,29 @@ import { CreateProjectDto } from './dto/create-project.dto'
 
 @Injectable()
 export class ProjectService {
-  constructor(private prismaService: PrismaService, private usersService: UsersService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private usersService: UsersService,
+    private teamService: TeamService
+  ) {}
 
-  async getProject(id: number, reqUser: ICurrentUser) {
-    // get project
-    const project = await this.prismaService.project.findUnique({
-      where: { id },
-      include: { users: { select: { id: true, username: true, email: true, avatar: true } } },
-    })
+  async getProject(teamTitle: string, projectTitle: string, reqUser: ICurrentUser) {
+    // get team
+    const team = await this.teamService.getTeam(teamTitle, reqUser)
 
+    const project = team.projects.find((p) => p.title === projectTitle)
+
+    if (!project) {
+      throw new HttpException('Project not found', HttpStatus.BAD_REQUEST)
+    }
+
+ 
     // check if user is in project and return project
     // else throw forbidden error
     if (project.users.some((u) => u.id === reqUser.id)) {
       return project
     } else {
+      console.log("testPrjectService")
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN)
     }
   }
@@ -30,10 +40,10 @@ export class ProjectService {
     return projects
   }
 
-  async findUserInProject(data: { userId: number; projectId: number }) {
+  async findUserInProject(data: { userId: number; projectTitle: string }) {
     const projects = await this.usersService.getUserProjects(data.userId)
 
-    if (projects.some((p) => p.id === data.projectId)) {
+    if (projects.some((p) => p.title === data.projectTitle)) {
       return true
     } else {
       return false

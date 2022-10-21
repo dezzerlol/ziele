@@ -8,13 +8,13 @@ import { Team } from './team.model'
 import { TeamService } from './team.service'
 
 @Resolver()
-@UseGuards(GqlAuthGuard)
+/* @UseGuards(GqlAuthGuard) */
 export class TeamResolver {
   constructor(private teamService: TeamService) {}
 
   @Query(() => Team)
-  async getTeam(@Args('id') id: number, @CurrentUser() reqUser: ICurrentUser) {
-    return this.teamService.getTeam(id, reqUser)
+  async getTeam(@Args('title') title: string, @CurrentUser() reqUser: ICurrentUser) {
+    return this.teamService.getTeam(title, reqUser)
   }
 
   @Query(() => [Team])

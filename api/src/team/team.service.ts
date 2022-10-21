@@ -9,18 +9,40 @@ import { CreateTeamDto } from './dto/create-team.dto'
 export class TeamService {
   constructor(private prismaService: PrismaService, private usersService: UsersService) {}
 
-  async getTeam(id: number, reqUser: ICurrentUser) {
+  async getTeam(title: string, reqUser: ICurrentUser) {
     // get project
     const team = await this.prismaService.team.findUnique({
-      where: { id },
-      include: { users: { select: { id: true, username: true, email: true, avatar: true } }, projects: true },
+      where: { title },
+      include: {
+        users: { select: { id: true, username: true, email: true, avatar: true } },
+        projects: {
+          select: {
+            users: { select: { id: true, avatar: true, username: true } },
+            columns: {
+              include: {
+                cards: true,
+              },
+            },
+            id: true,
+            image: true,
+            title: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
     })
+
+    if (!team) {
+      throw new HttpException('Team not found', HttpStatus.BAD_REQUEST)
+    }
 
     // check if user is in project and return project
     // else throw forbidden error
     if (team.users.some((u) => u.id === reqUser.id)) {
       return team
     } else {
+      console.log('test')
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN)
     }
   }

@@ -27,7 +27,7 @@ model User {
 
 model Team {
   id        Int       @id @default(autoincrement())
-  title     String
+  title     String    @unique
   updatedAt DateTime  @updatedAt
   createdAt DateTime  @default(now())
   projects  Project[]

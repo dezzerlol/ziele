@@ -27,7 +27,7 @@ export class UsersService {
   async getUserProjects(userId: number) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
-      include: { projects: { select: { id: true } } },
+      include: { projects: { select: { id: true, title: true } } },
     })
     return user.projects
   }

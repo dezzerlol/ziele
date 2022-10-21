@@ -4,9 +4,13 @@ import { IsNumber, IsString, Length } from 'class-validator'
 
 @InputType()
 export class GetColumnsDto {
-
-  @ApiProperty({ example: '1', description: 'Id of project where column should be added' })
-  @IsNumber({}, { message: 'Must be a number' })
+  @IsString({ message: 'Must be a string' })
+  @Length(1, 100, { message: 'Must be longer than 1 and shorter than 100' })
   @Field()
-  readonly projectId: number
+  readonly teamTitle: string
+
+  @IsString({ message: 'Must be a string' })
+  @Length(1, 100, { message: 'Must be longer than 1 and shorter than 100' })
+  @Field()
+  readonly projectTitle: string
 }
