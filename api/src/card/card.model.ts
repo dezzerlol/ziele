@@ -1,10 +1,10 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
 import { User } from 'src/users/users.model'
 
 @ObjectType()
 export class Card {
-  @Field(() => Int, {})
-  id: number
+  @Field(() => String, {})
+  id: string
 
   @Field(() => String, {})
   title: string
@@ -21,8 +21,8 @@ export class Card {
   @Field(() => [User], {})
   assignees: Array<User>
 
-  @Field(() => Int, {})
-  columnId: number
+  @Field(() => String, {})
+  columnId: string
 
   //   @Field(() => [Tag], {})
   //   tags: Array<Tag>

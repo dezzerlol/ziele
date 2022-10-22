@@ -4,8 +4,8 @@ import { Card } from 'src/card/card.model'
 
 @ObjectType()
 export class Column {
-  @Field(() => Int, {})
-  id: number
+  @Field(() => String, {})
+  id: string
 
   @Field(() => String, {})
   title: string
@@ -16,8 +16,8 @@ export class Column {
   @Field(() => String, {})
   createdAt: Date
 
-  @Field(() => Int, {})
-  projectId: number
+  @Field(() => String, {})
+  projectId: string
 
   @Field(() => [Card], {})
   cards: Array<Card>

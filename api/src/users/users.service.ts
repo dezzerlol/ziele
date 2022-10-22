@@ -24,7 +24,7 @@ export class UsersService {
     return await this.prisma.user.findMany()
   }
 
-  async getUserProjects(userId: number) {
+  async getUserProjects(userId: string) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       include: { projects: { select: { id: true, title: true } } },
@@ -32,7 +32,7 @@ export class UsersService {
     return user.projects
   }
 
-  async getUserTeams(userId: number) {
+  async getUserTeams(userId: string) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       include: { teams: true },

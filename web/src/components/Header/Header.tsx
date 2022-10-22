@@ -1,21 +1,24 @@
-import { ActionIcon, Anchor, Avatar, Box, Breadcrumbs, Button, Group } from '@mantine/core'
+import { ActionIcon, Anchor, Avatar, Breadcrumbs, Group } from '@mantine/core'
 import { useRouter } from 'next/router'
-import React from 'react'
-import { FiPlus } from 'react-icons/fi'
 import { BiNotification } from 'react-icons/bi'
+import { ProjectType } from 'types/ziele'
 import CreateCardButton from './IssueModal/CreateIssueButton'
 
-const Header = () => {
+const Header = ({ project }: { project: ProjectType }) => {
   const router = useRouter()
 
-  const items = [
-    { title: router.query.teamId, href: `/team/${router.query.teamId}` },
-    { title: router.query.boardId, href: `/team/${router.query.teamId}/boards/${router.query.boardId}` },
-  ].map((item, index) => (
-    <Anchor href={item.href} key={index}>
-      {item.title}
-    </Anchor>
-  ))
+  const { teamTitle, projectId } = router.query
+
+  const items = project
+    ? [
+        { title: teamTitle, href: `/team/${teamTitle}` },
+        { title: project.title, href: `/team/${teamTitle}/project/${projectId}` },
+      ].map((item, index) => (
+        <Anchor href={item.href} key={index}>
+          {item.title}
+        </Anchor>
+      ))
+    : []
 
   return (
     <Group align='center' position='apart'>

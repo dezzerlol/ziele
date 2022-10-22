@@ -41,12 +41,12 @@ export class ProjectGuard implements CanActivate {
     const validationResult = this.auth.validateToken(AUTH_TOKEN)
 
     if (validationResult) {
-      const projectTitle = args.data.projectTitle
+      const projectId = args.data.projectId
       const userId = validationResult.id
 
       // check if user exists in requested project,
       // if exists return true
-      const isUserInProject = await this.projectService.findUserInProject({ userId, projectTitle })
+      const isUserInProject = await this.projectService.findUserInProject({ userId, projectId })
 
       if (isUserInProject) {
         req.user = validationResult

@@ -16,17 +16,16 @@ import { BiGridAlt, BiMenu } from 'react-icons/bi'
 import { FiPlus } from 'react-icons/fi'
 import { useUiStore } from 'store/uiStore'
 import shallow from 'zustand/shallow'
+import { ProjectType } from '../../types/ziele'
+
+type Props = {
+  project: ProjectType
+}
 
 const tags = [
   { label: 'UI', value: 'ui' },
   { label: 'Api', value: 'api' },
   { label: 'Web', value: 'web' },
-]
-
-const users = [
-  { label: 'User 1', id: 'user1', avatar: 'https://avatars.githubusercontent.com/u/25126256?v=4' },
-  { label: 'User 2', id: 'user2', avatar: 'https://avatars.githubusercontent.com/u/25126256?v=4' },
-  { label: 'User 3', id: 'user3', avatar: 'https://avatars.githubusercontent.com/u/25126256?v=4' },
 ]
 
 const boardType = [
@@ -50,7 +49,7 @@ const boardType = [
   },
 ]
 
-const BoardHeader = () => {
+const BoardHeader = ({ project }: Props) => {
   const { isSidebarOpen, toggleSidebar } = useUiStore(
     (state) => ({
       isSidebarOpen: state.isSidebarOpen,
@@ -65,7 +64,7 @@ const BoardHeader = () => {
 
   return (
     <>
-      <Header />
+      <Header project={project} />
       <Group>
         <Burger
           opened={isSidebarOpen}
@@ -76,15 +75,15 @@ const BoardHeader = () => {
             },
           }}
         />
-        <h1>Design</h1>
+        <h1>{project.title}</h1>
       </Group>
       <Group position='apart' align='center'>
         <Group>
           <TextInput size='xs' sx={{ maxWidth: '150px' }} placeholder='Search' />
           <Tooltip.Group openDelay={300} closeDelay={100}>
             <Avatar.Group spacing='sm'>
-              {users.map((user) => (
-                <Tooltip key={user.id} label={user.label} withArrow>
+              {project.users.map((user: any) => (
+                <Tooltip key={user.id} label={user.username} withArrow>
                   <Avatar src={user.avatar} radius='xl' />
                 </Tooltip>
               ))}

@@ -24,11 +24,11 @@ export class ColumnService {
   }
 
   async getProjectColumns(data: GetColumnsDto, reqUser: ICurrentUser) {
-    const project = await this.projectSerivce.getProject(data.teamTitle, data.projectTitle, reqUser)
+    const project = await this.projectSerivce.getProject(data.teamTitle, data.projectId, reqUser)
     return project.columns
   }
 
-  async updateColumn(id: number, newTitle: string) {
+  async updateColumn(id: string, newTitle: string) {
     const column = await this.prisma.column.update({
       where: {
         id,

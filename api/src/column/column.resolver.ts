@@ -23,7 +23,7 @@ export class ColumnResolver {
   }
 
   @Mutation(() => Column)
-  async updateColumn(@Args('id') id: number, @Args('newTitle') newTitle: string) {
+  async updateColumn(@Args('id') id: string, @Args('newTitle') newTitle: string) {
     return this.columnService.updateColumn(id, newTitle)
   }
 }

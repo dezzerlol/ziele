@@ -1,17 +1,11 @@
-import Board from '@components/Board/Board'
-import BoardHeader from '@components/Board/BoardHeader'
+import Board from '@components/BoardPage/Board'
 import { AUTH_TOKEN } from '@constant'
-import { Box, Stack } from '@mantine/core'
+import { Box } from '@mantine/core'
 
 const BoardPage = () => {
   return (
     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Box p='md' sx={{ backgroundColor: 'white' }}>
-        <BoardHeader />
-      </Box>
-      <Box px='md' pt='md' sx={{ height: '80%' }}>
-        <Board />
-      </Box>
+      <Board />
     </Box>
   )
 }

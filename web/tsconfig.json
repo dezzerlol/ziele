@@ -21,6 +21,7 @@
       "@lib/*": ["lib/*"],
       "@services/*": ["services/*"],
       "@components/*": ["components/*"],
+      "types/*": ["types/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

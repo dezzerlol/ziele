@@ -10,29 +10,21 @@ import {
   rectIntersection,
   UniqueIdentifier,
   useSensor,
-  useSensors,
+  useSensors
 } from '@dnd-kit/core'
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { Box, ScrollArea } from '@mantine/core'
 import useColumns from 'hooks/useColumns'
+import useProject from 'hooks/useProject'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { CardType, ColumnType } from 'types/ziele'
+import BoardHeader from './BoardHeader'
 import Column from './Column'
 import CreateColumnButton from './CreateColumnButton'
 import IssueCard from './IssueCard'
 import IssueModal from './IssueModal'
-
-type Card = {
-  id: number
-  title: string
-}
-
-type Column = {
-  cards: Card[]
-  id: number
-  title: string
-}
 
 function findRoot(id: any, arr: any) {
   for (let i = 0; i < arr.length; i++) {
@@ -52,10 +44,12 @@ function findIndex(id: any, array: any) {
 
 const Board = () => {
   const router = useRouter()
-  const [items, setItems] = useState<Column[]>([])
+  const { teamTitle, projectId } = router.query
+  const { project, projectLoading } = useProject(teamTitle as string, projectId as string)
+  const [items, setItems] = useState<ColumnType[]>([])
   const [activeId, setActiveId] = useState<number | null>(null)
-  const [activeCard, setActiveCard] = useState<Card | null>(null)
-  const { data, loading, error } = useColumns(router.query.teamTitle as string, router.query.projectTitle as string)
+  const [activeCard, setActiveCard] = useState<CardType | null>(null)
+  const { data, loading, error } = useColumns(router.query.teamTitle as string, router.query.projectId as string)
   const recentlyMovedToNewContainer = useRef(false)
 
   const lastOverId = useRef<UniqueIdentifier | null>(null)
@@ -272,28 +266,35 @@ const Board = () => {
   if (loading) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
 
+  console.log({ items })
+
   return (
     <>
-      <ScrollArea type='always' scrollbarSize={18} offsetScrollbars style={{ width: '100%', height: '100%' }}>
-        <Box sx={{ width: 1200, height: '100%', display: 'flex', gap: '10px' }}>
-          <DndContext
-            sensors={sensors}
-            collisionDetection={collisionDetectionStrategy}
-            onDragStart={handleDragStart}
-            onDragOver={handleDragOver}
-            onDragEnd={handleDragEnd}
-            onDragCancel={handleDragCancel}>
-            {items.map((column: any) => (
-              <Column column={column} key={column.id} />
-            ))}
-            {createPortal(
-              <DragOverlay>{activeCard ? <IssueCard card={activeCard} /> : null}</DragOverlay>,
-              document.body
-            )}
-          </DndContext>
-          <CreateColumnButton />
-        </Box>
-      </ScrollArea>
+      <Box p='md' sx={{ backgroundColor: 'white' }}>
+        <BoardHeader project={project} />
+      </Box>
+      <Box px='sm' pt='md' sx={{ height: '80%' }}>
+        <ScrollArea type='always' scrollbarSize={18} offsetScrollbars style={{ width: '100%', height: '100%' }}>
+          <Box sx={{ width: 1200, height: '100%', display: 'flex', gap: '10px' }}>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={collisionDetectionStrategy}
+              onDragStart={handleDragStart}
+              onDragOver={handleDragOver}
+              onDragEnd={handleDragEnd}
+              onDragCancel={handleDragCancel}>
+              {items.map((column: any) => (
+                <Column column={column} key={column.id} />
+              ))}
+              {createPortal(
+                <DragOverlay>{activeCard ? <IssueCard card={activeCard} /> : null}</DragOverlay>,
+                document.body
+              )}
+            </DndContext>
+            <CreateColumnButton id={project.id} />
+          </Box>
+        </ScrollArea>
+      </Box>
       <IssueModal />
     </>
   )

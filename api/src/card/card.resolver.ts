@@ -16,7 +16,7 @@ export class CardResolver {
   constructor(private cardService: CardService) {}
 
   @Query(() => [Card])
-  async getCards(@Args('columnId') columnId: number) {
+  async getCards(@Args('columnId') columnId: string) {
     const cards = await this.cardService.getCards(columnId)
     return cards
   }
@@ -31,7 +31,7 @@ export class CardResolver {
   @Subscription(() => Card, {
     filter: (payload, variables) => payload.cardCreated.columnId === variables.columnId,
   })
-  cardCreated(@Args('columnId') columnId: number) {
+  cardCreated(@Args('columnId') columnId: string) {
     return pubSub.asyncIterator(CARD_CREATED)
   }
 
@@ -45,7 +45,7 @@ export class CardResolver {
   @Subscription(() => Card, {
     filter: (payload, variables) => payload.cardUpdated.cardId === variables.cardId,
   })
-  cardUpdated(@Args('cardId') cardId: number) {
+  cardUpdated(@Args('cardId') cardId: string) {
     return pubSub.asyncIterator(CARD_UPDATED)
   }
 }

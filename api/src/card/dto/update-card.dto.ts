@@ -1,13 +1,13 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsArray, IsNumber, IsOptional, IsString, Length } from 'class-validator'
+import { IsOptional, IsString, Length } from 'class-validator'
 
 @InputType()
 export class UpdateCardDto {
   @ApiProperty({ example: '1', description: 'Id of card that should be updated' })
-  @IsNumber({}, { message: 'Must be a number' })
+  @IsString({ message: 'Must be a string' })
   @Field()
-  readonly cardId: number
+  readonly cardId: string
 
   @ApiProperty({ example: 'Dev', description: 'New card title', required: false })
   @IsString({ message: 'Must be a string' })
@@ -23,14 +23,14 @@ export class UpdateCardDto {
   readonly description?: string
 
   @ApiProperty({ example: '1', description: 'New card assignee id', required: false })
-  @IsNumber({}, { message: 'Must be a number' })
+  @IsString({ message: 'Must be a string' })
   @IsOptional()
   @Field({ nullable: true })
-  readonly assigneeId?: number
+  readonly assigneeId?: string
 
   @ApiProperty({ example: '1', description: 'New card tag id', required: false })
-  @IsNumber({}, { message: 'Must be a number' })
+  @IsString({ message: 'Must be a string' })
   @IsOptional()
   @Field({ nullable: true })
-  readonly tagId: number
+  readonly tagId: string
 }

@@ -1,11 +1,12 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
 import { IsEmail } from 'class-validator'
+import { Card } from 'src/card/card.model'
 import { Project } from 'src/project/project.model'
 
 @ObjectType()
 export class User {
-  @Field(() => Int, {})
-  id: number
+  @Field(() => String, {})
+  id: string
 
   @Field(() => String, {})
   username: string
@@ -29,8 +30,8 @@ export class User {
   @Field(() => [Project], {})
   projects: []
 
-  // @Field(() => [], {})
-  // cards: []
+  @Field(() => [Card], {})
+  cards: []
 
   // @Field(() => [], {})
   // comments: []

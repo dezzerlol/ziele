@@ -8,17 +8,17 @@ import { Project } from './project.model'
 import { ProjectService } from './project.service'
 
 @Resolver()
-/* @UseGuards(GqlAuthGuard) */
+@UseGuards(GqlAuthGuard)
 export class ProjectResolver {
   constructor(private projectService: ProjectService) {}
 
   @Query(() => Project)
   async getProject(
     @Args('teamTitle') teamTitle: string,
-    @Args('projectTitle') projectTitle: string,
+    @Args('projectId') projectId: string,
     @CurrentUser() reqUser: ICurrentUser
   ) {
-    return this.projectService.getProject(teamTitle, projectTitle, reqUser)
+    return this.projectService.getProject(teamTitle, projectId, reqUser)
   }
 
   @Query(() => [Project])

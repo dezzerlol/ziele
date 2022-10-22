@@ -16,7 +16,6 @@ const Column = ({ column }: any) => {
     <>
       <Box
         p='xs'
-
         sx={{
           minWidth: '300px',
           maxWidth: '300px',

@@ -1,11 +1,15 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
 import { Column } from 'src/column/column.model'
 import { User } from 'src/users/users.model'
+import graphqlTypeJson from 'graphql-type-json'
 
 @ObjectType()
 export class Project {
-  @Field(() => Int, {})
-  id: number
+  @Field(() => String, {})
+  id: string
+
+  @Field(() => graphqlTypeJson, {})
+  _count: object
 
   @Field(() => String, {})
   title: string

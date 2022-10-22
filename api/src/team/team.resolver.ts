@@ -8,7 +8,7 @@ import { Team } from './team.model'
 import { TeamService } from './team.service'
 
 @Resolver()
-/* @UseGuards(GqlAuthGuard) */
+@UseGuards(GqlAuthGuard)
 export class TeamResolver {
   constructor(private teamService: TeamService) {}
 

@@ -7,7 +7,7 @@ import { UpdateCardDto } from './dto/update-card.dto'
 export class CardService {
   constructor(private prismaService: PrismaService) {}
 
-  async getCards(columnId: number) {
+  async getCards(columnId: string) {
     const cards = await this.prismaService.card.findMany({
       where: {
         columnId,

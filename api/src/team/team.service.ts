@@ -15,9 +15,13 @@ export class TeamService {
       where: { title },
       include: {
         users: { select: { id: true, username: true, email: true, avatar: true } },
+        _count: { select: { users: true } },
         projects: {
           select: {
-            users: { select: { id: true, avatar: true, username: true } },
+            _count: {
+              select: { users: true },
+            },
+            users: { select: { id: true, avatar: true, username: true }, take: 3 },
             columns: {
               include: {
                 cards: true,
@@ -33,6 +37,7 @@ export class TeamService {
       },
     })
 
+
     if (!team) {
       throw new HttpException('Team not found', HttpStatus.BAD_REQUEST)
     }
@@ -42,7 +47,6 @@ export class TeamService {
     if (team.users.some((u) => u.id === reqUser.id)) {
       return team
     } else {
-      console.log('test')
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN)
     }
   }
@@ -52,7 +56,7 @@ export class TeamService {
     return teams
   }
 
-  async createTeam(data: CreateTeamDto, userId: number) {
+  async createTeam(data: CreateTeamDto, userId: string) {
     return this.prismaService.team.create({
       data: {
         title: data.title,

@@ -4,8 +4,8 @@ import { User } from 'src/users/users.model'
 
 @ObjectType()
 export class Team {
-  @Field(() => Int, {})
-  id: number
+  @Field(() => String, {})
+  id: string
 
   @Field(() => String, {})
   title: string

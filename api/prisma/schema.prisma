@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   email     String   @unique
   password  String
   username  String   @unique
@@ -26,7 +26,7 @@ model User {
 }
 
 model Team {
-  id        Int       @id @default(autoincrement())
+  id        String    @id @default(cuid())
   title     String    @unique
   updatedAt DateTime  @updatedAt
   createdAt DateTime  @default(now())
@@ -35,7 +35,7 @@ model Team {
 }
 
 model Project {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   title     String
   image     String?
   updatedAt DateTime @updatedAt
@@ -43,22 +43,22 @@ model Project {
   columns   Column[]
   users     User[]
   team      Team?    @relation(fields: [teamId], references: [id])
-  teamId    Int?
+  teamId    String?
 }
 
 model Column {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   title     String
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
   cards     Card[]
 
   Project   Project? @relation(fields: [projectId], references: [id])
-  projectId Int?
+  projectId String?
 }
 
 model Card {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(cuid())
   title       String
   description String?
   updatedAt   DateTime @updatedAt
@@ -67,30 +67,30 @@ model Card {
   assignees   User[]
 
   column   Column?   @relation(fields: [columnId], references: [id])
-  columnId Int?
+  columnId String?
   comments Comment[]
 }
 
 model Tag {
-  id    Int    @id @default(autoincrement())
+  id    String @id @default(cuid())
   title String
   color String
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
   Card      Card?    @relation(fields: [cardId], references: [id])
-  cardId    Int?
+  cardId    String?
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   body      String
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
-  author User @relation(fields: [userId], references: [id])
-  userId Int
+  author User   @relation(fields: [userId], references: [id])
+  userId String
 
-  card   Card? @relation(fields: [cardId], references: [id])
-  cardId Int?
+  card   Card?   @relation(fields: [cardId], references: [id])
+  cardId String?
 }

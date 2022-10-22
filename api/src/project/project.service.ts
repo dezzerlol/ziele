@@ -14,23 +14,21 @@ export class ProjectService {
     private teamService: TeamService
   ) {}
 
-  async getProject(teamTitle: string, projectTitle: string, reqUser: ICurrentUser) {
+  async getProject(teamTitle: string, projectId: string, reqUser: ICurrentUser) {
     // get team
     const team = await this.teamService.getTeam(teamTitle, reqUser)
 
-    const project = team.projects.find((p) => p.title === projectTitle)
+    const project = team.projects.find((p) => p.id === projectId)
 
     if (!project) {
       throw new HttpException('Project not found', HttpStatus.BAD_REQUEST)
     }
 
- 
     // check if user is in project and return project
     // else throw forbidden error
     if (project.users.some((u) => u.id === reqUser.id)) {
       return project
     } else {
-      console.log("testPrjectService")
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN)
     }
   }
@@ -40,17 +38,17 @@ export class ProjectService {
     return projects
   }
 
-  async findUserInProject(data: { userId: number; projectTitle: string }) {
+  async findUserInProject(data: { userId: string; projectId: string }) {
     const projects = await this.usersService.getUserProjects(data.userId)
 
-    if (projects.some((p) => p.title === data.projectTitle)) {
+    if (projects.some((p) => p.id === data.projectId)) {
       return true
     } else {
       return false
     }
   }
 
-  async createProject(data: CreateProjectDto, userId: number) {
+  async createProject(data: CreateProjectDto, userId: string) {
     return this.prismaService.project.create({
       data: {
         title: data.title,
