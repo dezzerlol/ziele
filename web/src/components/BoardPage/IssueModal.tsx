@@ -20,7 +20,7 @@ const IssueModal = () => {
   const router = useRouter()
 
   const handleClose = () => {
-    router.push(`/team/${router.query.teamId}/boards/${router.query.boardId}`)
+    router.push(`/team/${router.query.teamTitle}/project/${router.query.projectId}`)
   }
   return (
     <Modal

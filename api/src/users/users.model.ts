@@ -2,6 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql'
 import { IsEmail } from 'class-validator'
 import { Card } from 'src/card/card.model'
 import { Project } from 'src/project/project.model'
+import graphqlTypeJson from 'graphql-type-json'
 
 @ObjectType()
 export class User {
@@ -32,6 +33,7 @@ export class User {
 
   @Field(() => [Card], {})
   cards: []
+
 
   // @Field(() => [], {})
   // comments: []

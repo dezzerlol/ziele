@@ -1,9 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   closestCenter,
   CollisionDetection,
-  DndContext,
-  DragOverlay,
   getFirstCollision,
   KeyboardSensor,
   MouseSensor,
@@ -14,6 +11,7 @@ import {
   useSensors,
 } from '@dnd-kit/core'
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { CardType } from 'types/ziele'
 
 function findRoot(id: any, arr: any) {
@@ -32,12 +30,7 @@ function findIndex(id: any, array: any) {
   return 0
 }
 
-type Props = {
-  items: any
-  setItems: (items: any) => void
-}
-
-export default function useDnd({ items, setItems }: Props) {
+export default function useDnd(items: any, setItems: (items: any) => void) {
   const recentlyMovedToNewContainer = useRef(false)
   const lastOverId = useRef<UniqueIdentifier | null>(null)
   const [activeId, setActiveId] = useState<number | null>(null)

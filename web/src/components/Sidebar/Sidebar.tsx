@@ -1,3 +1,4 @@
+import { gql, useQuery } from '@apollo/client'
 import { Box, Divider, Stack, TextInput } from '@mantine/core'
 import { useClickOutside, useMediaQuery } from '@mantine/hooks'
 import { BiSearchAlt } from 'react-icons/bi'
@@ -7,6 +8,16 @@ import Header from './Header'
 import Links from './Links'
 import Projects from './Projects'
 
+const Query = gql`
+  query {
+    getUserTeams {
+      id
+      title
+      image
+    }
+  }
+`
+
 const projects = [
   { id: 1, title: 'Development', link: '' },
   { id: 2, title: 'Design', link: '' },
@@ -14,6 +25,7 @@ const projects = [
 ]
 
 const Sidebar = () => {
+  const { data } = useQuery(Query)
   const matches = useMediaQuery('(max-width: 756px)')
 
   const { isSidebarOpen, toggleSidebar } = useUiStore((state) => ({
@@ -22,6 +34,9 @@ const Sidebar = () => {
   }))
   const ref = useClickOutside(() => toggleSidebar(false))
 
+  let teams = data?.getUserTeams
+
+  
   return (
     <Stack
       justify='space-between'
@@ -39,6 +54,7 @@ const Sidebar = () => {
       }}>
       <Box p='md'>
         <Header
+          teams={teams}
           companyName='My company'
           image='https://besthqwallpapers.com/Uploads/23-11-2020/146623/thumb2-mercedes-benz-logo-black-background-mercedes-emblem-mercedes-logo-on-a-black-background-car-brands.jpg'
         />

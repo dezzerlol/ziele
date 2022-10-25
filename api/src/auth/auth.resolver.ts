@@ -1,8 +1,9 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql'
+import { DefaultResponse } from 'src/common/defaultResponse.dto'
 import { CreateUserDto } from 'src/users/dto/create-user.dto'
 import { AuthService } from './auth.service'
 import { LoginDto } from './dto/login.dto'
-import { OutputLogin, OutputRegister } from './dto/output.dto'
+import { OutputLogin } from './dto/output.dto'
 
 @Resolver()
 export class AuthResolver {
@@ -13,8 +14,8 @@ export class AuthResolver {
     return this.authService.login(data)
   }
 
-  @Mutation(() => OutputRegister)
-  register(@Args('data') data: CreateUserDto): Promise<OutputRegister> {
+  @Mutation(() => DefaultResponse)
+  register(@Args('data') data: CreateUserDto): Promise<DefaultResponse> {
     return this.authService.register(data)
   }
 }

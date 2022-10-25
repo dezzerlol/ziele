@@ -15,7 +15,7 @@ const Query = gql`
 `
 
 const Subscription = gql`
-  subscription cardCreated($columnId: Float!) {
+  subscription cardCreated($columnId: String!) {
     cardCreated(columnId: $columnId) {
       id
       title

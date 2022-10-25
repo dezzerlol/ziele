@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma.service'
 import { ProjectService } from 'src/project/project.service'
 import { ICurrentUser } from 'src/users/user.decorator'
@@ -10,17 +10,22 @@ export class ColumnService {
   constructor(private prisma: PrismaService, private projectSerivce: ProjectService) {}
 
   async createColumn(data: CreateColumnDto) {
-    const column = await this.prisma.column.create({
-      data: {
-        title: data.title,
-        Project: {
-          connect: {
-            id: data.projectId,
+    try {
+      const column = await this.prisma.column.create({
+        data: {
+          title: data.title,
+          Project: {
+            connect: {
+              id: data.projectId,
+            },
           },
         },
-      },
-    })
-    return column
+      })
+
+      return column
+    } catch (error) {
+      throw new HttpException('Column with this name already exists.', HttpStatus.BAD_REQUEST)
+    }
   }
 
   async getProjectColumns(data: GetColumnsDto, reqUser: ICurrentUser) {
@@ -39,5 +44,18 @@ export class ColumnService {
     })
 
     return column
+  }
+
+  async deleteColumn(id: string) {
+    try {
+      const column = await this.prisma.column.delete({
+        where: {
+          id,
+        },
+      })
+      return { status: HttpStatus.OK, message: 'Column deleted.' }
+    } catch (error) {
+      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST)
+    }
   }
 }

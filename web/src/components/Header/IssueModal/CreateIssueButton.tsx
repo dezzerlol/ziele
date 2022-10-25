@@ -1,18 +1,10 @@
-import {
-  Box,
-  Button,
-  CloseButton,
-  Divider,
-  Group,
-  Modal,
-  MultiSelect, Select, TextInput,
-  Title
-} from '@mantine/core'
+import { Box, Button, CloseButton, Divider, Group, Modal, MultiSelect, Select, TextInput, Title } from '@mantine/core'
 import dynamic from 'next/dynamic'
 import { forwardRef, useState } from 'react'
 import { BiDownArrowAlt, BiUpArrowAlt } from 'react-icons/bi'
 import { FiPlus } from 'react-icons/fi'
 import { RiUser3Line } from 'react-icons/ri'
+import { useUiStore } from 'store/uiStore'
 import { FileDropzone } from './FileDropzone'
 import Label from './Label'
 
@@ -76,18 +68,22 @@ const Item = forwardRef(({ label, value, icon, ...others }: any, ref: any) => {
 })
 
 const CreateIssueButton = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { isCreateIssueModalOpen, toggleCreateIssueModal } = useUiStore((state) => ({
+    isCreateIssueModalOpen: state.isCreateIssueModalOpen,
+    toggleCreateIssueModal: state.toggleCreateIssueModal,
+  }))
+  
   return (
     <>
-      <Button radius='lg' size='xs' sx={{ width: '80px' }} onClick={() => setIsModalOpen(true)}>
+      <Button radius='lg' size='xs' sx={{ width: '80px' }} onClick={() => toggleCreateIssueModal(true)}>
         <FiPlus size={18} />
         <Box ml='xs'>Add</Box>
       </Button>
 
       <Modal
-        opened={isModalOpen}
+        opened={isCreateIssueModalOpen}
         withCloseButton={false}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => toggleCreateIssueModal(false)}
         size='xl'
         padding={30}
         title={<Title order={4}>Create issue</Title>}>
@@ -119,7 +115,7 @@ const CreateIssueButton = () => {
           <FileDropzone />
         </Box>
         <Group pt={40} position='right'>
-          <Button variant='white' onClick={() => setIsModalOpen(false)}>
+          <Button variant='white' onClick={() => toggleCreateIssueModal(false)}>
             Cancel
           </Button>
           <Button>Submit</Button>

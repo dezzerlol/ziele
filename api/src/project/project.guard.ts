@@ -33,7 +33,6 @@ export class ProjectGuard implements CanActivate {
     // Get the token from cookie
     const AUTH_TOKEN = context.getArgs()[2].req.cookies.ZIELE_AUTH_TOKEN
 
-
     if (!AUTH_TOKEN) {
       throw new BadRequestException('Authorization token not found.')
     }
@@ -41,7 +40,8 @@ export class ProjectGuard implements CanActivate {
     const validationResult = this.auth.validateToken(AUTH_TOKEN)
 
     if (validationResult) {
-      const projectId = args.data.projectId
+      // projectId can be passed in args data object or directly in args
+      const projectId = args.data ? args.data.projectId : args.projectId
       const userId = validationResult.id
 
       // check if user exists in requested project,

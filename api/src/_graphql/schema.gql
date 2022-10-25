@@ -2,13 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type OutputLogin {
-  token: String!
-}
-
-type OutputRegister {
+type DefaultResponse {
   status: Float!
   message: String!
+}
+
+type OutputLogin {
+  token: String!
 }
 
 type User {
@@ -44,13 +44,13 @@ type Column {
 
 type Project {
   id: String!
-  _count: JSON!
   title: String!
   image: String
   updatedAt: String!
   createdAt: String!
   users: [User!]!
   columns: [Column!]!
+  _count: JSON!
 }
 
 """
@@ -61,6 +61,7 @@ scalar JSON
 type Team {
   id: String!
   title: String!
+  image: String
   updatedAt: String!
   createdAt: String!
   users: [User!]!
@@ -83,13 +84,14 @@ input GetColumnsDto {
 
 type Mutation {
   login(data: LoginDto!): OutputLogin!
-  register(data: CreateUserDto!): OutputRegister!
+  register(data: CreateUserDto!): DefaultResponse!
   addUserInProject(data: AddUserDto!): Project!
   createProject(data: CreateProjectDto!): Project!
   createTeam(data: CreateTeamDto!): Team!
   addUserInTeam(data: AddUserToTeamDto!): Team!
   createColumn(data: CreateColumnDto!): Column!
   updateColumn(id: String!, newTitle: String!): Column!
+  deleteColumn(columnId: String!, projectId: String!): DefaultResponse!
   createCard(data: CreateCardDto!): Card!
   updateCard(data: UpdateCardDto!): Card!
 }

@@ -1,39 +1,34 @@
 import AvatarName from '@components/common/AvatarName'
 import { Group, Menu } from '@mantine/core'
+import { useRouter } from 'next/router'
 import { RiArrowUpDownFill } from 'react-icons/ri'
 
 type Props = {
   companyName: string
   image: string
+  teams: []
 }
 
-const Header = ({ companyName, image }: Props) => {
-  let members = 4500
+const Header = ({ teams }: Props) => {
+  const router = useRouter()
+  let currentTeam: any = teams?.find((team: any) => team.title === router.query.teamTitle)
+  let otherTeams: any = teams?.filter((team: any) => team.title !== router.query.teamTitle)
   return (
     <>
       <Menu width={260} shadow='xl'>
         <Menu.Target>
           <Group position='apart' sx={{ cursor: 'pointer' }}>
-            <AvatarName image={image} name={companyName} undername={'Team plan'} type='default' />
+            <AvatarName image={currentTeam?.image} name={currentTeam?.title} undername={'Team plan'} type='default' />
             <RiArrowUpDownFill color='gray' />
           </Group>
         </Menu.Target>
 
         <Menu.Dropdown ml='md'>
-          <Menu.Item>
-            <AvatarName
-              image={image}
-              name={companyName}
-              type='dropdown'
-              undername={`Team plan • ${members} members`}
-            />
-          </Menu.Item>
-          <Menu.Item>
-            <AvatarName image={image} name={companyName} type='dropdown' undername={`Team plan • ${members} members`} />
-          </Menu.Item>
-          <Menu.Item>
-            <AvatarName image={image} name={companyName} type='dropdown' undername={`Team plan • ${members} members`} />
-          </Menu.Item>
+          {otherTeams?.map((team: any) => (
+            <Menu.Item key={team.id} onClick={() => router.push(`/team/${team.title}`)}>
+              <AvatarName image={team.image} name={team.title} type='dropdown' />
+            </Menu.Item>
+          ))}
         </Menu.Dropdown>
       </Menu>
     </>

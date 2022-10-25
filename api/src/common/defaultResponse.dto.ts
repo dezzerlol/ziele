@@ -2,8 +2,9 @@ import { Field, ObjectType } from "@nestjs/graphql"
 import { HttpStatus } from '@nestjs/common'
 
 @ObjectType()
-export class OutputLogin {
+export class DefaultResponse {
   @Field()
-  token: string
+  status: HttpStatus
+  @Field()
+  message: string
 }
-

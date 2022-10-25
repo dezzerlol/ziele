@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { DefaultResponse } from 'src/common/defaultResponse.dto'
 import { ProjectGuard } from 'src/project/project.guard'
 import { CurrentUser, ICurrentUser } from 'src/users/user.decorator'
 import { Column } from './column.model'
@@ -25,5 +26,10 @@ export class ColumnResolver {
   @Mutation(() => Column)
   async updateColumn(@Args('id') id: string, @Args('newTitle') newTitle: string) {
     return this.columnService.updateColumn(id, newTitle)
+  }
+
+  @Mutation(() => DefaultResponse)
+  async deleteColumn(@Args('columnId') columnId: string, @Args('projectId') projectId: string) {
+    return this.columnService.deleteColumn(columnId)
   }
 }

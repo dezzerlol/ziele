@@ -8,9 +8,6 @@ export class Project {
   @Field(() => String, {})
   id: string
 
-  @Field(() => graphqlTypeJson, {})
-  _count: object
-
   @Field(() => String, {})
   title: string
 
@@ -28,4 +25,7 @@ export class Project {
 
   @Field(() => [Column], {})
   columns: Array<Column>
+
+  @Field(() => graphqlTypeJson, {})
+  _count: object
 }

@@ -6,14 +6,12 @@ const AvatarName = ({
   name,
   image,
   type,
-  members,
   undername,
 }: {
   name: string
   image: string
   type: 'default' | 'dropdown'
-  members?: string
-  undername: string
+  undername?: string
 }) => {
   return (
     <Group spacing='xs'>
@@ -23,7 +21,7 @@ const AvatarName = ({
         <Title order={6} weight='bold' p={0}>
           {name}
         </Title>
-        <Text size='xs'>{undername}</Text>
+        {undername && <Text size='xs'>{undername}</Text>}
       </Box>
     </Group>
   )

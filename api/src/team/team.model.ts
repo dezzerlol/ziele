@@ -1,4 +1,5 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
+import graphqlTypeJson from 'graphql-type-json'
 import { Project } from 'src/project/project.model'
 import { User } from 'src/users/users.model'
 
@@ -9,6 +10,9 @@ export class Team {
 
   @Field(() => String, {})
   title: string
+
+  @Field(() => String, { nullable: true })
+  image: string
 
   @Field(() => String, {})
   updatedAt: Date
@@ -21,4 +25,5 @@ export class Team {
 
   @Field(() => [Project], {})
   projects: Array<User>
+
 }
