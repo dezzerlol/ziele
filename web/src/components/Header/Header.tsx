@@ -2,13 +2,13 @@ import { ActionIcon, Anchor, Avatar, Breadcrumbs, Group } from '@mantine/core'
 import { useRouter } from 'next/router'
 import { BiNotification } from 'react-icons/bi'
 import { ProjectType } from 'types/ziele'
-import CreateCardButton from './IssueModal/CreateIssueButton'
+import CreateIssueButton from './CreateIssueButton'
 
 const Header = ({ project }: { project: ProjectType }) => {
   const router = useRouter()
-
   const { teamTitle, projectId } = router.query
 
+  // breadcrumbs items
   const items = project
     ? [
         { title: teamTitle, href: `/team/${teamTitle}` },
@@ -24,7 +24,7 @@ const Header = ({ project }: { project: ProjectType }) => {
     <Group align='center' position='apart'>
       <Breadcrumbs>{items}</Breadcrumbs>
       <Group>
-        <CreateCardButton />
+        <CreateIssueButton />
         <Group>
           <ActionIcon>
             <BiNotification size={20} />

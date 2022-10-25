@@ -10,6 +10,7 @@ import { ColumnType } from 'types/ziele'
 import BoardHeader from './BoardHeader'
 import Column from './Columns/Column'
 import CreateColumnButton from './Columns/CreateColumnButton'
+import CreateIssueModal from './CreateIssueModal/CreateIssueModal'
 import IssueCard from './IssueCard'
 import IssueModal from './IssueModal'
 
@@ -68,6 +69,7 @@ const Board = () => {
           </Box>
         </ScrollArea>
       </Box>
+      <CreateIssueModal columns={columns} project={project} />
       <IssueModal />
     </>
   )

@@ -1,16 +1,25 @@
+import { gql, useQuery } from '@apollo/client'
 import AvatarName from '@components/common/AvatarName'
 import { Group, Menu } from '@mantine/core'
 import { useRouter } from 'next/router'
 import { RiArrowUpDownFill } from 'react-icons/ri'
 
-type Props = {
-  companyName: string
-  image: string
-  teams: []
-}
+const getTeams = gql`
+  query getUserTeams {
+    getUserTeams {
+      id
+      title
+      image
+    }
+  }
+`
 
-const Header = ({ teams }: Props) => {
+
+const Header = () => {
+  const { data } = useQuery(getTeams)
   const router = useRouter()
+  let teams = data?.getUserTeams
+
   let currentTeam: any = teams?.find((team: any) => team.title === router.query.teamTitle)
   let otherTeams: any = teams?.filter((team: any) => team.title !== router.query.teamTitle)
   return (

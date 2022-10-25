@@ -1,30 +1,38 @@
+import { gql, useQuery } from '@apollo/client'
 import { Box, Button, ScrollArea, Text } from '@mantine/core'
-import React from 'react'
-import { BiHash } from 'react-icons/bi'
+import { useRouter } from 'next/router'
 import { BsPlusSquare } from 'react-icons/bs'
+import SidebarLink from './SidebarLink'
 
-const Projects = ({ projects }: { projects: any }) => {
+const getProjects = gql`
+  query getUserProjects {
+    getUserProjects {
+      id
+      title
+      image
+    }
+  }
+`
+
+const Projects = () => {
+  const router = useRouter()
+  const { data } = useQuery(getProjects)
+
+  let projects = data?.getUserProjects
   return (
     <Box sx={{ maxHeight: '350px' }}>
       <Text size='sm' ml='xs' color='gray.6'>
         Projects
       </Text>
       <ScrollArea.Autosize maxHeight={350}>
-        {projects.map((project: any) => (
-          <Box
+        {projects?.map((project: any) => (
+          <SidebarLink
+            variant='projects'
             key={project.id}
-            p='xs'
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              borderRadius: '10px',
-              cursor: 'pointer',
-              color: 'gray.',
-              '&:hover': { backgroundColor: '#F5F7FB', color: '#562BF7' },
-            }}>
-            <BiHash /> <Text color='gray.8'>{project.title}</Text>
-          </Box>
+            href={`/team/${router.query.teamTitle}/project/${project.id}`}
+            title={project.title}
+           
+          />
         ))}
       </ScrollArea.Autosize>
       <Button variant='white' p={'xs'} color='gray.6'>
