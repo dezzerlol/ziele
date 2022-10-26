@@ -18,7 +18,16 @@ export class CardService {
 
   async createCard(data: CreateCardDto) {
     const card = await this.prismaService.card.create({
-      data,
+      data: {
+        title: data.title,
+        columnId: data.columnId,
+        description: data.description,
+        priority: data.priority,
+        tags: data.tags,
+        assignees: {
+          connect: data.assignees && data.assignees.map((assignee) => ({ id: assignee })),
+        },
+      },
     })
     return card
   }

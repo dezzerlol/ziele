@@ -1,4 +1,4 @@
-import Tag from '@components/common/Tag'
+import Tag from '@components/Common/Tag'
 import { ActionIcon, Avatar, Box, Card, Group, Menu, Text, Title } from '@mantine/core'
 import { useRouter } from 'next/router'
 import { useState, forwardRef } from 'react'

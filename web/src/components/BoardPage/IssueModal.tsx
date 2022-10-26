@@ -1,4 +1,4 @@
-import Tag from '@components/common/Tag'
+import Tag from '@components/Common/Tag'
 import {
   ActionIcon,
   Avatar,

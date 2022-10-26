@@ -7,8 +7,11 @@ import { useUiStore } from 'store/uiStore'
 import { ColumnType, ProjectType } from 'types/ziele'
 import { FileDropzone } from './FileDropzone'
 import Label from './Label'
-import SelectItem from './SelectItem'
-import SelectValue from './SelectValue'
+import SelectItem from '../../Select/WithIcon/SelectItem'
+import SelectValue from '../../Select/WithIcon/SelectValue'
+import TagSelectItem from '@components/Select/Tags/TagSelectItem'
+import TagSelectValue from '@components/Select/Tags/TagSelectValue'
+import useCreateCard from 'hooks/useCreateCard'
 
 const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), { ssr: false, loading: () => null })
 
@@ -16,12 +19,6 @@ const issueTypes = [
   { label: 'Bug', value: 'bug', icon: <RiAlertFill size={18} color='#E44D42' /> },
   { label: 'Task', value: 'task', icon: <RiCheckboxFill size={18} color='#4FADE6' /> },
   { label: 'Story', value: 'story', icon: <RiBookmarkFill size={18} color='#65BA43' /> },
-]
-
-const tags = [
-  { label: 'UI', value: 'ui' },
-  { label: 'Api', value: 'api' },
-  { label: 'Web', value: 'web' },
 ]
 
 const priority = [
@@ -32,16 +29,17 @@ const priority = [
 ]
 
 const CreateIssueModal = ({ columns, project }: { columns: ColumnType[]; project: ProjectType }) => {
+  const { mutate, loading } = useCreateCard()
   const form = useForm({
     initialValues: {
       issueType: 'task',
       columnId: '',
-      shortSummary: '',
+      title: '',
       description: '',
+      priority: '',
       assignees: [],
       tags: [],
-      priority: '',
-      files: '',
+      /* files: '', */
     },
   })
   const { isCreateIssueModalOpen, toggleCreateIssueModal } = useUiStore((state) => ({
@@ -49,8 +47,15 @@ const CreateIssueModal = ({ columns, project }: { columns: ColumnType[]; project
     toggleCreateIssueModal: state.toggleCreateIssueModal,
   }))
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    await mutate({ variables: { data: form.values } })
+    toggleCreateIssueModal(false)
+  }
+
   const formattedColumns = columns.map((column) => ({ value: column.id, label: column.title }))
   const users = project.users.map((user: any) => ({ value: user.id, label: user.username, icon: <RiUser3Line /> }))
+  const tags = project.tags.tags.map((tag) => ({ label: tag.body, value: tag.body, color: tag.color }))
 
   return (
     <>
@@ -62,7 +67,7 @@ const CreateIssueModal = ({ columns, project }: { columns: ColumnType[]; project
         padding={20}
         title={<Title order={4}>Create issue</Title>}>
         <ScrollArea.Autosize maxHeight='700px' offsetScrollbars={true} type='auto'>
-          <Box p='sm' component='form' onSubmit={form.onSubmit((values) => console.log(values))}>
+          <Box p='sm' component='form' onSubmit={handleSubmit}>
             <Box pb='xl'>
               <Select
                 label={<Label text='Issue type' />}
@@ -86,7 +91,7 @@ const CreateIssueModal = ({ columns, project }: { columns: ColumnType[]; project
             <Box pt='xl'>
               <TextInput
                 label={<Label text='Short summary' />}
-                {...form.getInputProps('shortSummary')}
+                {...form.getInputProps('title')}
                 required
                 styles={{ label: { display: 'flex', gap: '2px' } }}
               />
@@ -104,13 +109,20 @@ const CreateIssueModal = ({ columns, project }: { columns: ColumnType[]; project
               />
             </Box>
             <Box pt='xl'>
-              <MultiSelect label={<Label text='Tags' />} data={tags} {...form.getInputProps('tags')} />
+              <MultiSelect
+                label={<Label text='Tags' />}
+                valueComponent={TagSelectValue}
+                itemComponent={TagSelectItem}
+                data={tags}
+                {...form.getInputProps('tags')}
+              />
             </Box>
             <Box pt='xl'>
               <Select
                 itemComponent={SelectItem}
                 label={<Label text='Priority' />}
                 data={priority}
+                icon={priority.find((i) => i.value === form.values.priority)?.icon}
                 {...form.getInputProps('priority')}
               />
             </Box>
@@ -126,7 +138,9 @@ const CreateIssueModal = ({ columns, project }: { columns: ColumnType[]; project
                 }}>
                 Cancel
               </Button>
-              <Button type='submit'>Submit</Button>
+              <Button loading={loading} type='submit'>
+                Submit
+              </Button>
             </Group>
           </Box>
         </ScrollArea.Autosize>

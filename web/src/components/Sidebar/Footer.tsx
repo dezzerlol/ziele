@@ -1,4 +1,4 @@
-import AvatarName from '@components/common/AvatarName'
+import AvatarName from '@components/Common/AvatarName'
 import { Box, Center, Divider, Group, Menu, SegmentedControl, Text } from '@mantine/core'
 import { useRouter } from 'next/router'
 import { BiNotification } from 'react-icons/bi'

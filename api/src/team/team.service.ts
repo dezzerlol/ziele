@@ -17,26 +17,20 @@ export class TeamService {
         users: { select: { id: true, username: true, email: true, avatar: true } },
         _count: { select: { users: true } },
         projects: {
-          select: {
-            _count: {
-              select: { users: true },
-            },
+          include: {
             users: { select: { id: true, avatar: true, username: true }, take: 3 },
             columns: {
               include: {
                 cards: true,
               },
             },
-            id: true,
-            image: true,
-            title: true,
-            createdAt: true,
-            updatedAt: true,
+            _count: {
+              select: { users: true },
+            },
           },
         },
       },
     })
-
 
     if (!team) {
       throw new HttpException('Team not found', HttpStatus.BAD_REQUEST)

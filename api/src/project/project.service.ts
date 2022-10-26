@@ -20,6 +20,7 @@ export class ProjectService {
 
     const project = team.projects.find((p) => p.id === projectId)
 
+   
     if (!project) {
       throw new HttpException('Project not found', HttpStatus.BAD_REQUEST)
     }

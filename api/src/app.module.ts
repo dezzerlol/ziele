@@ -11,10 +11,12 @@ import { ColumnModule } from './column/column.module'
 import { CardModule } from './card/card.module'
 import { GraphQLError, GraphQLFormattedError } from 'graphql'
 import { TeamModule } from './team/team.module';
+import { CommentService } from './comment/comment.service';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   controllers: [],
-  providers: [PrismaService],
+  providers: [PrismaService, CommentService],
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.env`,
@@ -45,6 +47,7 @@ import { TeamModule } from './team/team.module';
     ColumnModule,
     CardModule,
     TeamModule,
+    CommentModule,
   ],
 })
 export class AppModule {}

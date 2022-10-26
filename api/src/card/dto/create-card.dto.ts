@@ -1,6 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsArray, IsOptional, IsString, Length } from 'class-validator'
+import graphqlTypeJson from 'graphql-type-json'
 
 @InputType()
 export class CreateCardDto {
@@ -15,6 +16,18 @@ export class CreateCardDto {
   @Field()
   readonly columnId: string
 
+  @ApiProperty({ example: 'Issue type', description: 'Card description', required: false })
+  @IsString({ message: 'Must be a string' })
+  @IsOptional()
+  @Field({ nullable: true })
+  readonly issueType?: string
+
+  @ApiProperty({ example: 'Issue priority', description: 'Card description', required: false })
+  @IsString({ message: 'Must be a string' })
+  @IsOptional()
+  @Field({ nullable: true })
+  readonly priority?: string
+
   @ApiProperty({ example: 'Issue description', description: 'Card description', required: false })
   @IsString({ message: 'Must be a string' })
   @IsOptional()
@@ -25,12 +38,13 @@ export class CreateCardDto {
   @IsArray({ message: 'Must be an array' })
   @IsString({ each: true })
   @IsOptional()
-  @Field(() => [String], { nullable: true })
-  readonly assigneeIds?: string[]
+  @Field(() => graphqlTypeJson, { nullable: true })
+  readonly tags?: object
 
-  @ApiProperty({ example: '1', description: 'Card tag id', required: false })
-  @IsString({ message: 'Must be a number' })
+  @ApiProperty({ example: '[1,2,3]', description: 'Card assignees', required: false })
+  @IsArray({ message: 'Must be an array' })
+  @IsString({ each: true })
   @IsOptional()
-  @Field({ nullable: true })
-  readonly tagId?: string
+  @Field(() => [String], { nullable: true })
+  readonly assignees?: string[]
 }

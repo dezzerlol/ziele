@@ -5,6 +5,9 @@ export type ProjectType = {
   updatedAt: string
   createdAt: string
   users: []
+  tags: {
+    tags: [{ body: string; color: string }]
+  }
   _count: { users: number }
 }
 

@@ -6,6 +6,7 @@ import {
   Burger,
   Button,
   Center,
+  CloseButton,
   Group,
   MultiSelect,
   SegmentedControl,
@@ -17,16 +18,14 @@ import { FiPlus } from 'react-icons/fi'
 import { useUiStore } from 'store/uiStore'
 import shallow from 'zustand/shallow'
 import { ProjectType } from '../../types/ziele'
+import { forwardRef } from 'react'
+import Tag from '@components/Common/Tag'
+import TagSelectItem from '@components/Select/Tags/TagSelectItem'
+import TagSelectValue from '@components/Select/Tags/TagSelectValue'
 
 type Props = {
   project: ProjectType
 }
-
-const tags = [
-  { label: 'UI', value: 'ui' },
-  { label: 'Api', value: 'api' },
-  { label: 'Web', value: 'web' },
-]
 
 const boardType = [
   {
@@ -61,6 +60,8 @@ const BoardHeader = ({ project }: Props) => {
   const handleOpen = () => {
     toggleSidebar(true)
   }
+
+  const tags = project.tags.tags.map((tag) => ({ label: tag.body, value: tag.body, color: tag.color }))
 
   return (
     <>
@@ -100,6 +101,8 @@ const BoardHeader = ({ project }: Props) => {
             size='xs'
             variant='filled'
             data={tags}
+            itemComponent={TagSelectItem}
+            valueComponent={TagSelectValue}
             placeholder='Tag'
             sx={{ maxWidth: '150px' }}
             clearButtonLabel='Clear selection'
@@ -118,3 +121,5 @@ const BoardHeader = ({ project }: Props) => {
 }
 
 export default BoardHeader
+
+

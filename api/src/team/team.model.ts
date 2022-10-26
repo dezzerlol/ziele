@@ -1,9 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql'
-import graphqlTypeJson from 'graphql-type-json'
 import { Project } from 'src/project/project.model'
 import { User } from 'src/users/users.model'
 
-@ObjectType()
+@ObjectType('team')
 export class Team {
   @Field(() => String, {})
   id: string

@@ -1,8 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
 import { Card } from 'src/card/card.model'
 
-
-@ObjectType()
+@ObjectType('column')
 export class Column {
   @Field(() => String, {})
   id: string

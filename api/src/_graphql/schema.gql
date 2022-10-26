@@ -11,7 +11,17 @@ type OutputLogin {
   token: String!
 }
 
-type User {
+type comment {
+  id: String!
+  cardId: String!
+  userId: String!
+  body: String!
+  description: String
+  updatedAt: String!
+  createdAt: String!
+}
+
+type user {
   id: String!
   username: String!
   email: String!
@@ -19,38 +29,22 @@ type User {
   avatar: String
   updatedAt: String!
   createdAt: String!
-  projects: [Project!]!
-  cards: [Card!]!
+  projects: [project!]!
+  cards: [card!]!
+  comments: [comment!]!
 }
 
-type Card {
+type card {
   id: String!
   title: String!
   description: String
-  updatedAt: String!
-  createdAt: String!
-  assignees: [User!]!
+  priority: String
+  assignees: [user!]
   columnId: String!
-}
-
-type Column {
-  id: String!
-  title: String!
   updatedAt: String!
   createdAt: String!
-  projectId: String!
-  cards: [Card!]!
-}
-
-type Project {
-  id: String!
-  title: String!
-  image: String
-  updatedAt: String!
-  createdAt: String!
-  users: [User!]!
-  columns: [Column!]!
-  _count: JSON!
+  tags: JSON
+  comments: [comment!]!
 }
 
 """
@@ -58,23 +52,44 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 """
 scalar JSON
 
-type Team {
+type column {
+  id: String!
+  title: String!
+  updatedAt: String!
+  createdAt: String!
+  projectId: String!
+  cards: [card!]!
+}
+
+type project {
   id: String!
   title: String!
   image: String
   updatedAt: String!
   createdAt: String!
-  users: [User!]!
-  projects: [Project!]!
+  users: [user!]!
+  columns: [column!]!
+  tags: JSON
+  _count: JSON!
+}
+
+type team {
+  id: String!
+  title: String!
+  image: String
+  updatedAt: String!
+  createdAt: String!
+  users: [user!]!
+  projects: [project!]!
 }
 
 type Query {
-  getProject(teamTitle: String!, projectId: String!): Project!
-  getUserProjects: [Project!]!
-  getTeam(title: String!): Team!
-  getUserTeams: [Team!]!
-  getProjectColumns(data: GetColumnsDto!): [Column!]!
-  getCards(columnId: String!): [Card!]!
+  getProject(teamTitle: String!, projectId: String!): project!
+  getUserProjects: [project!]!
+  getTeam(title: String!): team!
+  getUserTeams: [team!]!
+  getProjectColumns(data: GetColumnsDto!): [column!]!
+  getCards(columnId: String!): [card!]!
 }
 
 input GetColumnsDto {
@@ -85,15 +100,16 @@ input GetColumnsDto {
 type Mutation {
   login(data: LoginDto!): OutputLogin!
   register(data: CreateUserDto!): DefaultResponse!
-  addUserInProject(data: AddUserDto!): Project!
-  createProject(data: CreateProjectDto!): Project!
-  createTeam(data: CreateTeamDto!): Team!
-  addUserInTeam(data: AddUserToTeamDto!): Team!
-  createColumn(data: CreateColumnDto!): Column!
-  updateColumn(id: String!, newTitle: String!): Column!
+  addUserInProject(data: AddUserDto!): project!
+  createProject(data: CreateProjectDto!): project!
+  createTeam(data: CreateTeamDto!): team!
+  addUserInTeam(data: AddUserToTeamDto!): team!
+  createColumn(data: CreateColumnDto!): column!
+  updateColumn(id: String!, newTitle: String!): column!
   deleteColumn(columnId: String!, projectId: String!): DefaultResponse!
-  createCard(data: CreateCardDto!): Card!
-  updateCard(data: UpdateCardDto!): Card!
+  createCard(data: CreateCardDto!): card!
+  updateCard(data: UpdateCardDto!): card!
+  addComment(data: AddCommentDto!): DefaultResponse!
 }
 
 input LoginDto {
@@ -134,9 +150,11 @@ input CreateColumnDto {
 input CreateCardDto {
   title: String!
   columnId: String!
+  issueType: String
+  priority: String
   description: String
-  assigneeIds: [String!]
-  tagId: String
+  tags: JSON
+  assignees: [String!]
 }
 
 input UpdateCardDto {
@@ -147,7 +165,13 @@ input UpdateCardDto {
   tagId: String
 }
 
+input AddCommentDto {
+  body: String!
+  cardId: String!
+  userId: String!
+}
+
 type Subscription {
-  cardCreated(columnId: String!): Card!
-  cardUpdated(cardId: String!): Card!
+  cardCreated(columnId: String!): card!
+  cardUpdated(cardId: String!): card!
 }

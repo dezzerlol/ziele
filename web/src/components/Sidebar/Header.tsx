@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
-import AvatarName from '@components/common/AvatarName'
+import AvatarName from '@components/Common/AvatarName'
 import { Group, Menu } from '@mantine/core'
 import { useRouter } from 'next/router'
 import { RiArrowUpDownFill } from 'react-icons/ri'
@@ -13,7 +13,6 @@ const getTeams = gql`
     }
   }
 `
-
 
 const Header = () => {
   const { data } = useQuery(getTeams)

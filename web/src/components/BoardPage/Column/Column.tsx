@@ -7,7 +7,7 @@ import DraggableIssueCard from '../DraggableIssueCard'
 import ColumnDropdown from './ColumnDropdown'
 import ColumnHeader from './ColumnHeader'
 
-const Column = ({ column }: {column: ColumnType}) => {
+const Column = ({ column }: { column: ColumnType }) => {
   const { isCreateIssueModalOpen, toggleCreateIssueModal } = useUiStore((state) => ({
     isCreateIssueModalOpen: state.isCreateIssueModalOpen,
     toggleCreateIssueModal: state.toggleCreateIssueModal,
@@ -15,6 +15,8 @@ const Column = ({ column }: {column: ColumnType}) => {
   const { setNodeRef } = useDroppable({
     id: column.id,
   })
+
+  console.log({ column })
 
   return (
     <>

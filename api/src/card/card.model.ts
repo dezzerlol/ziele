@@ -1,7 +1,16 @@
 import { Field, ObjectType } from '@nestjs/graphql'
 import { User } from 'src/users/users.model'
+import graphqlTypeJson from 'graphql-type-json'
+import { Comment } from 'src/comment/comment.model'
 
-@ObjectType()
+interface Tags {
+  tags: {
+    body: string
+    color: string
+  }
+}
+
+@ObjectType('card')
 export class Card {
   @Field(() => String, {})
   id: string
@@ -12,21 +21,24 @@ export class Card {
   @Field(() => String, { nullable: true })
   description?: string
 
+  @Field(() => String, { nullable: true })
+  priority?: string
+
+  @Field(() => [User], { nullable: true })
+  assignees: User[]
+
+  @Field(() => String, {})
+  columnId: string
+
   @Field(() => String, {})
   updatedAt: Date
 
   @Field(() => String, {})
   createdAt: Date
 
-  @Field(() => [User], {})
-  assignees: Array<User>
+  @Field(() => graphqlTypeJson, { nullable: true })
+  tags: Tags
 
-  @Field(() => String, {})
-  columnId: string
-
-  //   @Field(() => [Tag], {})
-  //   tags: Array<Tag>
-
-  //   @Field(() => [Comment], {})
-  //   tags: Array<Comments>
+  @Field(() => [Comment], {})
+  comments: Comment[]
 }
