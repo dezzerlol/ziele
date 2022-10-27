@@ -6,7 +6,7 @@ import { forwardRef } from 'react'
 const TagSelectItem = forwardRef(({ label, value, icon, color, ...others }: any, ref: any) => {
   return (
     <Box ref={ref} {...others} sx={{ cursor: 'pointer' }}>
-      <Tag color={color} text={value} pointer />
+      <Tag color={color} text={label} pointer />
     </Box>
   )
 })

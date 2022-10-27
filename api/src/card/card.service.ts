@@ -23,10 +23,15 @@ export class CardService {
         columnId: data.columnId,
         description: data.description,
         priority: data.priority,
-        tags: data.tags,
+        tags: {
+          connect: data.tags && data.tags.map((tag) => ({ id: tag })),
+        },
         assignees: {
           connect: data.assignees && data.assignees.map((assignee) => ({ id: assignee })),
         },
+      },
+      include: {
+        tags: true,
       },
     })
     return card

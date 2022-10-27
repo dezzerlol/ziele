@@ -13,6 +13,11 @@ const IssueCard = forwardRef(({ card, style, ...props }: any, ref) => {
     router.push(`${router.asPath}?issue=${card.id}`)
   }
 
+  const handleDelete = (e: any) =>{
+    e.stopPropagation()
+    console.log('Delete')
+  }
+
   return (
     <Card
       my='md'
@@ -25,7 +30,7 @@ const IssueCard = forwardRef(({ card, style, ...props }: any, ref) => {
       sx={{
         ...style,
         cursor: 'pointer',
-        /* transition: '0.2s', */
+        transition: '0.2s',
         '&:hover': { backgroundColor: '#F4F5F7' },
         overflow: 'visible',
       }}>
@@ -45,19 +50,19 @@ const IssueCard = forwardRef(({ card, style, ...props }: any, ref) => {
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item>
+            <Menu.Item onClick={handleDelete}>
               <Group spacing='xs' align='center'>
                 <BiTrash size={16} />
                 <Box mt={4}>Delete</Box>
               </Group>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item onClick={(e: any) => e.stopPropagation()}>
               <Group spacing='xs' align='center'>
                 <BiFlag size={16} />
                 <Box mt={4}>Add flag</Box>
               </Group>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item onClick={(e: any) => e.stopPropagation()}>
               <Group spacing='xs' align='center'>
                 <BiDownArrowAlt size={16} />
                 <Box mt={4}>Move to the bottom</Box>
@@ -68,7 +73,13 @@ const IssueCard = forwardRef(({ card, style, ...props }: any, ref) => {
       </Group>
       <Text color='gray.6'>Short summary</Text>
       <Group mt='xl' position='apart'>
-        <Tag color='green' text='WEB' />
+        <Group spacing='xs'>
+          {card.tags.length > 0 ? (
+            card.tags.map((tag: any) => <Tag key={tag.body} color={tag.color} text={tag.body} />)
+          ) : (
+            <Box />
+          )}
+        </Group>
         <Box>
           <Avatar radius='xl' size='sm' />
         </Box>

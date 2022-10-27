@@ -3,7 +3,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Box, Button, Group } from '@mantine/core'
 import { useUiStore } from 'store/uiStore'
 import { ColumnType } from 'types/ziele'
-import DraggableIssueCard from '../DraggableIssueCard'
+import DraggableIssueCard from '../Card/DraggableIssueCard'
 import ColumnDropdown from './ColumnDropdown'
 import ColumnHeader from './ColumnHeader'
 
@@ -15,8 +15,6 @@ const Column = ({ column }: { column: ColumnType }) => {
   const { setNodeRef } = useDroppable({
     id: column.id,
   })
-
-  console.log({ column })
 
   return (
     <>

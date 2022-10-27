@@ -12,6 +12,7 @@ import SelectValue from '../../Select/WithIcon/SelectValue'
 import TagSelectItem from '@components/Select/Tags/TagSelectItem'
 import TagSelectValue from '@components/Select/Tags/TagSelectValue'
 import useCreateCard from 'hooks/useCreateCard'
+import React from 'react'
 
 const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), { ssr: false, loading: () => null })
 
@@ -47,16 +48,22 @@ const CreateIssueModal = ({ columns, project }: { columns: ColumnType[]; project
     toggleCreateIssueModal: state.toggleCreateIssueModal,
   }))
 
+  const handleReset = () => {
+    form.reset()
+    toggleCreateIssueModal(false)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     await mutate({ variables: { data: form.values } })
-    toggleCreateIssueModal(false)
+    handleReset()
   }
 
   const formattedColumns = columns.map((column) => ({ value: column.id, label: column.title }))
   const users = project.users.map((user: any) => ({ value: user.id, label: user.username, icon: <RiUser3Line /> }))
-  const tags = project.tags.tags.map((tag) => ({ label: tag.body, value: tag.body, color: tag.color }))
+  const tags = project.tags.map((tag) => ({ label: tag.body, value: tag.id, color: tag.color }))
 
+ 
   return (
     <>
       <Modal
@@ -130,12 +137,7 @@ const CreateIssueModal = ({ columns, project }: { columns: ColumnType[]; project
               <FileDropzone />
             </Box>
             <Group pt={40} position='right'>
-              <Button
-                variant='white'
-                onClick={() => {
-                  form.reset()
-                  toggleCreateIssueModal(false)
-                }}>
+              <Button variant='white' onClick={handleReset}>
                 Cancel
               </Button>
               <Button loading={loading} type='submit'>

@@ -38,8 +38,8 @@ export class CreateCardDto {
   @IsArray({ message: 'Must be an array' })
   @IsString({ each: true })
   @IsOptional()
-  @Field(() => graphqlTypeJson, { nullable: true })
-  readonly tags?: object
+  @Field(() => [String], { nullable: true })
+  readonly tags?: []
 
   @ApiProperty({ example: '[1,2,3]', description: 'Card assignees', required: false })
   @IsArray({ message: 'Must be an array' })

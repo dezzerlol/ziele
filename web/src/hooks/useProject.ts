@@ -13,7 +13,11 @@ const getProject = gql`
         avatar
         username
       }
-      tags
+      tags {
+        id
+        body
+        color
+      }
       _count
     }
   }

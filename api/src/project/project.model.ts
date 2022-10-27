@@ -2,13 +2,8 @@ import { Field, ObjectType } from '@nestjs/graphql'
 import graphqlTypeJson from 'graphql-type-json'
 import { Column } from 'src/column/column.model'
 import { User } from 'src/users/users.model'
+import { Tag } from './tag.model'
 
-interface Tags {
-  tags: {
-    body: string
-    color: string
-  }
-}
 
 @ObjectType('project')
 export class Project {
@@ -33,8 +28,8 @@ export class Project {
   @Field(() => [Column], {})
   columns: Array<Column>
 
-  @Field(() => graphqlTypeJson, { nullable: true })
-  tags: Tags
+  @Field(() => [Tag], { nullable: true })
+  tags: Tag[]
 
   @Field(() => graphqlTypeJson, {})
   _count: JSON

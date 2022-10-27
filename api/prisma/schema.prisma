@@ -41,7 +41,7 @@ model Project {
   image     String?
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
-  tags      Json?    @default("{}")
+  tags      Tag[]
   columns   Column[]
   users     User[]
   team      Team?    @relation(fields: [teamId], references: [id])
@@ -62,19 +62,34 @@ model Column {
 }
 
 model Card {
-  id          String    @id @default(cuid())
+  id          String  @id @default(cuid())
   title       String
   description String?
   priority    String?
   issueType   String?
-  tags        Json?     @default("{}")
-  updatedAt   DateTime  @updatedAt
-  createdAt   DateTime  @default(now())
-  assignees   User[]
-  comments    Comment[]
+
+  updatedAt DateTime  @updatedAt
+  createdAt DateTime  @default(now())
+  assignees User[]
+  comments  Comment[]
+  tags      Tag[]
 
   column   Column? @relation(fields: [columnId], references: [id])
   columnId String?
+}
+
+model Tag {
+  id    String @id @default(cuid())
+  body  String
+  color String
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  Card      Card[]
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
+
+  @@unique([body])
 }
 
 model Comment {

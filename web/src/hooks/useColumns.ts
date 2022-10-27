@@ -9,6 +9,11 @@ const Query = gql`
       cards {
         id
         title
+        tags {
+          id
+          color
+          body
+        }
       }
     }
   }
@@ -20,12 +25,17 @@ const Subscription = gql`
       id
       title
       columnId
+      tags {
+        id
+        color
+        body
+      }
     }
   }
 `
 
 export default function useColumns(teamTitle: string, projectId: string) {
-  const { data, loading, error, subscribeToMore,  } = useQuery(Query, { variables: { data: { teamTitle, projectId } } })
+  const { data, loading, error, subscribeToMore } = useQuery(Query, { variables: { data: { teamTitle, projectId } } })
 
   const columnIds = data?.getProjectColumns.map((column: any) => column.id)
 
@@ -37,6 +47,8 @@ export default function useColumns(teamTitle: string, projectId: string) {
         updateQuery: (prev, { subscriptionData }) => {
           if (!subscriptionData.data) return prev
           const newCard = subscriptionData.data.cardCreated
+
+          console.log({ prev, subscriptionData })
           return {
             ...prev,
             getProjectColumns: prev.getProjectColumns.map((column: any) => {
@@ -52,9 +64,11 @@ export default function useColumns(teamTitle: string, projectId: string) {
         },
       })
     })
-  }, [columnIds])
+  }, [JSON.stringify(columnIds)])
+
 
   useEffect(() => {
+    console.log('u[date')
     columnIds && subscribeToColumn()
   }, [JSON.stringify(columnIds)])
 

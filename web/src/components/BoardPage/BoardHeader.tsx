@@ -61,7 +61,7 @@ const BoardHeader = ({ project }: Props) => {
     toggleSidebar(true)
   }
 
-  const tags = project.tags.tags.map((tag) => ({ label: tag.body, value: tag.body, color: tag.color }))
+  const tags = project.tags.map((tag) => ({ label: tag.body, value: tag.body, color: tag.color }))
 
   return (
     <>

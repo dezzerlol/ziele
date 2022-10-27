@@ -1,9 +1,11 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { GqlAuthGuard } from 'src/auth/jwt-auth.guard'
+import { DefaultResponse } from 'src/common/defaultResponse.dto'
 import { CurrentUser, ICurrentUser } from 'src/users/user.decorator'
 import { AddUserDto } from './dto/add-user.dto'
 import { CreateProjectDto } from './dto/create-project.dto'
+import { CreateTagDto } from './dto/create-tag.dto'
 import { Project } from './project.model'
 import { ProjectService } from './project.service'
 
@@ -34,5 +36,10 @@ export class ProjectResolver {
   @Mutation(() => Project)
   async createProject(@Args('data') data: CreateProjectDto, @CurrentUser() reqUser: ICurrentUser) {
     return this.projectService.createProject(data, reqUser.id)
+  }
+
+  @Mutation(() => DefaultResponse)
+  async createCardTag(@Args('data') data: CreateTagDto, @CurrentUser() reqUser: ICurrentUser) {
+    return this.projectService.createCardTag(data)
   }
 }

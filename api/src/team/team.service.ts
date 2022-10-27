@@ -21,9 +21,14 @@ export class TeamService {
             users: { select: { id: true, avatar: true, username: true }, take: 3 },
             columns: {
               include: {
-                cards: true,
+                cards: {
+                  include: {
+                    tags: true,
+                  },
+                },
               },
             },
+            tags: true,
             _count: {
               select: { users: true },
             },

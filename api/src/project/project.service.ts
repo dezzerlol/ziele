@@ -1,10 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { DefaultResponse } from 'src/common/defaultResponse.dto'
 import { PrismaService } from 'src/prisma.service'
 import { TeamService } from 'src/team/team.service'
 import { ICurrentUser } from 'src/users/user.decorator'
 import { UsersService } from 'src/users/users.service'
 import { AddUserDto } from './dto/add-user.dto'
 import { CreateProjectDto } from './dto/create-project.dto'
+import { CreateTagDto } from './dto/create-tag.dto'
+import { colors } from './tag.model'
 
 @Injectable()
 export class ProjectService {
@@ -20,7 +23,6 @@ export class ProjectService {
 
     const project = team.projects.find((p) => p.id === projectId)
 
-   
     if (!project) {
       throw new HttpException('Project not found', HttpStatus.BAD_REQUEST)
     }
@@ -80,5 +82,31 @@ export class ProjectService {
     })
 
     return addedToProject
+  }
+
+  async createCardTag(data: CreateTagDto): Promise<DefaultResponse> {
+    let tag
+
+    if (!colors.includes(data.color)) {
+      throw new HttpException('Invalid color', HttpStatus.BAD_REQUEST)
+    }
+
+    try {
+      tag = await this.prismaService.tag.create({
+        data,
+      })
+    } catch (error) {
+      throw new HttpException('Tag with this name already exists', HttpStatus.BAD_REQUEST)
+    }
+
+    const connectTag = await this.prismaService.project.update({
+      where: { id: data.projectId },
+      data: {
+        tags: {
+          connect: { id: tag.id },
+        },
+      },
+    })
+    return { status: HttpStatus.CREATED, message: 'ok' }
   }
 }

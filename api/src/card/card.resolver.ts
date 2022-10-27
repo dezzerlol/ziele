@@ -24,6 +24,7 @@ export class CardResolver {
   @Mutation(() => Card)
   async createCard(@Args('data') data: CreateCardDto) {
     const newCard = await this.cardService.createCard(data)
+    console.log({ newCard })
     pubSub.publish(CARD_CREATED, { cardCreated: newCard })
     return newCard
   }

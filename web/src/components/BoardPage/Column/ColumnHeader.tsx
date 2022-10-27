@@ -9,6 +9,7 @@ const ColumnHeader = ({ column }: {column: ColumnType}) => {
         order={6}
         color='gray.7'
         contentEditable
+        suppressContentEditableWarning={true}
         spellCheck='false'
         sx={{ cursor: 'pointer', '&:focus': { outline: 'none', textDecoration: 'underline' } }}>
         {column.title}

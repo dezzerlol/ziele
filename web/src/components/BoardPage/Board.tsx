@@ -11,7 +11,7 @@ import BoardHeader from './BoardHeader'
 import Column from './Column/Column'
 import CreateColumnButton from './Column/CreateColumnButton'
 import CreateIssueModal from './CreateIssueModal/CreateIssueModal'
-import IssueCard from './IssueCard'
+import IssueCard from './Card/IssueCard'
 import IssueModal from './IssueModal'
 
 const Board = () => {
@@ -76,6 +76,3 @@ const Board = () => {
 }
 
 export default Board
-
-
-

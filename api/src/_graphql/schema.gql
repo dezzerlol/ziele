@@ -21,6 +21,14 @@ type comment {
   createdAt: String!
 }
 
+type tag {
+  id: String!
+  body: String!
+  color: String!
+  updatedAt: String!
+  createdAt: String!
+}
+
 type user {
   id: String!
   username: String!
@@ -43,14 +51,9 @@ type card {
   columnId: String!
   updatedAt: String!
   createdAt: String!
-  tags: JSON
+  tags: [tag!]
   comments: [comment!]!
 }
-
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON
 
 type column {
   id: String!
@@ -69,9 +72,14 @@ type project {
   createdAt: String!
   users: [user!]!
   columns: [column!]!
-  tags: JSON
+  tags: [tag!]
   _count: JSON!
 }
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
 
 type team {
   id: String!
@@ -102,6 +110,7 @@ type Mutation {
   register(data: CreateUserDto!): DefaultResponse!
   addUserInProject(data: AddUserDto!): project!
   createProject(data: CreateProjectDto!): project!
+  createCardTag(data: CreateTagDto!): DefaultResponse!
   createTeam(data: CreateTeamDto!): team!
   addUserInTeam(data: AddUserToTeamDto!): team!
   createColumn(data: CreateColumnDto!): column!
@@ -133,6 +142,12 @@ input CreateProjectDto {
   title: String!
 }
 
+input CreateTagDto {
+  projectId: String!
+  body: String!
+  color: String!
+}
+
 input CreateTeamDto {
   title: String!
 }
@@ -153,7 +168,7 @@ input CreateCardDto {
   issueType: String
   priority: String
   description: String
-  tags: JSON
+  tags: [String!]
   assignees: [String!]
 }
 

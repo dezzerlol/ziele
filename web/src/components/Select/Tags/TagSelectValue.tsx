@@ -5,7 +5,7 @@ function TagSelectValue({ value, label, onRemove, classNames, color, ...others }
   return (
     <div {...others}>
       <Group spacing={1}>
-        <Tag color={color} text={value} pointer />
+        <Tag color={color} text={label} pointer />
         <CloseButton onMouseDown={onRemove} variant='transparent' size={22} iconSize={14} tabIndex={-1} />
       </Group>
     </div>
