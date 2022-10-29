@@ -1,7 +1,9 @@
 import React from 'react'
 
-const Team = () => {
-  return <div>Team</div>
+const TeamPage = () => {
+  return <div>TeamPage</div>
 }
 
-export default Team
+TeamPage.layout = true
+
+export default TeamPage

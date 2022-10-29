@@ -1,7 +1,7 @@
 # api
 - [ ] project api (delete, update, add users, multiple boards in 1 project)
-- [ ] column api (delete, update)
-- [ ] card api (delete, update, add tags, descriptions, assignees). Graphql subscriptions.
+- [ ] column api (update)
+- [ ] card api (update, add tags, descriptions, assignees). Graphql subscriptions.
 - [ ] comment api (create, delete, update)
 - [ ] file api
 - [ ] roles for projects

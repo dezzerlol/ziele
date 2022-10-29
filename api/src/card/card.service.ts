@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpStatus, Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma.service'
 import { CreateCardDto } from './dto/create-card.dto'
 import { UpdateCardDto } from './dto/update-card.dto'
@@ -66,5 +66,14 @@ export class CardService {
       data,
     })
     return card
+  }
+
+  async deleteCard(cardId: string) {
+    const card = await this.prismaService.card.delete({
+      where: {
+        id: cardId,
+      },
+    })
+    return { status: HttpStatus.OK, message: 'Card deleted successfully' }
   }
 }

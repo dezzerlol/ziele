@@ -120,6 +120,7 @@ type Mutation {
   deleteColumn(columnId: String!, projectId: String!): DefaultResponse!
   createCard(data: CreateCardDto!): card!
   updateCard(data: UpdateCardDto!): card!
+  deleteCard(cardId: String!): DefaultResponse!
   addComment(data: AddCommentDto!): DefaultResponse!
 }
 

@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Calendar = () => {
-  return (
-    <div>Calendar</div>
-  )
+const CalendarPage = () => {
+  return <div>CalendarPage</div>
 }
 
-export default Calendar
+CalendarPage.layout = true
+
+export default CalendarPage

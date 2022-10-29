@@ -13,13 +13,17 @@ import CreateColumnButton from './Column/CreateColumnButton'
 import CreateIssueModal from './CreateIssueModal/CreateIssueModal'
 import IssueCard from './Card/IssueCard'
 import IssueModal from './IssueModal/IssueModal'
+import { useUiStore } from 'store/uiStore'
 
 const Board = () => {
   const router = useRouter()
   const { teamTitle, projectId } = router.query
-  const { project, projectLoading } = useProject(teamTitle as string, projectId as string)
   const [columns, setColumns] = useState<ColumnType[]>([])
+  const { isCreateIssueModalOpen } = useUiStore((state) => ({
+    isCreateIssueModalOpen: state.isCreateIssueModalOpen,
+  }))
 
+  const { project, projectLoading } = useProject(teamTitle as string, projectId as string)
   const { data, loading, error } = useColumns(router.query.teamTitle as string, router.query.projectId as string)
 
   const {
@@ -47,8 +51,8 @@ const Board = () => {
         <BoardHeader project={project} />
       </Box>
       <Divider />
-      <Box px='sm' sx={{ minHeight: '65%', backgroundColor: 'white' }}>
-        <ScrollArea type='always' scrollbarSize={18} offsetScrollbars style={{ width: '100%', height: '100%' }}>
+      <Box px='sm' sx={{ minHeight: '65%', height: '100%', backgroundColor: 'white' }}>
+        <ScrollArea type='auto' scrollbarSize={18} offsetScrollbars style={{ width: '100%', height: '100%' }}>
           <Box mt='md' sx={{ width: 1200, height: '100%', display: 'flex', gap: '10px' }}>
             <DndContext
               sensors={sensors}
@@ -69,7 +73,8 @@ const Board = () => {
           </Box>
         </ScrollArea>
       </Box>
-      <CreateIssueModal columns={columns} project={project} />
+      
+      {isCreateIssueModalOpen && <CreateIssueModal columns={columns} project={project} />}
       {router.query.issue && <IssueModal />}
     </Box>
   )

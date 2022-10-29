@@ -8,13 +8,19 @@ import ColumnDropdown from './ColumnDropdown'
 import ColumnHeader from './ColumnHeader'
 
 const Column = ({ column }: { column: ColumnType }) => {
-  const { isCreateIssueModalOpen, toggleCreateIssueModal } = useUiStore((state) => ({
-    isCreateIssueModalOpen: state.isCreateIssueModalOpen,
+  const { toggleCreateIssueModal, setClickedColumnId } = useUiStore((state) => ({
     toggleCreateIssueModal: state.toggleCreateIssueModal,
+    setClickedColumnId: state.setClickedColumnId,
   }))
+
   const { setNodeRef } = useDroppable({
     id: column.id,
   })
+
+  const handleOpen = () => {
+    toggleCreateIssueModal(true)
+    setClickedColumnId(column.id)
+  }
 
   return (
     <>
@@ -35,11 +41,11 @@ const Column = ({ column }: { column: ColumnType }) => {
         </Group>
 
         <SortableContext items={column.cards.map((card: any) => card.id)} strategy={verticalListSortingStrategy}>
-          <Box ref={setNodeRef} sx={{ borderRadius: '5px', height: 'auto', minHeight: '300px' }}>
+          <Box ref={setNodeRef} sx={{ borderRadius: '5px', height: 'auto', minHeight: '280px' }}>
             {column.cards.map((card: any) => (
               <DraggableIssueCard key={card.id} card={card} />
             ))}
-            <Button onClick={() => toggleCreateIssueModal(true)} fullWidth variant='subtle'>
+            <Button onClick={handleOpen} fullWidth variant='subtle'>
               Add new card
             </Button>
           </Box>

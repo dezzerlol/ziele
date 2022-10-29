@@ -17,6 +17,7 @@ const Sidebar = () => {
   }))
   const ref = useClickOutside(() => toggleSidebar(false))
 
+  console.log('render')
   return (
     <Stack
       justify='space-between'

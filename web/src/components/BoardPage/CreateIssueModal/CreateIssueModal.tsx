@@ -16,6 +16,11 @@ import React from 'react'
 
 const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), { ssr: false, loading: () => null })
 
+interface Props {
+  columns: ColumnType[]
+  project: ProjectType
+}
+
 const issueTypes = [
   { label: 'Bug', value: 'bug', icon: <RiAlertFill size={18} color='#E44D42' /> },
   { label: 'Task', value: 'task', icon: <RiCheckboxFill size={18} color='#4FADE6' /> },
@@ -29,12 +34,21 @@ const priority = [
   { label: 'Lowest', value: 'lowest', icon: <BiDownArrowAlt size={18} /> },
 ]
 
-const CreateIssueModal = ({ columns, project }: { columns: ColumnType[]; project: ProjectType }) => {
+const CreateIssueModal = ({ columns, project }: Props) => {
   const { mutate, loading } = useCreateCard()
+  const { isCreateIssueModalOpen, toggleCreateIssueModal, clickedColumnId, setClickedColumnId } = useUiStore(
+    (state) => ({
+      isCreateIssueModalOpen: state.isCreateIssueModalOpen,
+      clickedColumnId: state.clickedColumnId,
+      toggleCreateIssueModal: state.toggleCreateIssueModal,
+      setClickedColumnId: state.setClickedColumnId,
+    })
+  )
+
   const form = useForm({
     initialValues: {
       issueType: 'task',
-      columnId: '',
+      columnId: clickedColumnId,
       title: '',
       description: '',
       priority: '',
@@ -43,14 +57,11 @@ const CreateIssueModal = ({ columns, project }: { columns: ColumnType[]; project
       /* files: '', */
     },
   })
-  const { isCreateIssueModalOpen, toggleCreateIssueModal } = useUiStore((state) => ({
-    isCreateIssueModalOpen: state.isCreateIssueModalOpen,
-    toggleCreateIssueModal: state.toggleCreateIssueModal,
-  }))
 
   const handleReset = () => {
     form.reset()
     toggleCreateIssueModal(false)
+    setClickedColumnId(null)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -63,16 +74,25 @@ const CreateIssueModal = ({ columns, project }: { columns: ColumnType[]; project
   const users = project.users.map((user: any) => ({ value: user.id, label: user.username, icon: <RiUser3Line /> }))
   const tags = project.tags.map((tag) => ({ label: tag.body, value: tag.id, color: tag.color }))
 
- 
   return (
     <>
       <Modal
         opened={isCreateIssueModalOpen}
         withCloseButton={false}
-        onClose={() => toggleCreateIssueModal(false)}
+        onClose={handleReset}
         size='xl'
         padding={20}
-        title={<Title order={4}>Create issue</Title>}>
+        title={
+          <Group spacing={3} pl='sm'>
+            <Title order={4}>Create</Title>{' '}
+            <Select
+              variant='unstyled'
+              data={['issue', 'tag']}
+              width={100}
+              styles={{ input: { fontSize: '18px', fontWeight: 700 } }}
+            />
+          </Group>
+        }>
         <ScrollArea.Autosize maxHeight='700px' offsetScrollbars={true} type='auto'>
           <Box p='sm' component='form' onSubmit={handleSubmit}>
             <Box pb='xl'>

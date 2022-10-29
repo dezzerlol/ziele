@@ -2,6 +2,7 @@ import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql'
 import { PubSub } from 'graphql-subscriptions'
 import { GqlAuthGuard } from 'src/auth/jwt-auth.guard'
+import { DefaultResponse } from 'src/common/defaultResponse.dto'
 import { CARD_CREATED, CARD_UPDATED } from 'src/constants/subscriptions.const'
 import { Card } from './card.model'
 import { CardService } from './card.service'
@@ -54,5 +55,11 @@ export class CardResolver {
   })
   cardUpdated(@Args('cardId') cardId: string) {
     return pubSub.asyncIterator(CARD_UPDATED)
+  }
+
+  @Mutation(() => DefaultResponse)
+  async deleteCard(@Args('cardId') cardId: string) {
+    const response = await this.cardService.deleteCard(cardId)
+    return response
   }
 }
