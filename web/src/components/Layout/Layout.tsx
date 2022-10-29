@@ -4,7 +4,7 @@ import React from 'react'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Container fluid p={0} sx={{ backgroundColor: '#F5F7FB', minHeight: '100vh', display: 'flex' }}>
+    <Container fluid p={0} sx={{ minHeight: '100vh', display: 'flex' }}>
       <Sidebar />
       <Box
         component='main'

@@ -15,6 +15,7 @@ type comment {
   id: String!
   cardId: String!
   userId: String!
+  author: String!
   body: String!
   description: String
   updatedAt: String!
@@ -52,7 +53,7 @@ type card {
   updatedAt: String!
   createdAt: String!
   tags: [tag!]
-  comments: [comment!]!
+  comments: [comment!]
 }
 
 type column {
@@ -98,6 +99,7 @@ type Query {
   getUserTeams: [team!]!
   getProjectColumns(data: GetColumnsDto!): [column!]!
   getCards(columnId: String!): [card!]!
+  getCard(cardId: String!): card!
 }
 
 input GetColumnsDto {

@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { BsCheckCircleFill } from 'react-icons/bs'
 import { AUTH_TOKEN } from '@constant'
 import fetcher from '@lib/fetcher'
-import { verifyJwt } from '@services/verifyJwt'
+import { verifyJwt } from '@lib/verifyJwt'
 import SEO from '@components/SEO'
 
 interface FormValues {

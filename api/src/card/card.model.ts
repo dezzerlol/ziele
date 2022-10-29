@@ -3,7 +3,6 @@ import { Comment } from 'src/comment/comment.model'
 import { Tag } from 'src/project/tag.model'
 import { User } from 'src/users/users.model'
 
-
 @ObjectType('card')
 export class Card {
   @Field(() => String, {})
@@ -33,6 +32,6 @@ export class Card {
   @Field(() => [Tag], { nullable: true })
   tags?: Tag[]
 
-  @Field(() => [Comment], {})
+  @Field(() => [Comment], { nullable: true })
   comments: Comment[]
 }

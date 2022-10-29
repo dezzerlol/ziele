@@ -3,11 +3,7 @@ import { AUTH_TOKEN } from '@constant'
 import { Box } from '@mantine/core'
 
 const BoardPage = () => {
-  return (
-    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Board />
-    </Box>
-  )
+  return <Board />
 }
 
 export default BoardPage

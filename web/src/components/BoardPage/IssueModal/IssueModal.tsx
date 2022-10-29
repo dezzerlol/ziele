@@ -1,27 +1,42 @@
 import Tag from '@components/Common/Tag'
+import { formatDate } from '@lib/formatDate'
 import {
   ActionIcon,
   Avatar,
   Badge,
   Box,
   Group,
+  Loader,
   Modal,
-  SimpleGrid,
+  Skeleton,
   Tabs,
   Text,
+  Textarea,
   Title,
   useMantineTheme,
 } from '@mantine/core'
+import useIssueCard from 'hooks/useIssueCard'
 import { useRouter } from 'next/router'
-import { BiDotsHorizontalRounded, BiX } from 'react-icons/bi'
+import { useState } from 'react'
+import { BiX } from 'react-icons/bi'
+import CommentsPanel from './Panels/CommentsPanel'
+import DescriptionPanel from './Panels/DescriptionPanel'
+import DotsButton from './DotsButton'
+import SettingsPanel from './Panels/SettingsPanel'
 
 const IssueModal = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const theme = useMantineTheme()
   const router = useRouter()
+  const issueSlug = router.query.issue as string
+  const { issue, error, loading } = useIssueCard(issueSlug)
 
   const handleClose = () => {
     router.push(`/team/${router.query.teamTitle}/project/${router.query.projectId}`)
   }
+
+  console.log({ issue })
+
   return (
     <Modal
       overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
@@ -33,41 +48,48 @@ const IssueModal = () => {
       opened={router.query.issue ? true : false}
       onClose={handleClose}>
       <Group position='apart' px={'sm'} pt='xs'>
-        <ActionIcon>
-          <BiDotsHorizontalRounded size={20} />
-        </ActionIcon>
+        <DotsButton />
         <ActionIcon onClick={handleClose}>
           <BiX size={20} />
         </ActionIcon>
       </Group>
 
       <Box p='lg'>
-        <Title order={2}>Mobile App Exploration</Title>
+        {loading ? <Skeleton width='80px' height='35px' /> : <Title order={2}>{issue?.title}</Title>}
         <Box mt={32}>
           <Group spacing={64} mb='sm'>
-            <Text color='gray.6' weight={500} sx={{ width: '70px' }}>
-              Assignee
+            <Text color='gray.6' weight={500} sx={{ width: '75px' }}>
+              Assignees
             </Text>
-            <Group spacing='xs'>
-              <Text weight={600}>Roxana Johnsson</Text>
-              <Avatar size='sm' radius='xl' />
-            </Group>
+            {issue?.assignees ? (
+              <Group>
+                {issue?.assignees.map((assignee: any) => (
+                  <Group key={assignee.id} spacing='xs'>
+                    <Text weight={600}>{assignee?.username}</Text>
+                    <Avatar size='sm' radius='xl' />
+                  </Group>
+                ))}
+              </Group>
+            ) : (
+              <Text color='gray.6'>No assignees</Text>
+            )}
           </Group>
 
           <Group spacing={64} mb='sm'>
-            <Text color='gray.6' weight={500} sx={{ width: '70px' }}>
+            <Text color='gray.6' weight={500} sx={{ width: '75px' }}>
               Date
             </Text>
-            <Text weight={600}>16/10/2022</Text>
+            <Text weight={600}>{formatDate(issue?.createdAt)}</Text>
           </Group>
 
           <Group spacing={64} mb='sm'>
-            <Text color='gray.6' weight={500} sx={{ width: '70px' }}>
+            <Text color='gray.6' weight={500} sx={{ width: '75px' }}>
               Tags
             </Text>
             <Group spacing='xs'>
-              <Tag text='Web' color='green' />
-              <Tag text='GIT' color='red' />
+              {issue?.tags.map((tag: any) => (
+                <Tag key={tag.id} text={tag.body} color={tag.color} />
+              ))}
             </Group>
           </Group>
         </Box>
@@ -84,7 +106,7 @@ const IssueModal = () => {
                   variant='light'
                   size='xs'
                   p={0}>
-                  12
+                  {issue?.comments.length}
                 </Badge>
               }>
               Comments
@@ -93,13 +115,13 @@ const IssueModal = () => {
           </Tabs.List>
 
           <Tabs.Panel value='description' pt='lg'>
-            Description
+            <DescriptionPanel />
           </Tabs.Panel>
           <Tabs.Panel value='comments' pt='lg'>
-            Comments
+            <CommentsPanel />
           </Tabs.Panel>
           <Tabs.Panel value='settings' pt='lg'>
-            Settings
+            <SettingsPanel />
           </Tabs.Panel>
         </Tabs>
       </Box>

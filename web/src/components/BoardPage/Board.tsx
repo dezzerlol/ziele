@@ -12,7 +12,7 @@ import Column from './Column/Column'
 import CreateColumnButton from './Column/CreateColumnButton'
 import CreateIssueModal from './CreateIssueModal/CreateIssueModal'
 import IssueCard from './Card/IssueCard'
-import IssueModal from './IssueModal'
+import IssueModal from './IssueModal/IssueModal'
 
 const Board = () => {
   const router = useRouter()
@@ -42,14 +42,14 @@ const Board = () => {
   if (error) return <div>Error: {error.message}</div>
 
   return (
-    <>
-      <Box p='md' sx={{ backgroundColor: 'white' }}>
+    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Box p='md' sx={{ backgroundColor: 'white', maxHeight: '35%', minHeight: 'auto' }}>
         <BoardHeader project={project} />
       </Box>
       <Divider />
-      <Box px='sm' pt='md' sx={{ height: '100%', backgroundColor: 'white' }}>
+      <Box px='sm' sx={{ minHeight: '65%', backgroundColor: 'white' }}>
         <ScrollArea type='always' scrollbarSize={18} offsetScrollbars style={{ width: '100%', height: '100%' }}>
-          <Box sx={{ width: 1200, height: '100%', display: 'flex', gap: '10px' }}>
+          <Box mt='md' sx={{ width: 1200, height: '100%', display: 'flex', gap: '10px' }}>
             <DndContext
               sensors={sensors}
               collisionDetection={collisionDetectionStrategy}
@@ -70,8 +70,8 @@ const Board = () => {
         </ScrollArea>
       </Box>
       <CreateIssueModal columns={columns} project={project} />
-      <IssueModal />
-    </>
+      {router.query.issue && <IssueModal />}
+    </Box>
   )
 }
 

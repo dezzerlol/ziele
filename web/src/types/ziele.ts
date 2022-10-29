@@ -13,6 +13,13 @@ export type ProjectType = {
 export type CardType = {
   id: string
   title: string
+  description: string
+  updatedAt: string
+  createdAt: string
+  priority: string
+  tags: []
+  assignees: []
+  comments: []
 }
 
 export type ColumnType = {

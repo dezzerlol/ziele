@@ -16,6 +16,27 @@ export class CardService {
     return cards
   }
 
+  async getCard(cardId: string) {
+    const card = await this.prismaService.card.findUnique({
+      where: {
+        id: cardId,
+      },
+      include: {
+        assignees: {
+          select: {
+            id: true,
+            avatar: true,
+            username: true,
+          },
+        },
+        column: true,
+        comments: true,
+        tags: true,
+      },
+    })
+    return card
+  }
+
   async createCard(data: CreateCardDto) {
     const card = await this.prismaService.card.create({
       data: {

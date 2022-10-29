@@ -12,6 +12,9 @@ export class Comment {
   userId: string
 
   @Field(() => String, {})
+  author: string
+
+  @Field(() => String, {})
   body: string
 
   @Field(() => String, { nullable: true })

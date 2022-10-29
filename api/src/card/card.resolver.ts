@@ -21,6 +21,12 @@ export class CardResolver {
     return cards
   }
 
+  @Query(() => Card)
+  async getCard(@Args('cardId') cardId: string) {
+    const card = await this.cardService.getCard(cardId)
+    return card
+  }
+
   @Mutation(() => Card)
   async createCard(@Args('data') data: CreateCardDto) {
     const newCard = await this.cardService.createCard(data)

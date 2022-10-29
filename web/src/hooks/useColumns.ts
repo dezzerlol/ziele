@@ -47,8 +47,6 @@ export default function useColumns(teamTitle: string, projectId: string) {
         updateQuery: (prev, { subscriptionData }) => {
           if (!subscriptionData.data) return prev
           const newCard = subscriptionData.data.cardCreated
-
-          console.log({ prev, subscriptionData })
           return {
             ...prev,
             getProjectColumns: prev.getProjectColumns.map((column: any) => {
@@ -68,7 +66,6 @@ export default function useColumns(teamTitle: string, projectId: string) {
 
 
   useEffect(() => {
-    console.log('u[date')
     columnIds && subscribeToColumn()
   }, [JSON.stringify(columnIds)])
 
