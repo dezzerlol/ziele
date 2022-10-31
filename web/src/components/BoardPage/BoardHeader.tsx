@@ -49,10 +49,11 @@ const boardType = [
 ]
 
 const BoardHeader = ({ project }: Props) => {
-  const { isSidebarOpen, toggleSidebar } = useUiStore(
+  const { isSidebarOpen, toggleSidebar, toggleInviteUserModal } = useUiStore(
     (state) => ({
       isSidebarOpen: state.isSidebarOpen,
       toggleSidebar: state.toggleSidebar,
+      toggleInviteUserModal: state.toggleInviteUserModal,
     }),
     shallow
   )
@@ -91,7 +92,7 @@ const BoardHeader = ({ project }: Props) => {
             </Avatar.Group>
           </Tooltip.Group>
           <Tooltip label='Add people' withArrow mr='xl'>
-            <ActionIcon size='lg' variant='transparent'>
+            <ActionIcon size='lg' variant='transparent' onClick={() => toggleInviteUserModal(true)}>
               <Avatar radius='xl'>
                 <FiPlus />
               </Avatar>
@@ -121,5 +122,3 @@ const BoardHeader = ({ project }: Props) => {
 }
 
 export default BoardHeader
-
-

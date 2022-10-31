@@ -1,8 +1,8 @@
 import { DndContext, DragOverlay } from '@dnd-kit/core'
 import { Box, Divider, ScrollArea } from '@mantine/core'
-import useColumns from 'hooks/useColumns'
+import useColumns from 'graphql/queries/useColumns'
 import useDnd from 'hooks/useDnd'
-import useProject from 'hooks/useProject'
+import useProject from 'graphql/queries/useProject'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -10,20 +10,22 @@ import { ColumnType } from 'types/ziele'
 import BoardHeader from './BoardHeader'
 import Column from './Column/Column'
 import CreateColumnButton from './Column/CreateColumnButton'
-import CreateIssueModal from './CreateIssueModal/CreateIssueModal'
+import CreateIssueModal from './CreateNewModal/CreateNewModal'
 import IssueCard from './Card/IssueCard'
 import IssueModal from './IssueModal/IssueModal'
 import { useUiStore } from 'store/uiStore'
+import InviteUserModal from './InviteUserModal/InviteUserModal'
 
 const Board = () => {
   const router = useRouter()
   const { teamTitle, projectId } = router.query
   const [columns, setColumns] = useState<ColumnType[]>([])
-  const { isCreateIssueModalOpen } = useUiStore((state) => ({
+  const { isCreateIssueModalOpen, isInviteUserModalOpen } = useUiStore((state) => ({
     isCreateIssueModalOpen: state.isCreateIssueModalOpen,
+    isInviteUserModalOpen: state.isInviteUserModalOpen,
   }))
 
-  const { project, projectLoading } = useProject(teamTitle as string, projectId as string)
+  const { project, loading: projectLoading } = useProject(teamTitle as string, projectId as string)
   const { data, loading, error } = useColumns(router.query.teamTitle as string, router.query.projectId as string)
 
   const {
@@ -73,8 +75,9 @@ const Board = () => {
           </Box>
         </ScrollArea>
       </Box>
-      
+
       {isCreateIssueModalOpen && <CreateIssueModal columns={columns} project={project} />}
+      {isInviteUserModalOpen && <InviteUserModal />}
       {router.query.issue && <IssueModal />}
     </Box>
   )

@@ -1,5 +1,6 @@
 import AvatarName from '@components/Common/AvatarName'
 import { Box, Center, Divider, Group, Menu, SegmentedControl, Text } from '@mantine/core'
+import useAccount from 'graphql/queries/useAccount'
 import { useRouter } from 'next/router'
 import { BiNotification } from 'react-icons/bi'
 import { FiLogOut, FiMoon, FiSun } from 'react-icons/fi'
@@ -32,6 +33,7 @@ const themeButtons = [
 ]
 
 const Footer = () => {
+  const { account, loading } = useAccount()
   const router = useRouter()
 
   const handleLogout = async () => {
@@ -62,10 +64,10 @@ const Footer = () => {
       </Box>
       <Divider />
 
-      <Menu width='260px' shadow='xl' position='top-start'>
+      <Menu width='260px' shadow='xl' position='top-start' disabled={loading}>
         <Menu.Target>
           <Box px='md' py='xs' sx={{ cursor: 'pointer' }}>
-            <AvatarName image={''} name={'dezzerlol'} undername={'user@test.com'} type='default' />
+            <AvatarName image={account?.avatar} name={account?.username} undername={account?.email} type='default' />
           </Box>
         </Menu.Target>
         <Menu.Dropdown ml='md'>

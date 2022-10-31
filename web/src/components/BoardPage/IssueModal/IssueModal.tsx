@@ -15,7 +15,7 @@ import {
   Title,
   useMantineTheme,
 } from '@mantine/core'
-import useIssueCard from 'hooks/useIssueCard'
+import useIssueCard from 'graphql/queries/useIssueCard'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { BiX } from 'react-icons/bi'

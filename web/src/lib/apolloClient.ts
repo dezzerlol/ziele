@@ -8,11 +8,13 @@ import { onError } from '@apollo/client/link/error'
 const graphqlUrl = 'http://localhost:5000/graphql'
 const wsUrl = 'ws://localhost:5000/graphql'
 
+// http link
 const httpLink = new HttpLink({
   uri: graphqlUrl,
   credentials: 'include',
 })
 
+//websockets link
 const wsLink =
   typeof window !== 'undefined'
     ? new GraphQLWsLink(
@@ -39,7 +41,7 @@ const apolloClient = new ApolloClient({
   link: link,
   cache: new InMemoryCache(),
   credentials: 'include',
+  ssrMode: true,
 })
-
 
 export default apolloClient

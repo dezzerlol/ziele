@@ -11,9 +11,9 @@ import SelectItem from '../../Select/WithIcon/SelectItem'
 import SelectValue from '../../Select/WithIcon/SelectValue'
 import TagSelectItem from '@components/Select/Tags/TagSelectItem'
 import TagSelectValue from '@components/Select/Tags/TagSelectValue'
-import useCreateCard from 'hooks/useCreateCard'
-import React from 'react'
-
+import useCreateCard from 'graphql/mutations/useCreateCard'
+import React, { useState } from 'react'
+import NewTagModal from './NewTagModal'
 const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), { ssr: false, loading: () => null })
 
 interface Props {
@@ -34,16 +34,15 @@ const priority = [
   { label: 'Lowest', value: 'lowest', icon: <BiDownArrowAlt size={18} /> },
 ]
 
-const CreateIssueModal = ({ columns, project }: Props) => {
+const CreateNewModal = ({ columns, project }: Props) => {
+  const [isNewTagOpen, setIsNewTagOpen] = useState(false)
   const { mutate, loading } = useCreateCard()
-  const { isCreateIssueModalOpen, toggleCreateIssueModal, clickedColumnId, setClickedColumnId } = useUiStore(
-    (state) => ({
-      isCreateIssueModalOpen: state.isCreateIssueModalOpen,
-      clickedColumnId: state.clickedColumnId,
-      toggleCreateIssueModal: state.toggleCreateIssueModal,
-      setClickedColumnId: state.setClickedColumnId,
-    })
-  )
+  const { isCreateModalOpen, toggleCreateNewModal, clickedColumnId, setClickedColumnId } = useUiStore((state) => ({
+    isCreateModalOpen: state.isCreateIssueModalOpen,
+    clickedColumnId: state.clickedColumnId,
+    toggleCreateNewModal: state.toggleCreateIssueModal,
+    setClickedColumnId: state.setClickedColumnId,
+  }))
 
   const form = useForm({
     initialValues: {
@@ -60,7 +59,7 @@ const CreateIssueModal = ({ columns, project }: Props) => {
 
   const handleReset = () => {
     form.reset()
-    toggleCreateIssueModal(false)
+    toggleCreateNewModal(false)
     setClickedColumnId(null)
   }
 
@@ -77,22 +76,12 @@ const CreateIssueModal = ({ columns, project }: Props) => {
   return (
     <>
       <Modal
-        opened={isCreateIssueModalOpen}
+        opened={isCreateModalOpen}
         withCloseButton={false}
         onClose={handleReset}
         size='xl'
         padding={20}
-        title={
-          <Group spacing={3} pl='sm'>
-            <Title order={4}>Create</Title>{' '}
-            <Select
-              variant='unstyled'
-              data={['issue', 'tag']}
-              width={100}
-              styles={{ input: { fontSize: '18px', fontWeight: 700 } }}
-            />
-          </Group>
-        }>
+        title={<Title order={4}>Create issue</Title>}>
         <ScrollArea.Autosize maxHeight='700px' offsetScrollbars={true} type='auto'>
           <Box p='sm' component='form' onSubmit={handleSubmit}>
             <Box pb='xl'>
@@ -121,6 +110,7 @@ const CreateIssueModal = ({ columns, project }: Props) => {
                 {...form.getInputProps('title')}
                 required
                 styles={{ label: { display: 'flex', gap: '2px' } }}
+                placeholder='Concisely summarize the issue in one or two sentences.'
               />
             </Box>
             <Box pt='xl'>
@@ -128,20 +118,29 @@ const CreateIssueModal = ({ columns, project }: Props) => {
             </Box>
             <Box pt='xl'>
               <MultiSelect
+                label={<Label text='Assignees' />}
+                placeholder='Start typing or pick one...'
                 valueComponent={SelectValue}
                 itemComponent={SelectItem}
-                label={<Label text='Assignees' />}
                 data={users}
                 {...form.getInputProps('assignees')}
+                searchable
               />
             </Box>
             <Box pt='xl'>
               <MultiSelect
                 label={<Label text='Tags' />}
+                placeholder='Start typing or pick one...'
                 valueComponent={TagSelectValue}
                 itemComponent={TagSelectItem}
                 data={tags}
                 {...form.getInputProps('tags')}
+                searchable
+                nothingFound={
+                  <Button variant='white' onClick={() => setIsNewTagOpen(true)}>
+                    Create new tag
+                  </Button>
+                }
               />
             </Box>
             <Box pt='xl'>
@@ -151,6 +150,7 @@ const CreateIssueModal = ({ columns, project }: Props) => {
                 data={priority}
                 icon={priority.find((i) => i.value === form.values.priority)?.icon}
                 {...form.getInputProps('priority')}
+                placeholder='Pick one...'
               />
             </Box>
             <Box pt='xl'>
@@ -166,9 +166,10 @@ const CreateIssueModal = ({ columns, project }: Props) => {
             </Group>
           </Box>
         </ScrollArea.Autosize>
+        {isNewTagOpen && <NewTagModal setIsNewTagOpen={setIsNewTagOpen} isNewTagOpen={isNewTagOpen} />}
       </Modal>
     </>
   )
 }
 
-export default CreateIssueModal
+export default CreateNewModal

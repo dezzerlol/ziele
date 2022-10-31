@@ -1,13 +1,13 @@
 import Tag from '@components/Common/Tag'
 import { ActionIcon, Avatar, Box, Card, Group, Loader, Menu, Text, Title } from '@mantine/core'
-import useDeleteCard from 'hooks/useDeleteCard'
+import useDeleteCard from 'graphql/mutations/useDeleteCard'
 import { useRouter } from 'next/router'
 import { useState, forwardRef } from 'react'
 import { BiDotsHorizontalRounded, BiDownArrowAlt, BiFlag, BiTrash } from 'react-icons/bi'
 
-const DotsButton = ({ cardId, isHover }: { cardId: string, isHover: boolean }) => {
+const DotsButton = ({ cardId, isHover }: { cardId: string; isHover: boolean }) => {
   const [isClicked, setIsClicked] = useState(false)
-  
+
   const { mutate, loading } = useDeleteCard()
 
   const handleDelete = (e: any) => {

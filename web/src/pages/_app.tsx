@@ -3,6 +3,7 @@ import Layout from '@components/Layout/Layout'
 import { ColorScheme, MantineProvider } from '@mantine/core'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 import { NotificationsProvider } from '@mantine/notifications'
+import useAccount from 'graphql/queries/useAccount'
 import { NextComponentType, NextPageContext } from 'next'
 import type { AppProps } from 'next/app'
 import apolloClient from '../lib/apolloClient'
@@ -13,6 +14,7 @@ type CustomAppProps = AppProps & {
 }
 
 function MyApp({ Component, pageProps }: CustomAppProps) {
+  
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: 'mantine-color-scheme',
     defaultValue: 'light',

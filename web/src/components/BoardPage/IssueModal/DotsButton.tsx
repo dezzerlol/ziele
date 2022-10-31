@@ -1,5 +1,5 @@
 import { ActionIcon, Box, Group, Loader, Menu } from '@mantine/core'
-import useDeleteCard from 'hooks/useDeleteCard'
+import useDeleteCard from 'graphql/mutations/useDeleteCard'
 import { useRouter } from 'next/router'
 import { BiDotsHorizontalRounded, BiTrash } from 'react-icons/bi'
 
@@ -7,7 +7,7 @@ const DotsButton = () => {
   const router = useRouter()
   const { mutate, loading } = useDeleteCard()
   let cardId = router.query.issue
-  
+
   const handleDelete = async () => {
     await mutate({ variables: { cardId } })
     router.push(router.asPath.split('?')[0])

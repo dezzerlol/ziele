@@ -1,5 +1,5 @@
 import { ActionIcon, Box, Group, Loader, Menu } from '@mantine/core'
-import useDeleteColumn from 'hooks/useDeleteColumn'
+import useDeleteColumn from 'graphql/mutations/useDeleteColumn'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { BiDotsHorizontalRounded, BiListUl, BiTrash } from 'react-icons/bi'

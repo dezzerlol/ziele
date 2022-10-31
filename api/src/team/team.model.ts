@@ -24,5 +24,4 @@ export class Team {
 
   @Field(() => [Project], {})
   projects: Array<User>
-
 }

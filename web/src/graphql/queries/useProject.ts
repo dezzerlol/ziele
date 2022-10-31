@@ -24,7 +24,7 @@ const getProject = gql`
 `
 
 export default function useProject(teamTitle: string, projectId: string) {
-  const { data: project, loading: projectLoading } = useQuery(getProject, { variables: { teamTitle, projectId } })
+  const { data, loading } = useQuery(getProject, { variables: { teamTitle, projectId } })
 
-  return { project: project?.getProject, projectLoading }
+  return { project: data?.getProject, loading }
 }

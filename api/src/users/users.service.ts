@@ -1,10 +1,29 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, UseGuards } from '@nestjs/common'
+import { GqlAuthGuard } from 'src/auth/jwt-auth.guard'
 import { PrismaService } from 'src/prisma.service'
 import { CreateUserDto } from './dto/create-user.dto'
+import { ICurrentUser } from './user.decorator'
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
+
+  async getUser(currentUser: ICurrentUser) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: currentUser.id },
+      select: {
+        id: true,
+        email: true,
+        avatar: true,
+        username: true,
+        createdAt: true,
+        updatedAt: true,
+        projects: true,
+        teams: true,
+      },
+    })
+    return user
+  }
 
   async createUser(data: CreateUserDto) {
     return this.prisma.user.create({ data })

@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 import { useCallback, useEffect } from 'react'
 
-const Query = gql`
+const getProjectColumns = gql`
   query getProjectColumns($data: GetColumnsDto!) {
     getProjectColumns(data: $data) {
       id
@@ -19,7 +19,7 @@ const Query = gql`
   }
 `
 
-const Subscription = gql`
+const cardCreated = gql`
   subscription cardCreated($columnId: String!) {
     cardCreated(columnId: $columnId) {
       id
@@ -35,14 +35,14 @@ const Subscription = gql`
 `
 
 export default function useColumns(teamTitle: string, projectId: string) {
-  const { data, loading, error, subscribeToMore } = useQuery(Query, { variables: { data: { teamTitle, projectId } } })
+  const { data, loading, error, subscribeToMore } = useQuery(getProjectColumns, { variables: { data: { teamTitle, projectId } } })
 
   const columnIds = data?.getProjectColumns.map((column: any) => column.id)
 
   const subscribeToColumn = useCallback(() => {
     columnIds.forEach((columnId: any) => {
       subscribeToMore({
-        document: Subscription,
+        document: cardCreated,
         variables: { columnId },
         updateQuery: (prev, { subscriptionData }) => {
           if (!subscriptionData.data) return prev

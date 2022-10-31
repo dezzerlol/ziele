@@ -3,6 +3,7 @@ import { Box, Divider, Stack, TextInput } from '@mantine/core'
 import { useClickOutside, useMediaQuery } from '@mantine/hooks'
 import { BiSearchAlt } from 'react-icons/bi'
 import { useUiStore } from 'store/uiStore'
+import shallow from 'zustand/shallow'
 import Footer from './Footer'
 import Header from './Header'
 import Links from './Links'
@@ -11,12 +12,14 @@ import Projects from './Projects'
 const Sidebar = () => {
   const matches = useMediaQuery('(max-width: 756px)')
 
-  const { isSidebarOpen, toggleSidebar } = useUiStore((state) => ({
-    isSidebarOpen: state.isSidebarOpen,
-    toggleSidebar: state.toggleSidebar,
-  }))
+  const { isSidebarOpen, toggleSidebar } = useUiStore(
+    (state) => ({
+      isSidebarOpen: state.isSidebarOpen,
+      toggleSidebar: state.toggleSidebar,
+    }),
+    shallow
+  )
   const ref = useClickOutside(() => toggleSidebar(false))
-
   console.log('render')
   return (
     <Stack
