@@ -35,11 +35,13 @@ const cardCreated = gql`
 `
 
 export default function useColumns(teamTitle: string, projectId: string) {
-  const { data, loading, error, subscribeToMore } = useQuery(getProjectColumns, { variables: { data: { teamTitle, projectId } } })
+  const { data, loading, error, subscribeToMore } = useQuery(getProjectColumns, {
+    variables: { data: { teamTitle, projectId } },
+  })
 
   const columnIds = data?.getProjectColumns.map((column: any) => column.id)
 
-  const subscribeToColumn = useCallback(() => {
+  const subscribeToCardCreate = useCallback(() => {
     columnIds.forEach((columnId: any) => {
       subscribeToMore({
         document: cardCreated,
@@ -64,9 +66,10 @@ export default function useColumns(teamTitle: string, projectId: string) {
     })
   }, [JSON.stringify(columnIds)])
 
-
   useEffect(() => {
-    columnIds && subscribeToColumn()
+    if (columnIds) {
+      subscribeToCardCreate()
+    }
   }, [JSON.stringify(columnIds)])
 
   return { data, loading, error }

@@ -47,8 +47,9 @@ export class ProjectGuard implements CanActivate {
       // check if user exists in requested project,
       // if exists return true
       const isUserInProject = await this.projectService.findUserInProject({ userId, projectId })
-
+      console.log({ projectId })
       if (isUserInProject) {
+        
         req.user = validationResult
         return true
       } else {

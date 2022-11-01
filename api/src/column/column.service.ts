@@ -33,6 +33,19 @@ export class ColumnService {
     return project.columns
   }
 
+  async getColumn(id: string) {
+    const column = await this.prisma.column.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        cards: true,
+      },
+    })
+
+    return column
+  }
+
   async updateColumn(id: string, newTitle: string) {
     const column = await this.prisma.column.update({
       where: {

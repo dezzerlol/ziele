@@ -60,6 +60,16 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 """
 scalar JSON
 
+type team {
+  id: String!
+  title: String!
+  image: String
+  updatedAt: String!
+  createdAt: String!
+  users: [user!]!
+  projects: [project!]!
+}
+
 type user {
   id: String!
   username: String!
@@ -70,6 +80,7 @@ type user {
   createdAt: String!
   projects: [project!]!
   cards: [card!]!
+  teams: [team!]!
   comments: [comment!]!
 }
 
@@ -80,16 +91,6 @@ type DefaultResponse {
 
 type OutputLogin {
   token: String!
-}
-
-type team {
-  id: String!
-  title: String!
-  image: String
-  updatedAt: String!
-  createdAt: String!
-  users: [user!]!
-  projects: [project!]!
 }
 
 type Query {
@@ -122,6 +123,7 @@ type Mutation {
   createCard(data: CreateCardDto!): card!
   updateCard(data: UpdateCardDto!): card!
   deleteCard(cardId: String!): DefaultResponse!
+  moveCardToColumn(cardId: String!, columnId: String!, projectId: String!): column!
   addComment(data: AddCommentDto!): DefaultResponse!
 }
 

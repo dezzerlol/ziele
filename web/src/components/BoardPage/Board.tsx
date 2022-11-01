@@ -26,7 +26,7 @@ const Board = () => {
   }))
 
   const { project, loading: projectLoading } = useProject(teamTitle as string, projectId as string)
-  const { data, loading, error } = useColumns(router.query.teamTitle as string, router.query.projectId as string)
+  const { data, loading, error } = useColumns(teamTitle as string, projectId as string)
 
   const {
     handleDragStart,

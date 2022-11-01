@@ -76,4 +76,25 @@ export class CardService {
     })
     return { status: HttpStatus.OK, message: 'Card deleted successfully' }
   }
+
+  async moveCardToColumn(cardId: string, columnId: string) {
+    const card = await this.prismaService.card.update({
+      where: {
+        id: cardId,
+      },
+      data: {
+        column: {
+          connect: {
+            id: columnId,
+          },
+        },
+      },
+
+      include: {
+        tags: true,
+      },
+    })
+
+    return card
+  }
 }

@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { PubSub } from 'graphql-subscriptions'
 import { DefaultResponse } from 'src/common/defaultResponse.dto'
 import { ProjectGuard } from 'src/project/project.guard'
 import { CurrentUser, ICurrentUser } from 'src/users/user.decorator'
@@ -32,4 +33,6 @@ export class ColumnResolver {
   async deleteColumn(@Args('columnId') columnId: string, @Args('projectId') projectId: string) {
     return this.columnService.deleteColumn(columnId)
   }
+
+
 }

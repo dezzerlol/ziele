@@ -3,6 +3,7 @@ import { IsEmail } from 'class-validator'
 import { Card } from 'src/card/card.model'
 import { Comment } from 'src/comment/comment.model'
 import { Project } from 'src/project/project.model'
+import { Team } from 'src/team/team.model'
 
 @ObjectType('user')
 export class User {
@@ -29,10 +30,13 @@ export class User {
   createdAt: Date
 
   @Field(() => [Project], {})
-  projects: []
+  projects: Project[]
 
   @Field(() => [Card], {})
-  cards: []
+  cards: Card[]
+
+  @Field(() => [Team], {})
+  teams: Team[]
 
   @Field(() => [Comment])
   comments: Comment[]

@@ -11,6 +11,7 @@ import {
   useSensors,
 } from '@dnd-kit/core'
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
+import useMoveCard from 'graphql/mutations/useMoveCard'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { CardType } from 'types/ziele'
 
@@ -31,6 +32,7 @@ function findIndex(id: any, array: any) {
 }
 
 export default function useDnd(items: any, setItems: (items: any) => void) {
+  const { moveCard, loading } = useMoveCard()
   const recentlyMovedToNewContainer = useRef(false)
   const lastOverId = useRef<UniqueIdentifier | null>(null)
   const [activeId, setActiveId] = useState<number | null>(null)
@@ -219,6 +221,11 @@ export default function useDnd(items: any, setItems: (items: any) => void) {
     const activeIndex = findIndex(activeId, items[activeContainer].cards)
     const overIndex = findIndex(overId, items[overContainer].cards)
 
+    const movedCardId = items[activeContainer].cards[activeIndex].id
+    const movedCardContainerId = items[activeContainer].id
+
+    console.log({ movedCardId, movedCardContainerId })
+
     if (activeIndex !== overIndex) {
       setItems((items: any): any => {
         let newColumnObj = {
@@ -232,6 +239,8 @@ export default function useDnd(items: any, setItems: (items: any) => void) {
         return newColumns
       })
     }
+
+    moveCard(movedCardId, movedCardContainerId, 'cl9jy941n0006uz4kyadqia36')
 
     setActiveId(null)
     setActiveCard(null)

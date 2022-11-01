@@ -7,6 +7,11 @@ const getAccount = gql`
       email
       avatar
       username
+      teams {
+        id
+        title
+        image
+      }
     }
   }
 `

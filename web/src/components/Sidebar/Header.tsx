@@ -1,6 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 import AvatarName from '@components/Common/AvatarName'
 import { Group, Menu } from '@mantine/core'
+import useAccount from 'graphql/queries/useAccount'
 import { useRouter } from 'next/router'
 import { RiArrowUpDownFill } from 'react-icons/ri'
 
@@ -15,12 +16,12 @@ const getTeams = gql`
 `
 
 const Header = () => {
-  const { data } = useQuery(getTeams)
+  const { account, loading } = useAccount()
   const router = useRouter()
-  let teams = data?.getUserTeams
 
-  let currentTeam: any = teams?.find((team: any) => team.title === router.query.teamTitle)
-  let otherTeams: any = teams?.filter((team: any) => team.title !== router.query.teamTitle)
+  let currentTeam: any = account?.teams?.find((team: any) => team.title === router.query.teamTitle)
+  let otherTeams: any = account?.teams?.filter((team: any) => team.title !== router.query.teamTitle)
+
   return (
     <>
       <Menu width={260} shadow='xl'>

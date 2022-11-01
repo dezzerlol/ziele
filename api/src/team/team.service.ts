@@ -75,7 +75,7 @@ export class TeamService {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST)
     }
 
-    const addedToTeam = await this.prismaService.project.update({
+    const addedToTeam = await this.prismaService.team.update({
       where: { id: data.teamId },
       data: {
         users: {

@@ -2,8 +2,10 @@ import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql'
 import { PubSub } from 'graphql-subscriptions'
 import { GqlAuthGuard } from 'src/auth/jwt-auth.guard'
+import { Column } from 'src/column/column.model'
+import { ColumnService } from 'src/column/column.service'
 import { DefaultResponse } from 'src/common/defaultResponse.dto'
-import { CARD_CREATED, CARD_UPDATED } from 'src/constants/subscriptions.const'
+import { CARD_CREATED, CARD_MOVED, CARD_UPDATED } from 'src/constants/subscriptions.const'
 import { Card } from './card.model'
 import { CardService } from './card.service'
 import { CreateCardDto } from './dto/create-card.dto'
@@ -14,7 +16,7 @@ const pubSub = new PubSub()
 @Resolver()
 /* @UseGuards(GqlAuthGuard) */
 export class CardResolver {
-  constructor(private cardService: CardService) {}
+  constructor(private cardService: CardService, private columnService: ColumnService) {}
 
   @Query(() => [Card])
   async getCards(@Args('columnId') columnId: string) {
@@ -31,7 +33,6 @@ export class CardResolver {
   @Mutation(() => Card)
   async createCard(@Args('data') data: CreateCardDto) {
     const newCard = await this.cardService.createCard(data)
-    console.log({ newCard })
     pubSub.publish(CARD_CREATED, { cardCreated: newCard })
     return newCard
   }
@@ -61,5 +62,15 @@ export class CardResolver {
   async deleteCard(@Args('cardId') cardId: string) {
     const response = await this.cardService.deleteCard(cardId)
     return response
+  }
+
+  @Mutation(() => Column)
+  async moveCardToColumn(
+    @Args('cardId') cardId: string,
+    @Args('columnId') columnId: string,
+    @Args('projectId') projectId: string
+  ) {
+    const card = await this.cardService.moveCardToColumn(cardId, columnId)
+    return card
   }
 }

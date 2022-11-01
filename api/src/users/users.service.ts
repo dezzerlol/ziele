@@ -1,5 +1,4 @@
-import { Injectable, UseGuards } from '@nestjs/common'
-import { GqlAuthGuard } from 'src/auth/jwt-auth.guard'
+import { Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { ICurrentUser } from './user.decorator'
