@@ -12,9 +12,16 @@ Question mark icon: RiQuestionMark;
 
 User icon: RiUser3Line;
 
+Bug: RiAlertFill;
+
+Task: RiCheckboxFill;
+
+Story: RiBookmarkFill;
+
 Plus icon: FiPlus;
 
 Plus outlined icon: BsPlusSquare;
+
 
 
 

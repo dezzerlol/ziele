@@ -1,4 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
+import { AccountType } from 'types/ziele'
 
 const getAccount = gql`
   query getAccount {
@@ -19,7 +20,7 @@ const getAccount = gql`
 export default function useAccount() {
   const { data, loading, error } = useQuery(getAccount)
 
-  let account = data?.getAccount
+  let account: AccountType = data?.getAccount
 
   return { account, loading, error }
 }

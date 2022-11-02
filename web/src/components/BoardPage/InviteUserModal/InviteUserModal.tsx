@@ -3,7 +3,7 @@ import useTeam from 'graphql/queries/useTeam'
 import { useRouter } from 'next/router'
 import { BiSearchAlt } from 'react-icons/bi'
 import { useUiStore } from 'store/uiStore'
-import Label from '../CreateNewModal/Label'
+import Label from '../CreateIssueModal/Label'
 import UserItem from './UserItem'
 
 const InviteUserModal = () => {
@@ -15,7 +15,6 @@ const InviteUserModal = () => {
     toggleInviteUserModal: state.toggleInviteUserModal,
   }))
 
- 
   return (
     <Modal
       opened={isInviteUserModalOpen}

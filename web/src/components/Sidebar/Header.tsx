@@ -19,9 +19,10 @@ const Header = () => {
   const { account, loading } = useAccount()
   const router = useRouter()
 
-  let currentTeam: any = account?.teams?.find((team: any) => team.title === router.query.teamTitle)
+  let currentTeam: any = account?.teams?.find((team: any) => team.title === router.query.teamTitle) || account?.teams[0]
   let otherTeams: any = account?.teams?.filter((team: any) => team.title !== router.query.teamTitle)
 
+ 
   return (
     <>
       <Menu width={260} shadow='xl'>

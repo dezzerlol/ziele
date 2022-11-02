@@ -4,7 +4,7 @@ import { TbGripVertical } from 'react-icons/tb'
 
 interface Props {
   name: string
-  image: string
+  image: string | null
   type: 'default' | 'dropdown'
   undername?: string
 }

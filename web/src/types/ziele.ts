@@ -1,3 +1,7 @@
+export type TeamType = {
+  
+}
+
 export type ProjectType = {
   id: string
   title: string
@@ -26,4 +30,12 @@ export type ColumnType = {
   cards: CardType[]
   id: string
   title: string
+}
+
+export type AccountType = {
+  id: string
+  username: string
+  email: string
+  avatar: string | null
+  teams: string[]
 }

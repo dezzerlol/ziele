@@ -1,10 +1,12 @@
 import AvatarName from '@components/Common/AvatarName'
 import { Box, Center, Divider, Group, Menu, SegmentedControl, Text } from '@mantine/core'
 import useAccount from 'graphql/queries/useAccount'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { BiNotification } from 'react-icons/bi'
 import { FiLogOut, FiMoon, FiSun } from 'react-icons/fi'
 import { RiQuestionMark, RiSettings5Line, RiUser3Line } from 'react-icons/ri'
+import SidebarLink from './SidebarLink'
 
 const links = [
   { id: 1, name: 'Settings', link: '', icon: <RiSettings5Line /> },
@@ -44,22 +46,7 @@ const Footer = () => {
     <Box>
       <Box p='md'>
         {links.map((link) => (
-          <Box
-            key={link.id}
-            p='xs'
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              borderRadius: '10px',
-              cursor: 'pointer',
-              '&:hover': { backgroundColor: '#F5F7FB', color: '#562BF7' },
-            }}>
-            {link.icon}
-            <Text mt='2px' sx={{ fontWeight: '600' as 'bold' }} color='black'>
-              {link.name}
-            </Text>
-          </Box>
+          <SidebarLink key={link.id} href={link.link} title={link.name} variant='links' icon={link.icon} />
         ))}
       </Box>
       <Divider />
@@ -73,28 +60,34 @@ const Footer = () => {
         <Menu.Dropdown ml='md'>
           <SegmentedControl size='xs' sx={{ width: '100%' }} data={themeButtons} />
           <Menu.Divider />
+
           <Menu.Item>
-            <Group>
-              <RiUser3Line />
-              Profile
-            </Group>
+            <Link href={`/user/${account?.id}`} passHref>
+              <Group>
+                <RiUser3Line />
+                Profile
+              </Group>
+            </Link>
           </Menu.Item>
-          <Menu.Item>
+
+          <Menu.Item disabled>
             <Group>
               <RiSettings5Line />
               Settings
             </Group>
           </Menu.Item>
-          <Menu.Item>
+
+          <Menu.Item disabled>
             <Group>
               <BiNotification />
               Notifications
             </Group>
           </Menu.Item>
+
           <Menu.Divider />
-          <Menu.Item>
+          <Menu.Item onClick={handleLogout}>
             <Box>
-              <Group onClick={handleLogout}>
+              <Group>
                 <FiLogOut />
                 Logout
               </Group>

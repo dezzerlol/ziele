@@ -1,7 +1,9 @@
-import React from 'react'
+import Profile from '@components/Profile/Profile'
 
 const UserPage = () => {
-  return <div>UserPage</div>
+  return <Profile />
 }
+
+UserPage.layout = true
 
 export default UserPage
