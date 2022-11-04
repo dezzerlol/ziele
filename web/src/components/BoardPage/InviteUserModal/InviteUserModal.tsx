@@ -1,9 +1,9 @@
-import { Box, Button, Group, Modal, ScrollArea, TextInput, Title } from '@mantine/core'
+import { Box, Button, Group, Modal, ScrollArea, TextInput } from '@mantine/core'
 import useTeam from 'graphql/queries/useTeam'
 import { useRouter } from 'next/router'
 import { BiSearchAlt } from 'react-icons/bi'
 import { useUiStore } from 'store/uiStore'
-import Label from '../CreateIssueModal/Label'
+import Label from '../../Common/Label'
 import UserItem from './UserItem'
 
 const InviteUserModal = () => {
@@ -20,7 +20,7 @@ const InviteUserModal = () => {
       opened={isInviteUserModalOpen}
       onClose={() => toggleInviteUserModal(false)}
       centered
-      title={<Title order={4}>Invite people to this project</Title>}>
+      title='Invite people to this project'>
       <Box>
         <Group align='end' sx={{ width: '100%' }} pb='xl'>
           <TextInput

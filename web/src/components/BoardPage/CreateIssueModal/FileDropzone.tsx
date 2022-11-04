@@ -1,7 +1,7 @@
 import { Group, Text, useMantineTheme } from '@mantine/core'
 import { BiUpload, BiFile, BiX } from 'react-icons/bi'
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone'
-import Label from './Label'
+import Label from '../../Common/Label'
 
 export function FileDropzone(props: Partial<DropzoneProps>) {
   const theme = useMantineTheme()

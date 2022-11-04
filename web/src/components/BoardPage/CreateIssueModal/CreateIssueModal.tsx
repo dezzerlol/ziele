@@ -1,18 +1,17 @@
-import { Box, Button, Divider, Group, Modal, MultiSelect, ScrollArea, Select, TextInput, Title } from '@mantine/core'
-import { useForm } from '@mantine/form'
-import dynamic from 'next/dynamic'
-import { BiDownArrowAlt, BiUpArrowAlt } from 'react-icons/bi'
-import { RiUser3Line, RiAlertFill, RiCheckboxFill, RiBookmarkFill } from 'react-icons/ri'
-import { useUiStore } from 'store/uiStore'
-import { ColumnType, ProjectType } from 'types/ziele'
-import { FileDropzone } from './FileDropzone'
-import Label from './Label'
-import SelectItem from '../../Select/WithIcon/SelectItem'
-import SelectValue from '../../Select/WithIcon/SelectValue'
 import TagSelectItem from '@components/Select/Tags/TagSelectItem'
 import TagSelectValue from '@components/Select/Tags/TagSelectValue'
+import { Box, Button, Divider, Group, Modal, MultiSelect, ScrollArea, Select, TextInput, Title } from '@mantine/core'
+import { useForm } from '@mantine/form'
 import useCreateCard from 'graphql/mutations/useCreateCard'
+import dynamic from 'next/dynamic'
 import React, { useState } from 'react'
+import { BiDownArrowAlt, BiUpArrowAlt } from 'react-icons/bi'
+import { RiAlertFill, RiBookmarkFill, RiCheckboxFill, RiUser3Line } from 'react-icons/ri'
+import { useUiStore } from 'store/uiStore'
+import { ColumnType, ProjectType } from 'types/ziele'
+import SelectItem from '../../Select/WithIcon/SelectItem'
+import SelectValue from '../../Select/WithIcon/SelectValue'
+import { FileDropzone } from './FileDropzone'
 import NewTagModal from './NewTagModal'
 const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), { ssr: false, loading: () => null })
 
@@ -81,12 +80,12 @@ const CreateNewModal = ({ columns, project }: Props) => {
         onClose={handleReset}
         size='xl'
         padding={20}
-        title={<Title order={4}>Create issue</Title>}>
+        title='Create issue'>
         <ScrollArea.Autosize maxHeight='700px' offsetScrollbars={true} type='auto'>
           <Box p='sm' component='form' onSubmit={handleSubmit}>
             <Box pb='xl'>
               <Select
-                label={<Label text='Issue type' />}
+                label='Issue type'
                 itemComponent={SelectItem}
                 data={issueTypes}
                 {...form.getInputProps('issueType')}
@@ -95,7 +94,7 @@ const CreateNewModal = ({ columns, project }: Props) => {
             </Box>
             <Box pb='xl'>
               <Select
-                label={<Label text='Column' />}
+                label='Column'
                 data={formattedColumns}
                 itemComponent={SelectItem}
                 {...form.getInputProps('columnId')}
@@ -106,7 +105,7 @@ const CreateNewModal = ({ columns, project }: Props) => {
             <Divider />
             <Box pt='xl'>
               <TextInput
-                label={<Label text='Short summary' />}
+                label='Short summary'
                 {...form.getInputProps('title')}
                 required
                 styles={{ label: { display: 'flex', gap: '2px' } }}
@@ -118,7 +117,7 @@ const CreateNewModal = ({ columns, project }: Props) => {
             </Box>
             <Box pt='xl'>
               <MultiSelect
-                label={<Label text='Assignees' />}
+                label='Assignees'
                 placeholder='Start typing or pick one...'
                 valueComponent={SelectValue}
                 itemComponent={SelectItem}
@@ -129,7 +128,7 @@ const CreateNewModal = ({ columns, project }: Props) => {
             </Box>
             <Box pt='xl'>
               <MultiSelect
-                label={<Label text='Tags' />}
+                label='Tags'
                 placeholder='Start typing or pick one...'
                 valueComponent={TagSelectValue}
                 itemComponent={TagSelectItem}
@@ -146,7 +145,7 @@ const CreateNewModal = ({ columns, project }: Props) => {
             <Box pt='xl'>
               <Select
                 itemComponent={SelectItem}
-                label={<Label text='Priority' />}
+                label='Priority'
                 data={priority}
                 icon={priority.find((i) => i.value === form.values.priority)?.icon}
                 {...form.getInputProps('priority')}

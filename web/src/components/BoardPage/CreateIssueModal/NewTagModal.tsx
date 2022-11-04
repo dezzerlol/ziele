@@ -1,38 +1,13 @@
-import { gql, useMutation } from '@apollo/client'
 import Tag from '@components/Common/Tag'
-import { DEFAULT_THEME, Button, ColorPicker, Group, Modal, TextInput, Title, Text } from '@mantine/core'
-import { showNotification } from '@mantine/notifications'
+import { Button, ColorPicker, Group, Modal, Text, TextInput } from '@mantine/core'
+import { tagColors } from 'constant/tagColors'
+import useCreateTag from 'graphql/mutations/useCreateTag'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import Label from './Label'
-
-const createTag = gql`
-  mutation createCardTag($data: CreateTagDto!) {
-    createCardTag(data: $data) {
-      status
-      message
-    }
-  }
-`
-const colorsObjects = [
-  { label: 'dark', value: DEFAULT_THEME.colors.dark[5] },
-  { label: 'gray', value: DEFAULT_THEME.colors.gray[5] },
-  { label: 'red', value: DEFAULT_THEME.colors.red[5] },
-  { label: 'pink', value: DEFAULT_THEME.colors.pink[5] },
-  { label: 'grape', value: DEFAULT_THEME.colors.grape[5] },
-  { label: 'violet', value: DEFAULT_THEME.colors.violet[5] },
-  { label: 'indigo', value: DEFAULT_THEME.colors.indigo[5] },
-  { label: 'blue', value: DEFAULT_THEME.colors.blue[5] },
-  { label: 'cyan', value: DEFAULT_THEME.colors.cyan[5] },
-  { label: 'teal', value: DEFAULT_THEME.colors.teal[5] },
-  { label: 'green', value: DEFAULT_THEME.colors.green[5] },
-  { label: 'lime', value: DEFAULT_THEME.colors.lime[5] },
-  { label: 'yellow', value: DEFAULT_THEME.colors.yellow[5] },
-  { label: 'orange', value: DEFAULT_THEME.colors.orange[5] },
-]
+import { useState } from 'react'
+import Label from '../../Common/Label'
 
 function getLabelFromColor(color: string) {
-  return colorsObjects.find((item) => item.value === color)!.label
+  return tagColors.find((item) => item.value === color)!.label
 }
 
 // TODO: migrate to form from hooks
@@ -40,18 +15,9 @@ const NewTagModal = ({ isNewTagOpen, setIsNewTagOpen }: any) => {
   const router = useRouter()
   const [tagBody, setTagBody] = useState('')
   const [tagColor, setTagColor] = useState('')
-  const [mutate, { loading }] = useMutation(createTag, {
-    refetchQueries: ['getProject'],
-    awaitRefetchQueries: true,
-    onCompleted: () => {
-      showNotification({
-        title: 'Tag created',
-        message: 'Tag has been created successfully',
-        color: 'green',
-      })
-    },
-  })
-  const colors = colorsObjects.map((item) => item.value)
+  const { mutate, loading } = useCreateTag()
+  
+  const colors = tagColors.map((item) => item.value)
   const projectId = router.query.projectId
 
   const handleCreate = async () => {
@@ -62,11 +28,7 @@ const NewTagModal = ({ isNewTagOpen, setIsNewTagOpen }: any) => {
   }
 
   return (
-    <Modal
-      opened={isNewTagOpen}
-      onClose={() => setIsNewTagOpen(false)}
-      centered
-      title={<Title order={4}>Create new tag</Title>}>
+    <Modal opened={isNewTagOpen} onClose={() => setIsNewTagOpen(false)} centered title='Create new tag'>
       <TextInput
         label={<Label text='Tag body' />}
         required

@@ -1,6 +1,6 @@
 import RichTextEditor from '@mantine/rte'
 import { useState } from 'react'
-import Label from './Label'
+import Label from '../../Common/Label'
 
 const initialValue = "<p>Describe the issue in as much detail as you'd like.</p>"
 
