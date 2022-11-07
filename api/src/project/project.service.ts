@@ -1,4 +1,6 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
+import { ColumnService } from 'src/column/column.service'
+import { CreateColumnDto } from 'src/column/dto/create-column.dto'
 import { DefaultResponse } from 'src/common/defaultResponse.dto'
 import { PrismaService } from 'src/prisma.service'
 import { TeamService } from 'src/team/team.service'
@@ -14,7 +16,8 @@ export class ProjectService {
   constructor(
     private prismaService: PrismaService,
     private usersService: UsersService,
-    private teamService: TeamService
+    @Inject(forwardRef(() => TeamService)) private teamService: TeamService,
+    @Inject(forwardRef(() => ColumnService)) private columnService: ColumnService
   ) {}
 
   async getProject(teamTitle: string, projectId: string, reqUser: ICurrentUser) {
@@ -52,7 +55,7 @@ export class ProjectService {
   }
 
   async createProject(data: CreateProjectDto, userId: string) {
-    return this.prismaService.project.create({
+    const project = await this.prismaService.project.create({
       data: {
         title: data.title,
         users: {
@@ -63,6 +66,15 @@ export class ProjectService {
         },
       },
     })
+
+    const firstColumn: CreateColumnDto = {
+      projectId: project.id,
+      title: 'To do',
+    }
+
+    const column = await this.columnService.createColumn(firstColumn)
+
+    return project
   }
 
   async addUserToProject(data: AddUserDto) {

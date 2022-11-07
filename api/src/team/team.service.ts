@@ -1,5 +1,7 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma.service'
+import { CreateProjectDto } from 'src/project/dto/create-project.dto'
+import { ProjectService } from 'src/project/project.service'
 import { ICurrentUser } from 'src/users/user.decorator'
 import { UsersService } from 'src/users/users.service'
 import { AddUserToTeamDto } from './dto/add-user.dto'
@@ -7,7 +9,11 @@ import { CreateTeamDto } from './dto/create-team.dto'
 
 @Injectable()
 export class TeamService {
-  constructor(private prismaService: PrismaService, private usersService: UsersService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private usersService: UsersService,
+    @Inject(forwardRef(() => ProjectService)) private projectService: ProjectService
+  ) {}
 
   async getTeam(title: string, reqUser: ICurrentUser) {
     // get project
@@ -56,7 +62,13 @@ export class TeamService {
   }
 
   async createTeam(data: CreateTeamDto, userId: string) {
-    return this.prismaService.team.create({
+    const isExistTeam = await this.prismaService.team.findUnique({ where: { title: data.title } })
+
+    if (isExistTeam) {
+      throw new HttpException('Name already taken.', HttpStatus.BAD_REQUEST)
+    }
+
+    const team = await this.prismaService.team.create({
       data: {
         title: data.title,
         users: {
@@ -66,6 +78,15 @@ export class TeamService {
         },
       },
     })
+
+    const newProject: CreateProjectDto = {
+      teamId: team.id,
+      title: 'Your first project.',
+    }
+
+    const project = await this.projectService.createProject(newProject, userId)
+
+    return team
   }
 
   async addUserInTeam(data: AddUserToTeamDto) {

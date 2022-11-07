@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma.service'
 import { ProjectService } from 'src/project/project.service'
 import { ICurrentUser } from 'src/users/user.decorator'
@@ -7,7 +7,10 @@ import { GetColumnsDto } from './dto/get-columns.dto'
 
 @Injectable()
 export class ColumnService {
-  constructor(private prisma: PrismaService, private projectSerivce: ProjectService) {}
+  constructor(
+    private prisma: PrismaService,
+    @Inject(forwardRef(() => ProjectService)) private projectSerivce: ProjectService
+  ) {}
 
   async createColumn(data: CreateColumnDto) {
     try {

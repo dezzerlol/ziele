@@ -10,13 +10,13 @@ import { ProjectModule } from './project/project.module'
 import { ColumnModule } from './column/column.module'
 import { CardModule } from './card/card.module'
 import { GraphQLError, GraphQLFormattedError } from 'graphql'
-import { TeamModule } from './team/team.module';
-import { CommentService } from './comment/comment.service';
-import { CommentModule } from './comment/comment.module';
+import { TeamModule } from './team/team.module'
+import { CommentService } from './comment/comment.service'
+import { CommentModule } from './comment/comment.module'
 
 @Module({
   controllers: [],
-  providers: [PrismaService, CommentService],
+  providers: [PrismaService],
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.env`,
@@ -31,7 +31,7 @@ import { CommentModule } from './comment/comment.module';
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
       debug: false,
       playground: true,
-      
+
       cors: { origin: 'http://localhost:3000', credentials: true },
       context: ({ req }) => ({ req }),
       formatError: (error: GraphQLError) => {
