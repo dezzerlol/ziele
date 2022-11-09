@@ -102,7 +102,7 @@ const CreateNewModal = ({ columns, project }: Props) => {
                 styles={{ label: { display: 'flex', gap: '2px' } }}
               />
             </Box>
-            <Divider />
+            <Divider color='var(--border-color)' />
             <Box pt='xl'>
               <TextInput
                 label='Short summary'

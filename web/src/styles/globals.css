@@ -29,7 +29,9 @@
   font-display: swap;
 }
 
-root {
+:root {
   --main-text-color: #000000;
   --sec-text-color: rgba(25, 23, 17, 0.6);
+
+  --border-color: #e0e0e0;
 }

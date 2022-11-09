@@ -1,5 +1,5 @@
 import { DndContext, DragOverlay } from '@dnd-kit/core'
-import { Box, Divider, ScrollArea } from '@mantine/core'
+import { Box, Center, Divider, Loader, ScrollArea } from '@mantine/core'
 import useColumns from 'graphql/queries/useColumns'
 import useDnd from 'hooks/useDnd'
 import useProject from 'graphql/queries/useProject'
@@ -44,7 +44,12 @@ const Board = () => {
     if (!loading && !error) setColumns(data.getProjectColumns)
   }, [data])
 
-  if (loading) return <div>Loading...</div>
+  if (loading)
+    return (
+      <Center sx={{ height: '100vh' }}>
+        <Loader />
+      </Center>
+    )
   if (error) return <div>Error: {error.message}</div>
 
   return (
@@ -52,7 +57,7 @@ const Board = () => {
       <Box p='md' sx={{ backgroundColor: 'white', maxHeight: '35%', minHeight: 'auto' }}>
         <BoardHeader project={project} />
       </Box>
-      <Divider />
+      <Divider color='var(--border-color)' />
       <Box px='sm' sx={{ minHeight: '65%', height: '100%', backgroundColor: 'white' }}>
         <ScrollArea type='auto' scrollbarSize={18} offsetScrollbars style={{ width: '100%', height: '100%' }}>
           <Box mt='md' sx={{ width: 1200, height: '100%', display: 'flex', gap: '10px' }}>

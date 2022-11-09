@@ -5,6 +5,7 @@ import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 import { NotificationsProvider } from '@mantine/notifications'
 import { NextComponentType } from 'next'
 import type { AppProps } from 'next/app'
+import NextNProgress from '@components/NextNProgress'
 import apolloClient from '../lib/apolloClient'
 import '../styles/globals.css'
 
@@ -87,6 +88,7 @@ function MyApp({ Component, pageProps }: CustomAppProps) {
         <ApolloProvider client={apolloClient}>
           {Component.layout ? (
             <Layout>
+              <NextNProgress color='#562BF7' options={{ showSpinner: false, speed: 400 }} showOnShallow={false} />
               <Component {...pageProps} />
             </Layout>
           ) : (

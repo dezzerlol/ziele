@@ -1,28 +1,13 @@
-import { gql, useQuery } from '@apollo/client'
 import AvatarName from '@components/Common/AvatarName'
 import { Group, Menu } from '@mantine/core'
 import useAccount from 'graphql/queries/useAccount'
 import { useRouter } from 'next/router'
 import { RiArrowUpDownFill } from 'react-icons/ri'
+import { TeamType } from 'types/ziele'
 
-const getTeams = gql`
-  query getUserTeams {
-    getUserTeams {
-      id
-      title
-      image
-    }
-  }
-`
-
-const Header = () => {
-  const { account, loading } = useAccount()
+const Header = ({ currentTeam, otherTeams }: { currentTeam: TeamType; otherTeams: TeamType[] }) => {
   const router = useRouter()
 
-  let currentTeam: any = account?.teams?.find((team: any) => team.title === router.query.teamTitle) || account?.teams[0]
-  let otherTeams: any = account?.teams?.filter((team: any) => team.title !== router.query.teamTitle)
-
- 
   return (
     <>
       <Menu width={260} shadow='xl'>

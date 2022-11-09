@@ -24,7 +24,7 @@ const CommentsPanel = () => {
           </Button>
         }
       />
-      <Divider my='md' />
+      <Divider my='md' color='var(--border-color)' />
 
       {comments.map((comment) => (
         <Stack key={comment.id} spacing='xs' mb='xl'>

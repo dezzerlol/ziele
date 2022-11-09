@@ -18,7 +18,15 @@ export class UsersService {
         createdAt: true,
         updatedAt: true,
         projects: true,
-        teams: true,
+        teams: {
+          include: {
+            projects: {
+              include: {
+                team: true,
+              },
+            },
+          },
+        },
       },
     })
     return user

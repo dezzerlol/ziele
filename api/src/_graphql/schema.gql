@@ -43,23 +43,6 @@ type column {
   cards: [card!]!
 }
 
-type project {
-  id: String!
-  title: String!
-  image: String
-  updatedAt: String!
-  createdAt: String!
-  users: [user!]!
-  columns: [column!]!
-  tags: [tag!]
-  _count: JSON!
-}
-
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON
-
 type team {
   id: String!
   title: String!
@@ -69,6 +52,24 @@ type team {
   users: [user!]!
   projects: [project!]!
 }
+
+type project {
+  id: String!
+  title: String!
+  image: String
+  updatedAt: String!
+  createdAt: String!
+  users: [user!]!
+  columns: [column!]!
+  tags: [tag!]
+  team: team!
+  _count: JSON!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
 
 type user {
   id: String!

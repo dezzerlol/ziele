@@ -32,7 +32,7 @@ const IssueModal = () => {
   const { issue, error, loading } = useIssueCard(issueSlug)
 
   const handleClose = () => {
-    router.push(`/team/${router.query.teamTitle}/project/${router.query.projectId}`)
+    router.push(`/team/${router.query.teamTitle}/project/${router.query.projectId}`, undefined, { shallow: true })
   }
 
   console.log({ issue })

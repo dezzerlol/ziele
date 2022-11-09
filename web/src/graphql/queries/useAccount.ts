@@ -12,6 +12,15 @@ const getAccount = gql`
         id
         title
         image
+        projects {
+          id
+          title
+          image
+          team {
+            id
+            title
+          }
+        }
       }
     }
   }

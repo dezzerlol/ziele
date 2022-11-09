@@ -7,9 +7,10 @@ import DotsButton from './DotsButton'
 const IssueCard = forwardRef(({ card, style, ...props }: any, ref) => {
   const router = useRouter()
   const [isHover, setIsHover] = useState(false)
- 
+
   const handleOpen = () => {
-    router.push(`${router.asPath}?issue=${card.id}`)
+    // shallow to prevent nextjs router call
+    router.push(`${router.asPath}?issue=${card.id}`, undefined, { shallow: true })
   }
 
   return (

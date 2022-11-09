@@ -49,7 +49,7 @@ const Footer = () => {
           <SidebarLink key={link.id} href={link.link} title={link.name} variant='links' icon={link.icon} />
         ))}
       </Box>
-      <Divider />
+      <Divider color='var(--border-color)' />
 
       <Menu width='260px' shadow='xl' position='top-start' disabled={loading}>
         <Menu.Target>
@@ -59,7 +59,7 @@ const Footer = () => {
         </Menu.Target>
         <Menu.Dropdown ml='md'>
           <SegmentedControl size='xs' sx={{ width: '100%' }} data={themeButtons} />
-          <Menu.Divider />
+          <Menu.Divider color='var(--border-color)' />
 
           <Menu.Item>
             <Link href={`/user/${account?.id}`} passHref>
@@ -84,7 +84,7 @@ const Footer = () => {
             </Group>
           </Menu.Item>
 
-          <Menu.Divider />
+          <Menu.Divider color='var(--border-color)' />
           <Menu.Item onClick={handleLogout}>
             <Box>
               <Group>

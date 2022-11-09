@@ -1,5 +1,8 @@
 export type TeamType = {
-  
+  id: string
+  image: string | null
+  projects: ProjectType[] | null
+  title: string
 }
 
 export type ProjectType = {
@@ -10,6 +13,7 @@ export type ProjectType = {
   createdAt: string
   users: []
   tags: [{ body: string; color: string; id: string }]
+  team: TeamType
 
   _count: { users: number }
 }
@@ -37,5 +41,5 @@ export type AccountType = {
   username: string
   email: string
   avatar: string | null
-  teams: string[]
+  teams: TeamType[]
 }

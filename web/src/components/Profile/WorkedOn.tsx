@@ -2,7 +2,6 @@ import { Anchor, Box, Card, Group, Text, Title } from '@mantine/core'
 import Link from 'next/link'
 import { RiCheckboxFill } from 'react-icons/ri'
 
-
 const WorkedOn = () => {
   return (
     <Box>
@@ -31,9 +30,11 @@ const WorkedOn = () => {
             </Text>
           </Box>
         </Group>
-        <Text size='xs' color='gray.6' pt='md'>
-          View all
-        </Text>
+        <Link href='/' passHref>
+          <Anchor p='xs' size='xs' color='gray.6' pt='md'>
+            View all
+          </Anchor>
+        </Link>
       </Card>
     </Box>
   )

@@ -16,6 +16,8 @@ const Profile = () => {
     shallow
   )
 
+  console.log({ account })
+
   return (
     <Box
       sx={{
@@ -34,15 +36,22 @@ const Profile = () => {
           flexDirection: 'column',
           gap: '30px',
           width: '80%',
-          '@media(min-width: 992px)': { flexDirection: 'row' },
+          '@media(min-width: 992px)': { flexDirection: 'row', alignItems: 'flex-start' },
         }}>
-        <Box p='md' sx={{ flex: '0 1 320px', border: '1px solid lightgray', borderRadius: '5px', minWidth: '240px' }}>
+        <Box
+          p='md'
+          sx={{
+            flex: '0 1 320px',
+            border: '1px solid var(--border-color)',
+            borderRadius: '5px',
+            minWidth: '240px',
+          }}>
           <UserProfileCard account={account} />
         </Box>
 
         <Stack spacing='xl' sx={{ flex: '0 1 980px', minWidth: '300px' }}>
           <WorkedOn />
-          <WorkTeams />
+          <WorkTeams teams={account?.teams} />
         </Stack>
       </Box>
       {isCreateTeamModalOpen && <CreateTeamModal />}

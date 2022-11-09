@@ -1,7 +1,6 @@
-import { Box, Group, Text } from '@mantine/core'
+import { Box } from '@mantine/core'
 import { useRouter } from 'next/router'
-import React from 'react'
-import { BiCalendar, BiChalkboard, BiNotification } from 'react-icons/bi'
+import { BiCalendar, BiNotification } from 'react-icons/bi'
 import { RiTeamLine } from 'react-icons/ri'
 import SidebarLink from './SidebarLink'
 const links = [

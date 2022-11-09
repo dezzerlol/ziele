@@ -23,6 +23,11 @@ export class ProjectResolver {
     return this.projectService.getProject(teamTitle, projectId, reqUser)
   }
 
+  /* @Query(() => [Project])
+  async getTeamProjects(@Args('teamId') teamId: string, @CurrentUser() reqUser: ICurrentUser) {
+    return this.projectService.getTeamProjects(reqUser)
+  } */
+
   @Query(() => [Project])
   async getUserProjects(@CurrentUser() reqUser: ICurrentUser) {
     return this.projectService.getUserProjects(reqUser)
