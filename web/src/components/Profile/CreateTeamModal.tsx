@@ -1,14 +1,14 @@
-import Label from '@components/Common/Label'
-import { Box, Button, Group, Image, Input, Modal, Stack, Text, TextInput } from '@mantine/core'
+import { Box, Button, Group, Image, Modal, MultiSelect, Stack, Text, TextInput } from '@mantine/core'
 import useCreateTeam from 'graphql/mutations/useCreateTeam'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useUiStore } from 'store/uiStore'
 import shallow from 'zustand/shallow'
 
 const CreateTeamModal = () => {
   const router = useRouter()
   const [teamTitle, setTeamTitle] = useState('')
+  const [invitedUsers, setInvitedUsers] = useState<string[]>([])
   const { createTeam, loading, error } = useCreateTeam()
 
   const { isCreateTeamModalOpen, toggleCreateTeamModal } = useUiStore(
@@ -20,7 +20,7 @@ const CreateTeamModal = () => {
   )
 
   const handleCreate = async () => {
-    const team = await createTeam({ title: teamTitle })
+    const team = await createTeam({ title: teamTitle, users: invitedUsers })
 
     if (!team.errors) {
       toggleCreateTeamModal(false)
@@ -58,7 +58,19 @@ const CreateTeamModal = () => {
             label='Team name'
             required
           />
-          <TextInput placeholder='Username or email' label='Invite people to your team' />
+          <MultiSelect
+            data={invitedUsers}
+            placeholder='Usernames'
+            label='Invite people to your team'
+            rightSection={<Box />}
+            searchable
+            creatable
+            getCreateLabel={(value) => `Invite ${value} to your team`}
+            onCreate={(value) => {
+              setInvitedUsers([...invitedUsers, value])
+              return value
+            }}
+          />
           <Group sx={{ alignSelf: 'flex-end' }}>
             <Button variant='subtle' onClick={() => toggleCreateTeamModal(false)}>
               Cancel

@@ -23,7 +23,7 @@ export default function useCreateTeam() {
     onError: (e) => {},
   })
 
-  const createTeam = async (data: { title: string }) => {
+  const createTeam = async (data: { title: string; users?: string[] }) => {
     return createTeamMutation({
       variables: {
         data,

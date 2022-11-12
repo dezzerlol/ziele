@@ -1,7 +1,8 @@
+import Team from '@components/TeamPage/Team'
 import React from 'react'
 
 const TeamPage = () => {
-  return <div>TeamPage</div>
+  return <Team />
 }
 
 TeamPage.layout = true

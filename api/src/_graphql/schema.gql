@@ -157,6 +157,7 @@ input CreateTagDto {
 
 input CreateTeamDto {
   title: String!
+  users: [String!]
 }
 
 input AddUserToTeamDto {

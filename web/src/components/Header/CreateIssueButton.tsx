@@ -4,10 +4,10 @@ import { FiPlus } from 'react-icons/fi'
 import { useUiStore } from 'store/uiStore'
 
 const CreateIssueButton = () => {
-  const { isCreateIssueModalOpen, toggleCreateIssueModal } = useUiStore((state) => ({
-    isCreateIssueModalOpen: state.isCreateIssueModalOpen,
+  const { toggleCreateIssueModal } = useUiStore((state) => ({
     toggleCreateIssueModal: state.toggleCreateIssueModal,
   }))
+  
   return (
     <Button radius='lg' size='xs' sx={{ width: '80px' }} onClick={() => toggleCreateIssueModal(true)}>
       <FiPlus size={18} />

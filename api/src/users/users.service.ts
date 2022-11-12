@@ -41,6 +41,13 @@ export class UsersService {
     return user
   }
 
+  async findUsersByUsername(usernames: string[]) {
+    const users = await this.prisma.user.findMany({
+      where: { username: { in: usernames } },
+    })
+    return users
+  }
+
   async findUserByUsername(username: string) {
     const user = await this.prisma.user.findUnique({ where: { username } })
     return user

@@ -68,13 +68,14 @@ export class TeamService {
       throw new HttpException('Name already taken.', HttpStatus.BAD_REQUEST)
     }
 
+    const findUsers = await this.usersService.findUsersByUsername(data.users)
+    const allUsers = [userId, ...findUsers.map((u) => u.id)]
+
     const team = await this.prismaService.team.create({
       data: {
         title: data.title,
         users: {
-          connect: {
-            id: userId,
-          },
+          connect: allUsers.map((u) => ({ id: u })),
         },
       },
     })
