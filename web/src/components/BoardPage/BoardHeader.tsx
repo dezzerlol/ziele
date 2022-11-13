@@ -1,27 +1,26 @@
 import Header from '@components/Header/Header'
+import TagSelectItem from '@components/Select/Tags/TagSelectItem'
+import TagSelectValue from '@components/Select/Tags/TagSelectValue'
 import {
   ActionIcon,
   Avatar,
-  Box,
   Burger,
   Button,
   Center,
-  CloseButton,
   Group,
   MultiSelect,
   SegmentedControl,
   TextInput,
   Tooltip,
 } from '@mantine/core'
+import useDebouncedCallback from 'hooks/useDebounce'
+import React, { useRef } from 'react'
 import { BiGridAlt, BiMenu } from 'react-icons/bi'
 import { FiPlus } from 'react-icons/fi'
+import { useBoardStore } from 'store/boardStore'
 import { useUiStore } from 'store/uiStore'
 import shallow from 'zustand/shallow'
 import { ProjectType } from '../../types/ziele'
-import { forwardRef } from 'react'
-import Tag from '@components/Common/Tag'
-import TagSelectItem from '@components/Select/Tags/TagSelectItem'
-import TagSelectValue from '@components/Select/Tags/TagSelectValue'
 
 type Props = {
   project: ProjectType
@@ -58,8 +57,18 @@ const BoardHeader = ({ project }: Props) => {
     shallow
   )
 
+  const { filterCardsByText } = useBoardStore((state) => ({
+    filterCardsByText: state.filterCardsByText,
+  }))
+
   const handleOpen = () => {
     toggleSidebar(true)
+  }
+
+  const debouncedSearch = useDebouncedCallback((v) => filterCardsByText(v), 650)
+
+  const handleSearch = (e: any) => {
+    debouncedSearch(e.target.value)
   }
 
   const tags = project.tags.map((tag) => ({ label: tag.body, value: tag.body, color: tag.color }))
@@ -81,7 +90,8 @@ const BoardHeader = ({ project }: Props) => {
       </Group>
       <Group position='apart' align='center'>
         <Group>
-          <TextInput size='xs' sx={{ maxWidth: '150px' }} placeholder='Search' />
+          <TextInput onChange={handleSearch} placeholder='Search' size='xs' sx={{ maxWidth: '150px' }} />
+
           <Tooltip.Group openDelay={300} closeDelay={100}>
             <Avatar.Group spacing='sm'>
               {project.users.map((user: any) => (
@@ -91,6 +101,7 @@ const BoardHeader = ({ project }: Props) => {
               ))}
             </Avatar.Group>
           </Tooltip.Group>
+
           <Tooltip label='Add people' withArrow mr='xl'>
             <ActionIcon size='lg' variant='transparent' onClick={() => toggleInviteUserModal(true)}>
               <Avatar radius='xl'>
@@ -98,6 +109,7 @@ const BoardHeader = ({ project }: Props) => {
               </Avatar>
             </ActionIcon>
           </Tooltip>
+
           <MultiSelect
             size='xs'
             variant='filled'
@@ -121,4 +133,4 @@ const BoardHeader = ({ project }: Props) => {
   )
 }
 
-export default BoardHeader
+export default React.memo(BoardHeader)

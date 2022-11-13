@@ -15,11 +15,24 @@ import IssueCard from './Card/IssueCard'
 import IssueModal from './IssueModal/IssueModal'
 import { useUiStore } from 'store/uiStore'
 import InviteUserModal from './InviteUserModal/InviteUserModal'
+import { useBoardStore } from 'store/boardStore'
+import shallow from 'zustand/shallow'
 
 const Board = () => {
   const router = useRouter()
   const { teamTitle, projectId } = router.query
-  const [columns, setColumns] = useState<ColumnType[]>([])
+
+  /* const [columns, setColumns] = useState<ColumnType[]>([]) */
+
+  const { columns, setColumns, filteredColumns } = useBoardStore(
+    (state) => ({
+      columns: state.columns,
+      setColumns: state.setColumns,
+      filteredColumns: state.filteredColumns,
+    }),
+    shallow
+  )
+
   const { isCreateIssueModalOpen, isInviteUserModalOpen } = useUiStore((state) => ({
     isCreateIssueModalOpen: state.isCreateIssueModalOpen,
     isInviteUserModalOpen: state.isInviteUserModalOpen,
@@ -68,7 +81,7 @@ const Board = () => {
               onDragOver={handleDragOver}
               onDragEnd={handleDragEnd}
               onDragCancel={handleDragCancel}>
-              {columns.map((column: any) => (
+              {filteredColumns.map((column: any) => (
                 <Column column={column} key={column.id} />
               ))}
               {createPortal(
