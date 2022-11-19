@@ -5,11 +5,11 @@ import { TbGripVertical } from 'react-icons/tb'
 interface Props {
   name: string
   image: string | null
-  type: 'default' | 'dropdown'
+  type?: 'default' | 'dropdown'
   undername?: string
 }
 
-const AvatarName = ({ name, image, type, undername }: Props) => {
+const AvatarName = ({ name, image, type = 'default', undername }: Props) => {
   return (
     <Group spacing='xs'>
       {type === 'dropdown' && <TbGripVertical />}

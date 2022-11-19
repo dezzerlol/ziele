@@ -51,7 +51,13 @@ type team {
   createdAt: String!
   users: [user!]!
   projects: [project!]!
+  _count: JSON!
 }
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
 
 type project {
   id: String!
@@ -65,11 +71,6 @@ type project {
   team: team!
   _count: JSON!
 }
-
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON
 
 type user {
   id: String!
@@ -98,7 +99,7 @@ type Query {
   getAccount: user!
   getProject(teamTitle: String!, projectId: String!): project!
   getUserProjects: [project!]!
-  getTeam(title: String!): team!
+  getTeam(title: String!, offset: Float = 0): team!
   getUserTeams: [team!]!
   getProjectColumns(data: GetColumnsDto!): [column!]!
   getCards(columnId: String!): [card!]!

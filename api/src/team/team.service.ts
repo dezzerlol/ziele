@@ -15,12 +15,12 @@ export class TeamService {
     @Inject(forwardRef(() => ProjectService)) private projectService: ProjectService
   ) {}
 
-  async getTeam(title: string, reqUser: ICurrentUser) {
+  async getTeam(title: string, reqUser: ICurrentUser, offset = 0) {
     // get project
     const team = await this.prismaService.team.findUnique({
       where: { title },
       include: {
-        users: { select: { id: true, username: true, email: true, avatar: true } },
+        users: { select: { id: true, username: true, email: true, avatar: true }, take: 15, skip: offset },
         _count: { select: { users: true } },
         projects: {
           include: {

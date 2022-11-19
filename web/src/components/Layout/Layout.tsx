@@ -1,5 +1,5 @@
 import Sidebar from '@components/Sidebar/Sidebar'
-import { Box, Container } from '@mantine/core'
+import { Box, Container, ScrollArea } from '@mantine/core'
 import React from 'react'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -11,11 +11,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         sx={{
           width: 'calc(100% - 260px)',
           height: '100%',
+          overflowY: 'hidden',
           '@media (max-width: 755px)': {
             width: '100%',
           },
         }}>
-        {children}
+       {children}
       </Box>
     </Container>
   )

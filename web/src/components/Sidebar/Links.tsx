@@ -1,16 +1,15 @@
 import { Box } from '@mantine/core'
-import { useRouter } from 'next/router'
 import { BiCalendar, BiNotification } from 'react-icons/bi'
 import { RiTeamLine } from 'react-icons/ri'
+import { TeamType } from 'types/ziele'
 import SidebarLink from './SidebarLink'
 const links = [
   { id: 1, name: 'Notifications', icon: <BiNotification size={20} />, link: 'notifications' },
   { id: 2, name: 'Calendar', icon: <BiCalendar size={20} />, link: 'calendar' },
-  { id: 3, name: 'Team', icon: <RiTeamLine size={20} />, link: 'team' },
+  { id: 3, name: 'Members', icon: <RiTeamLine size={20} />, link: 'members' },
 ]
 
-const Links = () => {
-  const router = useRouter()
+const Links = ({ currentTeam }: { currentTeam: TeamType }) => {
   return (
     <Box mt='lg'>
       {links.map((link) => (
@@ -18,7 +17,7 @@ const Links = () => {
           key={link.id}
           title={link.name}
           icon={link.icon}
-          href={`/team/${router.query.teamTitle}/${link.link}`}
+          href={`/team/${currentTeam?.title}/${link.link}`}
           style={{ fontWeight: '600' }}
           variant='links'
         />

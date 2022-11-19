@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql'
 import { Project } from 'src/project/project.model'
 import { User } from 'src/users/users.model'
+import graphqlTypeJson from 'graphql-type-json'
 
 @ObjectType('team')
 export class Team {
@@ -24,4 +25,7 @@ export class Team {
 
   @Field(() => [Project], {})
   projects: Array<User>
+
+  @Field(() => graphqlTypeJson, {})
+  _count: JSON
 }

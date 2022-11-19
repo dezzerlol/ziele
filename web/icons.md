@@ -6,6 +6,8 @@ Search icon: BiSearchAlt;
 
 Notifications icon: BiNotification;
 
+Trash bin: BiTrash;
+
 Settings icon: RiSettings5Line;
 
 Question mark icon: RiQuestionMark;

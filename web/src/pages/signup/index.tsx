@@ -25,7 +25,7 @@ const RegisterPage = () => {
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-      password: (value) => (value.length > 6 ? null : 'Password must be at least 6 characters'),
+      password: (value) => (value.length > 5 ? null : 'Password must be at least 6 characters'),
       username: (value) => (value.length >= 3 ? null : 'Username must be at least 3 characters'),
     },
   })

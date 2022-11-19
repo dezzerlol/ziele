@@ -13,8 +13,12 @@ export class TeamResolver {
   constructor(private teamService: TeamService) {}
 
   @Query(() => Team)
-  async getTeam(@Args('title') title: string, @CurrentUser() reqUser: ICurrentUser) {
-    return this.teamService.getTeam(title, reqUser)
+  async getTeam(
+    @Args('title') title: string,
+    @CurrentUser() reqUser: ICurrentUser,
+    @Args('offset', { type: () => Number, nullable: true, defaultValue: 0 }) offset?: number
+  ) {
+    return this.teamService.getTeam(title, reqUser, offset)
   }
 
   @Query(() => [Team])

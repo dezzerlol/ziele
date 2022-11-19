@@ -52,7 +52,7 @@ const Sidebar = () => {
           radius='md'
           styles={{ input: { border: '1px solid lightgray' } }}
         />
-        <Links />
+        <Links currentTeam={currentTeam} />
         <Divider my='lg' color='var(--border-color)' />
         <Projects projects={currentTeam?.projects} />
       </Box>

@@ -1,4 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
+import { TeamType } from 'types/ziele'
 
 const getTeam = gql`
   query getTeam($title: String!) {
@@ -12,6 +13,7 @@ const getTeam = gql`
         id
         username
         avatar
+        email
       }
       projects {
         id
@@ -22,6 +24,7 @@ const getTeam = gql`
           avatar
         }
       }
+      _count
     }
   }
 `
@@ -31,7 +34,7 @@ export default function useTeam(teamTitle: string) {
     variables: { title: teamTitle },
   })
 
-  let team = data?.getTeam
+  let team: TeamType = data?.getTeam
 
   return { team, loading, error }
 }

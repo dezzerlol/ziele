@@ -2,7 +2,11 @@ export type TeamType = {
   id: string
   image: string | null
   projects: ProjectType[] | null
+  users: UserType[]
   title: string
+  _count: {
+    users: number
+  }
 }
 
 export type ProjectType = {
@@ -11,8 +15,8 @@ export type ProjectType = {
   image: string | null
   updatedAt: string
   createdAt: string
-  users: []
-  tags: [{ body: string; color: string; id: string }]
+  users: UserType[]
+  tags: TagType[]
   team: TeamType
 
   _count: { users: number }
@@ -25,8 +29,8 @@ export type CardType = {
   updatedAt: string
   createdAt: string
   priority: string
-  tags: []
-  assignees: []
+  tags: TagType[]
+  assignees: UserType[]
   comments: []
 }
 
@@ -42,4 +46,17 @@ export type AccountType = {
   email: string
   avatar: string | null
   teams: TeamType[]
+}
+
+export type TagType = {
+  id: string
+  body: string
+  color: string
+}
+
+export type UserType = {
+  id: string
+  username: string
+  avatar: string | null
+  email?: string
 }

@@ -1,9 +1,8 @@
-import Team from '@components/TeamPage/Team'
+import Members from '@components/TeamPage/Members'
 import { Box } from '@mantine/core'
-import React from 'react'
 
 const TeamPage = () => {
-  return <Box>team page users</Box>
+  return <Members />
 }
 
 TeamPage.layout = true

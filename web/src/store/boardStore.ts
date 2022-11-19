@@ -7,7 +7,8 @@ interface BoardStore {
 
   setColumns: (columns: ColumnType[]) => void
   filterCardsByText: (searchTerm: string) => void
-  filterCardsByTag: (tag: string) => void
+  filterCardsByTags: (tags: string[]) => void
+  clearFilters: () => void
 }
 
 const useBoardStore = create<BoardStore>((set) => ({
@@ -25,7 +26,15 @@ const useBoardStore = create<BoardStore>((set) => ({
       })),
     })),
 
-  filterCardsByTag: (tag) => set((state) => ({})),
+  filterCardsByTags: (tags) =>
+    set((state) => ({
+      filteredColumns: state.columns.map((column) => ({
+        ...column,
+        cards: column.cards.filter((card) => card.tags.some((tag) => tags.includes(tag.body))),
+      })),
+    })),
+
+  clearFilters: () => set((state) => ({ filteredColumns: state.columns })),
 }))
 
 export { useBoardStore }
