@@ -2,7 +2,7 @@ import Sidebar from '@components/Sidebar/Sidebar'
 import { Box, Container, ScrollArea } from '@mantine/core'
 import React from 'react'
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Container fluid p={0} sx={{ minHeight: '100vh', display: 'flex' }} id='layout'>
       <Sidebar />
@@ -22,4 +22,4 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-export default Layout
+export default AppLayout

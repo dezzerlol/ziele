@@ -99,7 +99,7 @@ type Query {
   getAccount: user!
   getProject(teamTitle: String!, projectId: String!): project!
   getUserProjects: [project!]!
-  getTeam(title: String!, offset: Float = 0): team!
+  getTeam(title: String!, offset: Int = 0): team!
   getUserTeams: [team!]!
   getProjectColumns(data: GetColumnsDto!): [column!]!
   getCards(columnId: String!): [card!]!

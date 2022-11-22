@@ -2,8 +2,8 @@ import { gql, useQuery } from '@apollo/client'
 import { TeamType } from 'types/ziele'
 
 const getTeam = gql`
-  query getTeam($title: String!) {
-    getTeam(title: $title) {
+  query getTeam($title: String!, $offset: Int) {
+    getTeam(title: $title, offset: $offset) {
       id
       title
       image
@@ -29,9 +29,11 @@ const getTeam = gql`
   }
 `
 
-export default function useTeam(teamTitle: string) {
+export default function useTeam(teamTitle: string, page: string) {
+  const offset = +page > 1 ? (+page - 1) * 15 : 0
+  
   const { data, loading, error } = useQuery(getTeam, {
-    variables: { title: teamTitle },
+    variables: { title: teamTitle, offset },
   })
 
   let team: TeamType = data?.getTeam

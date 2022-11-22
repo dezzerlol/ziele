@@ -41,7 +41,7 @@ const apolloClient = new ApolloClient({
   link: link,
   cache: new InMemoryCache(),
   credentials: 'include',
-  ssrMode: true,
+  ssrMode: false,
 })
 
 export default apolloClient

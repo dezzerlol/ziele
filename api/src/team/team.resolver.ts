@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common'
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { GqlAuthGuard } from 'src/auth/jwt-auth.guard'
 import { CurrentUser, ICurrentUser } from 'src/users/user.decorator'
 import { AddUserToTeamDto } from './dto/add-user.dto'
@@ -16,7 +16,7 @@ export class TeamResolver {
   async getTeam(
     @Args('title') title: string,
     @CurrentUser() reqUser: ICurrentUser,
-    @Args('offset', { type: () => Number, nullable: true, defaultValue: 0 }) offset?: number
+    @Args('offset', { type: () => Int, nullable: true, defaultValue: 0 }) offset?: number
   ) {
     return this.teamService.getTeam(title, reqUser, offset)
   }

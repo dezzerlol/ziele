@@ -35,7 +35,6 @@ const Sidebar = () => {
         minWidth: '260px',
         minHeight: 'inherit',
         backgroundColor: 'white',
-        boxShadow: '-3px 0 5px 0 #555',
         borderRight: '1px solid var(--border-color)',
         '@media (max-width: 755px)': {
           display: isSidebarOpen ? 'flex' : 'none',
