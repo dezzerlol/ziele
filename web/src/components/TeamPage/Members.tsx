@@ -1,47 +1,22 @@
-import AvatarName from '@components/Common/AvatarName'
-import { ActionIcon, Badge, Box, Center, Checkbox, Group, Loader, Pagination, Table, Title } from '@mantine/core'
+import { Badge, Box, Center, Group, Loader, Pagination, Title } from '@mantine/core'
 import useTeam from 'graphql/queries/useTeam'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { BiEdit, BiTrash } from 'react-icons/bi'
-import { ProjectType } from 'types/ziele'
-
-function findUserProjects(userId: string, allProjects: ProjectType[] | null) {
-  const userProjects = []
-
-  for (let i = 0; i < allProjects!.length; i++) {
-    for (let j = 0; j < allProjects![i].users.length; j++) {
-      if (allProjects![i].users[j].id === userId) {
-        userProjects.push(allProjects![i])
-      }
-    }
-  }
-
-  return userProjects?.map((project) => (
-    <Badge mr='xs' key={project.id}>
-      {project.title}
-    </Badge>
-  ))
-}
+import MembersTable from './MembersTable'
 
 const Members = () => {
-  const [activePage, setPage] = useState(1)
+  const USERS_PER_PAGE = 15
   const router = useRouter()
   const teamTitle = router.query.teamTitle as string
   const page = (router.query?.page as string) || '1'
+  const [activePage, setPage] = useState(page)
 
   const { team, loading, error } = useTeam(teamTitle, page)
+  const pageCount = Math.ceil(team?._count.users / USERS_PER_PAGE)
 
   const handlePageChange = (page: number) => {
-    setPage(page)
-  }
-
-  if (loading) {
-    return (
-      <Center sx={{ height: '100%' }}>
-        <Loader />
-      </Center>
-    )
+    setPage(page.toString())
+    router.push({ pathname: router.pathname, query: { teamTitle, page } })
   }
 
   return (
@@ -52,46 +27,14 @@ const Members = () => {
           {team?._count.users} users
         </Badge>
       </Group>
-      <Table striped highlightOnHover withBorder sx={{ minHeight: '' }}>
-        <thead>
-          <tr>
-            <th />
-            <th>Name</th>
-            <th>Email address</th>
-            <th>Last active</th>
-            <th>Projects</th>
-            <th />
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {team?.users.map((user) => (
-            <tr key={user.id}>
-              <td>
-                <Checkbox />
-              </td>
-              <td>
-                <AvatarName image={user.avatar} name={user.username} />
-              </td>
-              <td>{user.email}</td>
-              <td>19.11.2022</td>
-              <td>{findUserProjects(user.id, team.projects)}</td>
-              <td>
-                <ActionIcon variant='transparent'>
-                  <BiTrash size={20} />
-                </ActionIcon>
-              </td>
-              <td>
-                <ActionIcon variant='transparent'>
-                  <BiEdit size={20} />
-                </ActionIcon>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      {loading && (
+        <Center sx={{ height: '100%' }}>
+          <Loader />
+        </Center>
+      )}
+      <MembersTable team={team} />
       <Box py='xl'>
-        <Pagination onChange={handlePageChange} total={10} color='violet' size='sm' />
+        <Pagination page={+activePage} onChange={handlePageChange} total={pageCount} color='violet' size='sm' />
       </Box>
     </>
   )

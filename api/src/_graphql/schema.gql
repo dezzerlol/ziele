@@ -119,6 +119,7 @@ type Mutation {
   createCardTag(data: CreateTagDto!): DefaultResponse!
   createTeam(data: CreateTeamDto!): team!
   addUserInTeam(data: AddUserToTeamDto!): team!
+  removeUserFromTeam(data: AddUserToTeamDto!): DefaultResponse!
   createColumn(data: CreateColumnDto!): column!
   updateColumn(id: String!, newTitle: String!): column!
   deleteColumn(columnId: String!, projectId: String!): DefaultResponse!

@@ -96,6 +96,56 @@ export class ProjectService {
     return addedToProject
   }
 
+  async removeUserFromProject(data: AddUserDto) {
+    const removedFromProject = await this.prismaService.project.update({
+      where: { id: data.projectId },
+      data: {
+        users: {
+          disconnect: { username: data.username },
+        },
+      },
+    })
+    return removedFromProject
+  }
+
+  async removeUserFromProjects(data: { username: string; teamId: string }) {
+    const projects = await this.prismaService.project.findMany({
+      where: {
+        teamId: data.teamId,
+      },
+      select: {
+        id: true,
+        users: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
+    })
+
+    // https://github.com/prisma/prisma/issues/3143
+    await Promise.all(
+      projects.map((p) => {
+        return this.prismaService.project.update({
+          where: {
+            id: p.id,
+          },
+
+          data: {
+            users: {
+              disconnect: {
+                username: data.username,
+              },
+            },
+          },
+        })
+      })
+    )
+
+    return { status: HttpStatus.OK, message: 'ok' }
+  }
+
   async createCardTag(data: CreateTagDto): Promise<DefaultResponse> {
     let tag
 

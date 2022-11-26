@@ -1,9 +1,11 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { GqlAuthGuard } from 'src/auth/jwt-auth.guard'
+import { DefaultResponse } from 'src/common/defaultResponse.dto'
 import { CurrentUser, ICurrentUser } from 'src/users/user.decorator'
 import { AddUserToTeamDto } from './dto/add-user.dto'
 import { CreateTeamDto } from './dto/create-team.dto'
+import { TeamGuard } from './team.guard'
 import { Team } from './team.model'
 import { TeamService } from './team.service'
 
@@ -12,6 +14,7 @@ import { TeamService } from './team.service'
 export class TeamResolver {
   constructor(private teamService: TeamService) {}
 
+  @UseGuards(TeamGuard)
   @Query(() => Team)
   async getTeam(
     @Args('title') title: string,
@@ -34,5 +37,10 @@ export class TeamResolver {
   @Mutation(() => Team)
   async addUserInTeam(@Args('data') data: AddUserToTeamDto) {
     return this.teamService.addUserInTeam(data)
+  }
+
+  @Mutation(() => DefaultResponse)
+  async removeUserFromTeam(@Args('data') data: AddUserToTeamDto) {
+    return this.teamService.removeUserFromTeam(data)
   }
 }

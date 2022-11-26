@@ -9,11 +9,11 @@ import {
 } from '@nestjs/common'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { AuthService } from 'src/auth/auth.service'
-import { ProjectService } from './project.service'
+import { TeamService } from './team.service'
 
 @Injectable()
-export class ProjectGuard implements CanActivate {
-  constructor(private readonly auth: AuthService, private readonly projectService: ProjectService) {}
+export class TeamGuard implements CanActivate {
+  constructor(private readonly auth: AuthService, private readonly teamService: TeamService) {}
 
   getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context)
@@ -41,15 +41,15 @@ export class ProjectGuard implements CanActivate {
 
     if (validationResult) {
       // projectId can be passed in args data object or directly in args
-      const projectId = args.data ? args.data.projectId : args.projectId
+      const teamTitle = args.data ? args.data.title : args.title
       const userId = validationResult.id
+
 
       // check if user exists in requested project,
       // if exists return true
-      const isUserInProject = await this.projectService.findUserInProject({ userId, projectId })
-   
+      const isUserInProject = await this.teamService.findUserInTeam({ userId, teamTitle })
+
       if (isUserInProject) {
-        
         req.user = validationResult
         return true
       } else {

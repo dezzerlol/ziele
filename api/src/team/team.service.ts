@@ -15,8 +15,8 @@ export class TeamService {
     @Inject(forwardRef(() => ProjectService)) private projectService: ProjectService
   ) {}
 
-  async getTeam(title: string, reqUser: ICurrentUser, offset = 0) {
-    // get project
+  async getTeam(title: string, reqUser?: ICurrentUser, offset = 0) {
+    // get team
     const team = await this.prismaService.team.findUnique({
       where: { title },
       include: {
@@ -43,17 +43,12 @@ export class TeamService {
       },
     })
 
+    // if no team throw error
     if (!team) {
       throw new HttpException('Team not found', HttpStatus.BAD_REQUEST)
     }
 
-    // check if user is in project and return project
-    // else throw forbidden error
-    if (team.users.some((u) => u.id === reqUser.id)) {
-      return team
-    } else {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN)
-    }
+    return team
   }
 
   async getUserTeams(reqUser: ICurrentUser) {
@@ -62,15 +57,20 @@ export class TeamService {
   }
 
   async createTeam(data: CreateTeamDto, userId: string) {
+    // get team with this title
     const isExistTeam = await this.prismaService.team.findUnique({ where: { title: data.title } })
 
+    // if exists throw error
     if (isExistTeam) {
       throw new HttpException('Name already taken.', HttpStatus.BAD_REQUEST)
     }
 
+    // get users with requested ids
     const findUsers = await this.usersService.findUsersByUsername(data.users)
+    // add current user to users array
     const allUsers = [userId, ...findUsers.map((u) => u.id)]
 
+    // create team and connect users
     const team = await this.prismaService.team.create({
       data: {
         title: data.title,
@@ -85,6 +85,7 @@ export class TeamService {
       title: 'Your first project.',
     }
 
+    // create default project
     const project = await this.projectService.createProject(newProject, userId)
 
     return team
@@ -107,5 +108,33 @@ export class TeamService {
     })
 
     return addedToTeam
+  }
+
+  async removeUserFromTeam(data: AddUserToTeamDto) {
+    const team = await this.prismaService.team.update({
+      where: { id: data.teamId },
+      data: {
+        users: {
+          disconnect: { username: data.username },
+        },
+      },
+    })
+
+    const removedFromProjects = await this.projectService.removeUserFromProjects({
+      username: data.username,
+      teamId: data.teamId,
+    })
+
+    return { status: HttpStatus.OK, message: 'ok' }
+  }
+
+  async findUserInTeam(data: { userId: string; teamTitle: string }) {
+    const teams = await this.usersService.getUserTeams(data.userId)
+
+    if (teams.some((p) => p.title === data.teamTitle)) {
+      return true
+    } else {
+      return false
+    }
   }
 }
