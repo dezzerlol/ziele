@@ -1,12 +1,13 @@
 import TagSelectItem from '@components/Select/Tags/TagSelectItem'
 import TagSelectValue from '@components/Select/Tags/TagSelectValue'
-import { Box, Button, Divider, Group, Modal, MultiSelect, ScrollArea, Select, TextInput, Title } from '@mantine/core'
+import { Box, Button, Divider, Group, Modal, MultiSelect, ScrollArea, Select, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import { ISSUE_TYPES } from 'constant/issueTypes'
+import { PRIORITIES } from 'constant/priorities'
 import useCreateCard from 'graphql/mutations/useCreateCard'
 import dynamic from 'next/dynamic'
-import React, { useState } from 'react'
-import { BiDownArrowAlt, BiUpArrowAlt } from 'react-icons/bi'
-import { RiAlertFill, RiBookmarkFill, RiCheckboxFill, RiUser3Line } from 'react-icons/ri'
+import React, { useMemo, useState } from 'react'
+import { RiUser3Line } from 'react-icons/ri'
 import { useUiStore } from 'store/uiStore'
 import { ColumnType, ProjectType } from 'types/ziele'
 import SelectItem from '../../Select/WithIcon/SelectItem'
@@ -20,18 +21,11 @@ interface Props {
   project: ProjectType
 }
 
-const issueTypes = [
-  { label: 'Bug', value: 'bug', icon: <RiAlertFill size={18} color='#E44D42' /> },
-  { label: 'Task', value: 'task', icon: <RiCheckboxFill size={18} color='#4FADE6' /> },
-  { label: 'Story', value: 'story', icon: <RiBookmarkFill size={18} color='#65BA43' /> },
-]
+const getNewCardIndex = (columns: ColumnType[], columnId: string) => {
+  const usedColumn = columns.find((column) => column.id === columnId)
 
-const priority = [
-  { label: 'Highest', value: 'highest', icon: <BiUpArrowAlt size={18} /> },
-  { label: 'High', value: 'high', icon: <BiUpArrowAlt size={18} /> },
-  { label: 'Low', value: 'low', icon: <BiDownArrowAlt size={18} /> },
-  { label: 'Lowest', value: 'lowest', icon: <BiDownArrowAlt size={18} /> },
-]
+  return usedColumn!.cards.length + 1
+}
 
 const CreateNewModal = ({ columns, project }: Props) => {
   const [isNewTagOpen, setIsNewTagOpen] = useState(false)
@@ -64,13 +58,25 @@ const CreateNewModal = ({ columns, project }: Props) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await mutate({ variables: { data: form.values } })
+
+    const index = getNewCardIndex(columns, form.values.columnId as string)
+    await mutate({ variables: { data: { ...form.values, index } } })
     handleReset()
   }
 
-  const formattedColumns = columns.map((column) => ({ value: column.id, label: column.title }))
-  const users = project.users.map((user: any) => ({ value: user.id, label: user.username, icon: <RiUser3Line /> }))
-  const tags = project.tags.map((tag) => ({ label: tag.body, value: tag.id, color: tag.color }))
+  const formattedColumns = useMemo(
+    () => columns.map((column) => ({ value: column.id, label: column.title })),
+    [columns]
+  )
+  const users = useMemo(
+    () => project.users.map((user: any) => ({ value: user.id, label: user.username, icon: <RiUser3Line /> })),
+    [project.users]
+  )
+  const tags = useMemo(
+    () => project.tags.map((tag) => ({ value: tag.id, label: tag.body, color: tag.color })),
+    [project.tags]
+  )
+
 
   return (
     <>
@@ -87,9 +93,9 @@ const CreateNewModal = ({ columns, project }: Props) => {
               <Select
                 label='Issue type'
                 itemComponent={SelectItem}
-                data={issueTypes}
+                data={ISSUE_TYPES}
                 {...form.getInputProps('issueType')}
-                icon={issueTypes.find((i) => i.value === form.values.issueType)?.icon}
+                icon={ISSUE_TYPES.find((i) => i.value === form.values.issueType)?.icon}
               />
             </Box>
             <Box pb='xl'>
@@ -146,8 +152,8 @@ const CreateNewModal = ({ columns, project }: Props) => {
               <Select
                 itemComponent={SelectItem}
                 label='Priority'
-                data={priority}
-                icon={priority.find((i) => i.value === form.values.priority)?.icon}
+                data={PRIORITIES}
+                icon={PRIORITIES.find((i) => i.value === form.values.priority)?.icon}
                 {...form.getInputProps('priority')}
                 placeholder='Pick one...'
               />

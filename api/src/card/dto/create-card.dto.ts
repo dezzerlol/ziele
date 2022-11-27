@@ -1,7 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsArray, IsOptional, IsString, Length } from 'class-validator'
-import graphqlTypeJson from 'graphql-type-json'
+import { IsArray, IsNumber, IsOptional, IsString, Length } from 'class-validator'
 
 @InputType()
 export class CreateCardDto {
@@ -10,6 +9,11 @@ export class CreateCardDto {
   @Length(1, 100, { message: 'Must be longer than 1 and shorter than 100' })
   @Field()
   readonly title: string
+
+  @ApiProperty({ example: '1', description: 'Card index in column' })
+  @IsNumber({}, { message: 'Must be a number' })
+  @Field()
+  readonly index: number
 
   @ApiProperty({ example: '1', description: 'Id of column where card should be added' })
   @IsString({ message: 'Must be a string' })

@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql'
+import { Field, Int, ObjectType } from '@nestjs/graphql'
 import { Comment } from 'src/comment/comment.model'
 import { Tag } from 'src/project/tag.model'
 import { User } from 'src/users/users.model'
@@ -10,6 +10,12 @@ export class Card {
 
   @Field(() => String, {})
   title: string
+
+  @Field(() => Int, {})
+  index: number
+
+  @Field(() => String, {})
+  issueType: string
 
   @Field(() => String, { nullable: true })
   description?: string

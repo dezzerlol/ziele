@@ -1,11 +1,9 @@
-import Tag from '@components/Common/Tag'
-import { ActionIcon, Avatar, Box, Card, Group, Loader, Menu, Text, Title } from '@mantine/core'
+import { ActionIcon, Box, Group, Loader, Menu } from '@mantine/core'
 import useDeleteCard from 'graphql/mutations/useDeleteCard'
-import { useRouter } from 'next/router'
-import { useState, forwardRef } from 'react'
+import { useState } from 'react'
 import { BiDotsHorizontalRounded, BiDownArrowAlt, BiFlag, BiTrash } from 'react-icons/bi'
 
-const DotsButton = ({ cardId, isHover }: { cardId: string; isHover: boolean }) => {
+const DotsButton = ({ cardId }: { cardId: string }) => {
   const [isClicked, setIsClicked] = useState(false)
 
   const { mutate, loading } = useDeleteCard()
@@ -27,7 +25,6 @@ const DotsButton = ({ cardId, isHover }: { cardId: string; isHover: boolean }) =
             sx={{
               width: '20px',
               color: isClicked ? '#562BF7' : '',
-              display: isHover || isClicked ? 'flex' : 'none',
             }}>
             <BiDotsHorizontalRounded size={24} />
           </ActionIcon>

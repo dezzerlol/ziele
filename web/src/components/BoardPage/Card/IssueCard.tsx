@@ -1,8 +1,14 @@
 import Tag from '@components/Common/Tag'
 import { Avatar, Box, Card, Group, Text, Title } from '@mantine/core'
+import { ISSUE_TYPES } from 'constant/issueTypes'
 import { useRouter } from 'next/router'
 import { forwardRef, useState } from 'react'
 import DotsButton from './DotsButton'
+
+const getIssueCardIcon = (type: string) => {
+  const issueType = ISSUE_TYPES.find((issueType) => issueType.value === type)
+  return issueType?.icon
+}
 
 const IssueCard = forwardRef(({ card, style, ...props }: any, ref) => {
   const router = useRouter()
@@ -31,9 +37,9 @@ const IssueCard = forwardRef(({ card, style, ...props }: any, ref) => {
       }}>
       <Group position='apart' sx={{ height: '28px' }}>
         <Title order={5}>{card.title}</Title>
-        <DotsButton cardId={card.id} isHover={isHover} />
+        {isHover && <DotsButton cardId={card.id} />}
       </Group>
-      <Text color='gray.6'>Short summary</Text>
+
       <Group mt='xl' position='apart'>
         <Group spacing='xs'>
           {card.tags.length > 0 ? (
@@ -42,9 +48,7 @@ const IssueCard = forwardRef(({ card, style, ...props }: any, ref) => {
             <Box />
           )}
         </Group>
-        <Box>
-          <Avatar radius='xl' size='sm' />
-        </Box>
+        {getIssueCardIcon(card.issueType)}
       </Group>
     </Card>
   )

@@ -44,6 +44,8 @@ export class CardService {
         columnId: data.columnId,
         description: data.description,
         priority: data.priority,
+        issueType: data.issueType,
+        index: data.index,
         tags: {
           connect: data.tags && data.tags.map((tag) => ({ id: tag })),
         },

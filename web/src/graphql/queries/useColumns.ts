@@ -9,6 +9,9 @@ const getProjectColumns = gql`
       cards {
         id
         title
+        index
+        description
+        issueType
         tags {
           id
           color
@@ -25,6 +28,9 @@ const cardCreated = gql`
       id
       title
       columnId
+      index
+      issueType
+      description
       tags {
         id
         color

@@ -64,9 +64,10 @@ model Column {
 model Card {
   id          String  @id @default(cuid())
   title       String
+  issueType   String
+  index       Int
   description String?
   priority    String?
-  issueType   String?
 
   updatedAt DateTime  @updatedAt
   createdAt DateTime  @default(now())

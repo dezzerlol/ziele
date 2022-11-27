@@ -24,6 +24,8 @@ type tag {
 type card {
   id: String!
   title: String!
+  index: Int!
+  issueType: String!
   description: String
   priority: String
   assignees: [user!]
@@ -174,6 +176,7 @@ input CreateColumnDto {
 
 input CreateCardDto {
   title: String!
+  index: Float!
   columnId: String!
   issueType: String
   priority: String

@@ -22,8 +22,6 @@ const Board = () => {
   const router = useRouter()
   const { teamTitle, projectId } = router.query
 
-  /* const [columns, setColumns] = useState<ColumnType[]>([]) */
-
   const { columns, setColumns, filteredColumns } = useBoardStore(
     (state) => ({
       columns: state.columns,
@@ -48,10 +46,8 @@ const Board = () => {
     handleDragCancel,
     collisionDetectionStrategy,
     sensors,
-    activeId,
     activeCard,
-    setActiveCard,
-  } = useDnd(columns, setColumns)
+  } = useDnd(columns, setColumns, projectId as string)
 
   useEffect(() => {
     if (!loading && !error) setColumns(data.getProjectColumns)
@@ -64,6 +60,8 @@ const Board = () => {
       </Center>
     )
   if (error) return <div>Error: {error.message}</div>
+
+  console.log({ filteredColumns })
 
   return (
     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -81,7 +79,7 @@ const Board = () => {
               onDragOver={handleDragOver}
               onDragEnd={handleDragEnd}
               onDragCancel={handleDragCancel}>
-              {filteredColumns.map((column: any) => (
+              {columns.map((column: any) => (
                 <Column column={column} key={column.id} />
               ))}
               {createPortal(

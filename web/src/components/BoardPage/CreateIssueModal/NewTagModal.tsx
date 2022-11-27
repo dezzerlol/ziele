@@ -1,5 +1,5 @@
 import Tag from '@components/Common/Tag'
-import { Button, ColorPicker, Group, Modal, Text, TextInput } from '@mantine/core'
+import { Box, Button, ColorPicker, Group, Modal, Text, TextInput } from '@mantine/core'
 import { tagColors } from 'constant/tagColors'
 import useCreateTag from 'graphql/mutations/useCreateTag'
 import { useRouter } from 'next/router'
@@ -16,7 +16,7 @@ const NewTagModal = ({ isNewTagOpen, setIsNewTagOpen }: any) => {
   const [tagBody, setTagBody] = useState('')
   const [tagColor, setTagColor] = useState('')
   const { mutate, loading } = useCreateTag()
-  
+
   const colors = tagColors.map((item) => item.value)
   const projectId = router.query.projectId
 
@@ -49,7 +49,12 @@ const NewTagModal = ({ isNewTagOpen, setIsNewTagOpen }: any) => {
         fullWidth
         pb='xl'
       />
-      {tagBody && <Tag text={tagBody} color={tagColor ? tagColor : 'dark'} />}
+      {tagBody && (
+        <Group>
+          <Label text='Tag preview:' />
+          <Tag text={tagBody} color={tagColor ? tagColor : 'dark'} />
+        </Group>
+      )}
       <Group position='right'>
         <Button onClick={handleCreate} loading={loading}>
           Create
