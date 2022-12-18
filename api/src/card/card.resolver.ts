@@ -67,10 +67,11 @@ export class CardResolver {
   @Mutation(() => Column)
   async moveCardToColumn(
     @Args('cardId') cardId: string,
+    @Args('newIndex') newIndex: number,
     @Args('columnId') columnId: string,
     @Args('projectId') projectId: string
   ) {
-    const card = await this.cardService.moveCardToColumn(cardId, columnId)
+    const card = await this.cardService.moveCardToColumn(cardId, newIndex, columnId)
     return card
   }
 }

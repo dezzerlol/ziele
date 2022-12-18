@@ -15,6 +15,33 @@ import useMoveCard from 'graphql/mutations/useMoveCard'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { CardType } from 'types/ziele'
 
+/**
+ * Accepts array like this: items = [
+    {
+        "id": "cl9jycry80000uz68dxrdviwe",
+        [cardsKey]: [
+            {
+                "id": "claz8hm440003uzl4c3t8fwgl",
+            }
+        ]
+    },
+    {
+        "id": "cl9u54bix0000uzx85nc0c88g",
+        [cardsKey]: []
+    }
+]
+*/
+
+interface Props {
+  items: any
+  setItems: (items: any) => void
+
+  helpers: {
+    projectId: string
+    cardsKey: string
+  }
+}
+
 function findRoot(id: any, arr: any) {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].id === id) return true
@@ -31,12 +58,13 @@ function findIndex(id: any, array: any) {
   return 0
 }
 
-export default function useDnd(items: any, setItems: (items: any) => void, projectId: string) {
+const useDnd = ({ items, setItems, helpers: { projectId, cardsKey } }: Props) => {
   const { moveCard, loading } = useMoveCard()
   const recentlyMovedToNewContainer = useRef(false)
   const lastOverId = useRef<UniqueIdentifier | null>(null)
   const [activeId, setActiveId] = useState<number | null>(null)
   const [activeCard, setActiveCard] = useState<CardType | null>(null)
+
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -75,16 +103,15 @@ export default function useDnd(items: any, setItems: (items: any) => void, proje
       if (overId != null) {
         if (findRoot(overId, items)) {
           const containerItems = items.find((item: any) => item.id === overId)
-          /*  const containerItems = items[overId].cards */
 
           // If a container is matched and it contains cards
-          if (containerItems && containerItems.cards.length > 0) {
+          if (containerItems && containerItems[cardsKey].length > 0) {
             // Return the closest droppable within that container
             overId = closestCenter({
               ...args,
               droppableContainers: args.droppableContainers.filter(
                 (container) =>
-                  container.id !== overId && containerItems.cards.find((item: any) => item.id === container.id)
+                  container.id !== overId && containerItems[cardsKey].find((item: any) => item.id === container.id)
               ),
             })[0]?.id
           }
@@ -119,8 +146,8 @@ export default function useDnd(items: any, setItems: (items: any) => void, proje
 
     // check if container cards is root
     for (let i = 0; i < items.length; i++) {
-      for (let j = 0; j < items[i].cards.length; j++) {
-        if (items[i].cards[j].id === id) return `${i}`
+      for (let j = 0; j < items[i][cardsKey].length; j++) {
+        if (items[i][cardsKey][j].id === id) return `${i}`
       }
     }
   }
@@ -129,9 +156,9 @@ export default function useDnd(items: any, setItems: (items: any) => void, proje
     setActiveId(active.id)
     // set active card to show in drag overlay
     const activeContainer = findContainer(active.id)
-    const activeItems = items[activeContainer].cards
+    const activeItems = items[activeContainer][cardsKey]
     let activeIndex = findIndex(active.id, activeItems) || 0
-    setActiveCard(items[activeContainer].cards[activeIndex])
+    setActiveCard(items[activeContainer][cardsKey][activeIndex])
   }
 
   function handleDragOver({ active, over }: any) {
@@ -151,8 +178,8 @@ export default function useDnd(items: any, setItems: (items: any) => void, proje
     }
 
     // Get items of active container and over container
-    const activeItems = items[activeContainer].cards
-    const overItems = items[overContainer].cards
+    const activeItems = items[activeContainer][cardsKey]
+    const overItems = items[overContainer][cardsKey]
 
     // Find the index of the active item and the over item
     let activeIndex = findIndex(activeId, activeItems)
@@ -160,7 +187,7 @@ export default function useDnd(items: any, setItems: (items: any) => void, proje
 
     let newIndex
     if (findRoot(overId, items)) {
-      // We're at the root droppable of a container
+      // We're at the root droppable of a containerf
       newIndex = overItems.length + 1
     } else {
       const isBelowOverItem =
@@ -173,18 +200,21 @@ export default function useDnd(items: any, setItems: (items: any) => void, proje
 
     recentlyMovedToNewContainer.current = true
 
+    // destructure old columns
+    // filter cards in active container from which card was dragged
+    // insert card in over container
     let newColumnsInObj = {
       ...items,
       [activeContainer]: {
         ...items[activeContainer],
-        cards: [...items[activeContainer].cards.filter((item: any) => item.id !== active.id)],
+        [cardsKey]: [...items[activeContainer][cardsKey].filter((item: any) => item.id !== active.id)],
       },
       [overContainer]: {
         ...items[overContainer],
-        cards: [
-          ...items[overContainer].cards.slice(0, newIndex),
-          items[activeContainer].cards[activeIndex],
-          ...items[overContainer].cards.slice(newIndex, items[overContainer].cards.length),
+        [cardsKey]: [
+          ...items[overContainer][cardsKey].slice(0, newIndex),
+          items[activeContainer][cardsKey][activeIndex],
+          ...items[overContainer][cardsKey].slice(newIndex, items[overContainer][cardsKey].length),
         ],
       },
     }
@@ -219,10 +249,10 @@ export default function useDnd(items: any, setItems: (items: any) => void, proje
       return
     }
 
-    const activeIndex = findIndex(activeId, items[activeContainer].cards)
-    const overIndex = findIndex(overId, items[overContainer].cards)
+    const activeIndex = findIndex(activeId, items[activeContainer][cardsKey])
+    const overIndex = findIndex(overId, items[overContainer][cardsKey])
 
-    const movedCardId = items[activeContainer].cards[activeIndex].id
+    const movedCardId = items[activeContainer][cardsKey][activeIndex].id
     const movedCardContainerId = items[activeContainer].id
 
     if (activeIndex !== overIndex) {
@@ -230,14 +260,14 @@ export default function useDnd(items: any, setItems: (items: any) => void, proje
         ...items,
         [overContainer]: {
           ...items[overContainer],
-          cards: arrayMove(items[overContainer].cards, activeIndex, overIndex),
+          [cardsKey]: arrayMove(items[overContainer][cardsKey], activeIndex, overIndex),
         },
       }
       let newColumns = Object.values(newColumnObj)
       setItems(newColumns)
     }
 
-    moveCard(movedCardId, movedCardContainerId, projectId)
+    moveCard(movedCardId, overIndex, movedCardContainerId, projectId)
 
     setActiveId(null)
     setActiveCard(null)
@@ -260,3 +290,5 @@ export default function useDnd(items: any, setItems: (items: any) => void, proje
     setActiveCard,
   }
 }
+
+export default useDnd

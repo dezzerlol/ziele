@@ -22,6 +22,9 @@ const Column = ({ column }: { column: ColumnType }) => {
     setClickedColumnId(column.id)
   }
 
+  const cardsToSort = [...column.cards]
+  const sortedCards = cardsToSort.sort((a, b) => a.index - b.index)
+
   return (
     <>
       <Box
@@ -40,9 +43,9 @@ const Column = ({ column }: { column: ColumnType }) => {
           <ColumnDropdown id={column.id} />
         </Group>
 
-        <SortableContext items={column.cards.map((card: any) => card.id)} strategy={verticalListSortingStrategy}>
+        <SortableContext items={sortedCards.map((card: any) => card.id)} strategy={verticalListSortingStrategy}>
           <Box ref={setNodeRef} sx={{ borderRadius: '5px', height: 'auto', minHeight: '280px' }}>
-            {column.cards.map((card: any) => (
+            {sortedCards.map((card: any) => (
               <DraggableIssueCard key={card.id} card={card} />
             ))}
             <Button onClick={handleOpen} fullWidth variant='subtle'>

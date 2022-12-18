@@ -68,7 +68,6 @@ model Card {
   index       Int
   description String?
   priority    String?
-
   updatedAt DateTime  @updatedAt
   createdAt DateTime  @default(now())
   assignees User[]
@@ -77,6 +76,8 @@ model Card {
 
   column   Column? @relation(fields: [columnId], references: [id])
   columnId String?
+
+  // @@unique([columnId, index])
 }
 
 model Tag {

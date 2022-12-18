@@ -1,4 +1,10 @@
-import { DndContext, DragOverlay } from '@dnd-kit/core'
+import {
+  defaultDropAnimationSideEffects,
+  DndContext,
+  DragOverlay,
+  DropAnimation,
+  MeasuringStrategy,
+} from '@dnd-kit/core'
 import { Box, Center, Divider, Loader, ScrollArea } from '@mantine/core'
 import useColumns from 'graphql/queries/useColumns'
 import useDnd from 'hooks/useDnd'
@@ -17,6 +23,16 @@ import { useUiStore } from 'store/uiStore'
 import InviteUserModal from './InviteUserModal/InviteUserModal'
 import { useBoardStore } from 'store/boardStore'
 import shallow from 'zustand/shallow'
+
+const dropAnimation: DropAnimation = {
+  sideEffects: defaultDropAnimationSideEffects({
+    styles: {
+      active: {
+        opacity: '0.5',
+      },
+    },
+  }),
+}
 
 const Board = () => {
   const router = useRouter()
@@ -47,7 +63,7 @@ const Board = () => {
     collisionDetectionStrategy,
     sensors,
     activeCard,
-  } = useDnd(columns, setColumns, projectId as string)
+  } = useDnd({ items: columns, setItems: setColumns, helpers: { projectId: projectId as string, cardsKey: 'cards' } })
 
   useEffect(() => {
     if (!loading && !error) setColumns(data.getProjectColumns)
@@ -61,8 +77,6 @@ const Board = () => {
     )
   if (error) return <div>Error: {error.message}</div>
 
-  console.log({ filteredColumns })
-
   return (
     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Box p='md' sx={{ backgroundColor: 'white', maxHeight: '35%', minHeight: 'auto' }}>
@@ -74,16 +88,23 @@ const Board = () => {
           <Box mt='md' sx={{ width: 1200, height: '100%', display: 'flex', gap: '10px' }}>
             <DndContext
               sensors={sensors}
+              measuring={{
+                droppable: {
+                  strategy: MeasuringStrategy.Always,
+                },
+              }}
               collisionDetection={collisionDetectionStrategy}
               onDragStart={handleDragStart}
               onDragOver={handleDragOver}
               onDragEnd={handleDragEnd}
               onDragCancel={handleDragCancel}>
-              {columns.map((column: any) => (
+              {filteredColumns.map((column: any) => (
                 <Column column={column} key={column.id} />
               ))}
               {createPortal(
-                <DragOverlay>{activeCard ? <IssueCard card={activeCard} /> : null}</DragOverlay>,
+                <DragOverlay dropAnimation={dropAnimation}>
+                  {activeCard ? <IssueCard card={activeCard} /> : null}
+                </DragOverlay>,
                 document.body
               )}
             </DndContext>

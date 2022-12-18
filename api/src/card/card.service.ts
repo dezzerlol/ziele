@@ -79,23 +79,55 @@ export class CardService {
     return { status: HttpStatus.OK, message: 'Card deleted successfully' }
   }
 
-  async moveCardToColumn(cardId: string, columnId: string) {
+  async updateIndexOfCard(cardId: string, index: number) {
+    return await this.prismaService.card.update({
+      where: {
+        id: cardId,
+      },
+      data: {
+        index,
+      },
+    })
+  }
+
+  async moveCardToColumn(cardId: string, newIndex: number, columnId: string) {
+    console.log({ newIndex })
     const card = await this.prismaService.card.update({
       where: {
         id: cardId,
       },
       data: {
+        index: newIndex,
         column: {
           connect: {
             id: columnId,
           },
         },
       },
+    })
 
-      include: {
-        tags: true,
+    const nextCards = await this.prismaService.card.findMany({
+      where: {
+        index: {
+          gt: card.index,
+        },
+        AND: {
+          columnId,
+        },
+      },
+      select: {
+        id: true,
+        index: true,
       },
     })
+
+    const idsOfNextCards = nextCards.map((card) => card.id)
+
+    const updatedNextCards = await Promise.all(
+      idsOfNextCards.map((id, index) => {
+        return this.updateIndexOfCard(id, index + card.index + 1)
+      })
+    )
 
     return card
   }

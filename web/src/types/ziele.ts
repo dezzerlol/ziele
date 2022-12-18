@@ -25,6 +25,7 @@ export type ProjectType = {
 export type CardType = {
   id: string
   title: string
+  index: number
   description: string
   updatedAt: string
   createdAt: string

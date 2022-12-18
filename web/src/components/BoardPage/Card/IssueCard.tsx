@@ -2,7 +2,7 @@ import Tag from '@components/Common/Tag'
 import { Avatar, Box, Card, Group, Text, Title } from '@mantine/core'
 import { ISSUE_TYPES } from 'constant/issueTypes'
 import { useRouter } from 'next/router'
-import { forwardRef, useState } from 'react'
+import React, { forwardRef, useState } from 'react'
 import DotsButton from './DotsButton'
 
 const getIssueCardIcon = (type: string) => {
@@ -56,4 +56,4 @@ const IssueCard = forwardRef(({ card, style, ...props }: any, ref) => {
 
 IssueCard.displayName = 'IssueCard'
 
-export default IssueCard
+export default React.memo(IssueCard)

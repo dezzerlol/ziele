@@ -128,7 +128,7 @@ type Mutation {
   createCard(data: CreateCardDto!): card!
   updateCard(data: UpdateCardDto!): card!
   deleteCard(cardId: String!): DefaultResponse!
-  moveCardToColumn(cardId: String!, columnId: String!, projectId: String!): column!
+  moveCardToColumn(cardId: String!, newIndex: Float!, columnId: String!, projectId: String!): column!
   addComment(data: AddCommentDto!): DefaultResponse!
 }
 

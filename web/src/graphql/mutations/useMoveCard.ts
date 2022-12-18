@@ -1,8 +1,8 @@
 import { gql, useMutation } from '@apollo/client'
 
 const moveCardToColumn = gql`
-  mutation moveCardToColumn($cardId: String!, $columnId: String!, $projectId: String!) {
-    moveCardToColumn(cardId: $cardId, columnId: $columnId, projectId: $projectId) {
+  mutation moveCardToColumn($cardId: String!, $newIndex: Float!, $columnId: String!, $projectId: String!) {
+    moveCardToColumn(cardId: $cardId, newIndex: $newIndex, columnId: $columnId, projectId: $projectId) {
       id
       title
     }
@@ -12,10 +12,11 @@ const moveCardToColumn = gql`
 export default function useMoveCard() {
   const [moveCardMutation, { loading, error }] = useMutation(moveCardToColumn)
 
-  const moveCard = (cardId: string, columnId: string, projectId: string) => {
+  const moveCard = (cardId: string, newIndex: number, columnId: string, projectId: string) => {
     moveCardMutation({
       variables: {
         cardId,
+        newIndex,
         columnId,
         projectId,
       },
